@@ -1,0 +1,171 @@
+﻿@page "/Usuarios"
+@page "/Usuarios/{Id:int}"
+
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
+
+@inject IToastService toast
+
+
+<EditForm Model="usuarios" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Usuario</h3>
+        </div>
+
+        <div class="card-body">
+            <form>
+
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID:</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control col-4" />
+                                <ValidationMessage For="@(() => usuarios.UsuarioId)"></ValidationMessage>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"> <i class="fa fa-search"></i>  Buscar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Nombres*@
+                <div class="form-group">
+                    <label>Nombre:</label>
+                    <InputText @bind-Value="usuarios.Nombre" class="form-control" />
+                    <ValidationMessage For="@(() => usuarios.Nombre)" />
+                </div>
+
+                @*Nombre de usuario*@
+                <div class="form-group">
+                    <label>Nombre de usuario:</label>
+                    <InputText @bind-Value="usuarios.NombreUsuario" class="form-control" />
+                    <ValidationMessage For="@(() => usuarios.NombreUsuario)" />
+                </div>
+
+                @*Email*@
+                <div class="form-group">
+                    <label>Email:</label>
+                    <InputText @bind-Value="usuarios.Email" class="form-control" />
+                    <ValidationMessage For="@(() => usuarios.Email)" />
+                </div>
+
+                @*Clave*@
+                <div class="form-group">
+                    <label>Clave</label>
+                    <InputText type="password" class="form-control" @bind-Value="usuarios.Clave"></InputText>
+                    <ValidationMessage For="@(() => usuarios.Clave)" />
+                </div>
+
+                @*confirmar clave*@
+                <div class="form-group">
+                    <label>Confirmar Clave</label>
+                    <InputText type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
+                    <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
+                </div>
+
+                @*Nivel*@
+                <div class="form-group">
+                    <label>Nivel:</label>
+                    <InputText @bind-Value="usuarios.Nivel" class="form-control" />
+                    <ValidationMessage For="@(() => usuarios.Nivel)" />
+                </div>
+
+                @*Fecha*@
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control"></InputDate>
+                    <ValidationMessage For="@(()=>usuarios.FechaIngreso)"></ValidationMessage>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo </button>
+                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar </button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar </button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+
+@code { Usuarios usuarios = new Usuarios();
+
+            [Parameter]
+            public int Id { get; set; }
+
+            protected override void OnInitialized()
+            {
+                Nuevo();
+                if (Id > 0)
+                {
+                    usuarios = UsuarioBLL.Buscar(Id);
+                }
+            }
+
+            private void Nuevo()
+            {
+                this.usuarios = new Usuarios();
+            }
+
+            private void Guardar()
+            {
+                bool paso;
+                paso = UsuarioBLL.Guardar(usuarios);
+
+
+                if (usuarios.ConfirmarClave != usuarios.Clave)
+                {
+                    toast.ShowWarning("La claves no son iguales", "Error!");
+                    return;
+                }
+
+
+                if (paso)
+                {
+                    Nuevo();
+                    toast.ShowSuccess("Guardado Correctamente");
+                }
+                else
+                {
+                    toast.ShowError("No fue posible guardar");
+                }
+            }
+
+            private void Buscar()
+            {
+                var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
+                if (encontrado != null)
+                {
+                    this.usuarios = encontrado;
+                }
+                else
+                {
+                    toast.ShowWarning("No encontrado");
+                }
+            }
+
+            private void Eliminar()
+            {
+                bool eliminar;
+
+                eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
+
+                if (eliminar)
+                {
+                    Nuevo();
+                    toast.ShowSuccess("Eliminado Correctamente");
+                }
+                else
+                {
+                    toast.ShowError("No fue posible eliminar");
+                }
+            }
+
+ }
