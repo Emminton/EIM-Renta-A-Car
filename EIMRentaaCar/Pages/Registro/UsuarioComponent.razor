@@ -68,6 +68,11 @@
                     <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
                 </div>
 
+                <div class="form-group">
+                    <input type="file" @bind-value="usuarios.Image"/>
+                    <img src="@usuarios.Image"  />
+                </div>
+
                 @*Nivel*@
                 <div class="form-group">
                     <label>Nivel:</label>
@@ -79,7 +84,7 @@
                 <div class="form-group">
                     <label>Fecha</label>
                     <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control"></InputDate>
-                    <ValidationMessage For="@(()=>usuarios.FechaIngreso)"></ValidationMessage>
+                    <ValidationMessage For="@(() => usuarios.FechaIngreso)"></ValidationMessage>
                 </div>
             </form>
         </div>
@@ -95,77 +100,95 @@
 
 
 
-@code { Usuarios usuarios = new Usuarios();
+@code {
 
-            [Parameter]
-            public int Id { get; set; }
+    Usuarios usuarios = new Usuarios();
 
-            protected override void OnInitialized()
-            {
-                Nuevo();
-                if (Id > 0)
-                {
-                    usuarios = UsuarioBLL.Buscar(Id);
-                }
-            }
+    [Parameter]
+    public int Id { get; set; }
 
-            private void Nuevo()
-            {
-                this.usuarios = new Usuarios();
-            }
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (Id > 0)
+        {
+            usuarios = UsuarioBLL.Buscar(Id);
+        }
+    }
 
-            private void Guardar()
-            {
-                bool paso;
-                paso = UsuarioBLL.Guardar(usuarios);
+    private void Nuevo()
+    {
+        this.usuarios = new Usuarios();
+    }
+
+    private void Guardar()
+    {
+
+        bool paso;
+
+        paso = UsuarioBLL.Guardar(usuarios);
+
+        if (paso)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado Correctamente");
+        }
+        else
+        {
+            toast.ShowError("No fue posible guardar");
+        }
+    }
+
+    private void Buscar()
+    {
+        var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
+        if (encontrado != null)
+        {
+
+            this.usuarios = encontrado;
+        }
+        else
+        {
+            toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Eliminar()
+    {
+        bool eliminar;
+
+        eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
+
+        if (eliminar)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado Correctamente");
+        }
+        else
+        {
+            toast.ShowError("No fue posible eliminar");
+        }
+    }
 
 
-                if (usuarios.ConfirmarClave != usuarios.Clave)
-                {
-                    toast.ShowWarning("La claves no son iguales", "Error!");
-                    return;
-                }
+    //private byte[] ToByteArray(string value)
+    //{
+    //    char[] charArr = value.ToCharArray();
+    //    byte[] bytes = new byte[charArr.Length];
+    //    for (int i = 0; i < charArr.Length; i++)
+    //    {
+    //        byte current = Convert.ToByte(charArr[i]);
+    //        bytes[i] = current;
+    //    }
 
+    //    return bytes;
+    //}
 
-                if (paso)
-                {
-                    Nuevo();
-                    toast.ShowSuccess("Guardado Correctamente");
-                }
-                else
-                {
-                    toast.ShowError("No fue posible guardar");
-                }
-            }
+    //private void pasa()
+    //{
+    //    var aux = new byte [Convert.ToByte(cadena)];
 
-            private void Buscar()
-            {
-                var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
-                if (encontrado != null)
-                {
-                    this.usuarios = encontrado;
-                }
-                else
-                {
-                    toast.ShowWarning("No encontrado");
-                }
-            }
+    //    usuarios.Image = aux;
+    //}
 
-            private void Eliminar()
-            {
-                bool eliminar;
-
-                eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
-
-                if (eliminar)
-                {
-                    Nuevo();
-                    toast.ShowSuccess("Eliminado Correctamente");
-                }
-                else
-                {
-                    toast.ShowError("No fue posible eliminar");
-                }
-            }
-
- }
+}

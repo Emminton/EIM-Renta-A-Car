@@ -273,6 +273,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<DateTime>("FechaIngreso")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Nivel")
                         .IsRequired()
                         .HasColumnType("TEXT");

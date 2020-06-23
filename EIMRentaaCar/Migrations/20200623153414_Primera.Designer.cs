@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200621152400_Firts")]
-    partial class Firts
+    [Migration("20200623153414_Primera")]
+    partial class Primera
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -273,6 +273,9 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaIngreso")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Image")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Nivel")

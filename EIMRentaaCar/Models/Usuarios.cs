@@ -45,6 +45,9 @@ namespace EIMRentaaCar.Models
         [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime FechaIngreso { get; set; }
 
+        [Url]
+        public string Image { get; set; }
+            
         public Usuarios()
         {
             UsuarioId = 0;
@@ -55,6 +58,7 @@ namespace EIMRentaaCar.Models
             Nivel = string.Empty;
             FechaIngreso = DateTime.Now;
             NombreUsuario = string.Empty;
+            Image = string.Empty;
         }
 
         public static string Encriptar(string Cadena)

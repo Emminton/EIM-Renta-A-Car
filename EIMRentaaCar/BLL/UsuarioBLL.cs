@@ -101,6 +101,7 @@ namespace EIMRentaaCar.BLL
             {
                 usuarios = contexto.Usuarios.Find(id);
                 usuarios.Clave = Usuarios.DesEncriptar(usuarios.Clave);
+                usuarios.ConfirmarClave = Usuarios.DesEncriptar(usuarios.ConfirmarClave);
             }
             catch (Exception)
             {

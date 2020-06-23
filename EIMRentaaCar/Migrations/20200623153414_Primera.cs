@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Firts : Migration
+    public partial class Primera : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -119,7 +119,8 @@ namespace EIMRentaaCar.Migrations
                     Clave = table.Column<string>(maxLength: 60, nullable: false),
                     ConfirmarClave = table.Column<string>(maxLength: 60, nullable: false),
                     Nivel = table.Column<string>(nullable: false),
-                    FechaIngreso = table.Column<DateTime>(nullable: false)
+                    FechaIngreso = table.Column<DateTime>(nullable: false),
+                    Image = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
