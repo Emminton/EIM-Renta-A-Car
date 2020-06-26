@@ -1,0 +1,78 @@
+﻿
+
+
+@using EIMRentaaCar.Models
+@using EIMRentaaCar.BLL
+
+@inject IToastService toast
+
+
+@code
+{
+    [Parameter]
+    public int VentaId { get; set; }
+
+    Ventas ventas = new Ventas();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (VentaId > 0)
+        {
+            var Auxventas = VentasBLL.Buscar(VentaId);
+            if (Auxventas != null)
+                this.ventas = Auxventas;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.ventas = new Ventas();
+
+    }
+
+    private void Buscar()
+    {
+        if (ventas.VentaId> 0)
+        {
+            var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+            if (encontrado != null)
+                this.ventas = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+        bool guardo;
+
+        guardo = VentasBLL.Guardar(ventas);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+}

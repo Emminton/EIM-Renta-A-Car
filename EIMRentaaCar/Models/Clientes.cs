@@ -19,32 +19,32 @@ namespace EIMRentaaCar.Models
 
         [Required(ErrorMessage = "El campo nombre no puede estar vació.")]
         [MinLength(3, ErrorMessage = "El campo lo minimo debe terner 3 caracteres.")]
-        [MaxLength(30, ErrorMessage = "El nombre es muy largo.")]
+        [MaxLength(40, ErrorMessage = "El nombre es muy largo.")]
         [RegularExpression(@"\S(.*)\S", ErrorMessage = "Debe ser un texto.")]
         public string Nombre { get; set; }
-
-        [Required(ErrorMessage = "El campo cedula no debe estar vació.")]
-        [MinLength(11, ErrorMessage = "El Campo Cedula debe contener 11 Caracteres.")]
-        public string Cedula { get; set; }
-
-        [Required(ErrorMessage = "El campo Email no debe estar vació.")]
-        [EmailAddress(ErrorMessage = "Ingrese su dirección de Email.")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "El campo Dirección no debe de estar vació.")]
-        [MinLength(10, ErrorMessage = "La dirección es muy corta.")]
-        [MaxLength(40, ErrorMessage = "La dirección debe contener menos de 40 caracteres.")]
-        public string Direccion { get; set; }
 
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
         [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
         public DateTime FechaNacimiento { get; set; }
 
+        [Required(ErrorMessage = "El campo cedula no debe estar vació.")]
+        [MinLength(11, ErrorMessage = "El Campo Cedula debe contener 11 Caracteres.")]
+        public string Cedula { get; set; }
+
         [Required(ErrorMessage = "El campo Teléfono no debe de estar vació.")]
         [Phone(ErrorMessage = "Debes de ingresar tu número telefonico.")]
         [MaxLength(10, ErrorMessage = "El campo telefono no tiene más de diez dígitos.")]
         public string Telefono { get; set; }
+
+        [Required(ErrorMessage = "El campo Dirección no debe de estar vació.")]
+        [MinLength(10, ErrorMessage = "La dirección es muy corta.")]
+        [MaxLength(100, ErrorMessage = "La dirección debe contener menos de 40 caracteres.")]
+        public string Direccion { get; set; }
+
+        [Required(ErrorMessage = "El campo Email no debe estar vació.")]
+        [EmailAddress(ErrorMessage = "Ingrese su dirección de Email.")]
+        public string Email { get; set; }
 
         public Clientes()
         {

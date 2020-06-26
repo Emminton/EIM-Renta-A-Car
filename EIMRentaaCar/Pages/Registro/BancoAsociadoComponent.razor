@@ -1,0 +1,78 @@
+﻿
+
+
+@using EIMRentaaCar.Models
+@using EIMRentaaCar.BLL
+
+@inject IToastService toast
+
+
+@code
+{
+    [Parameter]
+    public int BancoAsociadoId { get; set; }
+
+    BancosAsociados bancosAsociados = new BancosAsociados();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (BancoAsociadoId > 0)
+        {
+            var AuxbancosAsociados = BancoAsociadoBLL.Buscar(BancoAsociadoId);
+            if (AuxbancosAsociados != null)
+                this.bancosAsociados = AuxbancosAsociados;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.bancosAsociados = new BancosAsociados();
+
+    }
+
+    private void Buscar()
+    {
+        if (bancosAsociados.BancoAsociadoId > 0)
+        {
+            var encontrado = BancoAsociadoBLL.Buscar(bancosAsociados.BancoAsociadoId);
+
+            if (encontrado != null)
+                this.bancosAsociados = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+        bool guardo;
+
+        guardo = BancoAsociadoBLL.Guardar(bancosAsociados);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = BancoAsociadoBLL.Eliminar(bancosAsociados.BancoAsociadoId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+}

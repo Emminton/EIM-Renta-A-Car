@@ -17,6 +17,9 @@ namespace EIMRentaaCar.Models
         [ForeignKey("RentaId")]
         public int RentaId { get; set; }
 
+        [ForeignKey("UsuarioId")]
+        public int UsuarioId { get; set; }
+
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
         [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]

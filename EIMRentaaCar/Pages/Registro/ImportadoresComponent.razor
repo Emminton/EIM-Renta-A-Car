@@ -1,0 +1,78 @@
+﻿
+
+
+@using EIMRentaaCar.Models
+@using EIMRentaaCar.BLL
+
+@inject IToastService toast
+
+
+@code
+{
+    [Parameter]
+    public int ImportadorId { get; set; }
+
+    Importadores importadores = new Importadores();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (ImportadorId > 0)
+        {
+            var Auximportadores = ImportadoresBLL.Buscar(ImportadorId);
+            if (Auximportadores != null)
+                this.importadores = Auximportadores;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.importadores = new Importadores();
+
+    }
+
+    private void Buscar()
+    {
+        if (importadores.ImportadorId> 0)
+        {
+            var encontrado = ImportadoresBLL.Buscar(importadores.ImportadorId);
+
+            if (encontrado != null)
+                this.importadores = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+        bool guardo;
+
+        guardo = ImportadoresBLL.Guardar(importadores);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = ImportadoresBLL.Eliminar(importadores.ImportadorId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+}
