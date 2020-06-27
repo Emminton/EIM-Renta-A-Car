@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200623153414_Primera")]
-    partial class Primera
+    [Migration("20200627125910_Inicio")]
+    partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,7 +63,7 @@ namespace EIMRentaaCar.Migrations
                     b.Property<string>("Direccion")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(40);
+                        .HasMaxLength(100);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -75,7 +75,7 @@ namespace EIMRentaaCar.Migrations
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT")
-                        .HasMaxLength(30);
+                        .HasMaxLength(40);
 
                     b.Property<string>("Telefono")
                         .IsRequired()
@@ -197,6 +197,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<int>("RentaId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("PagoRentaId");
 
                     b.ToTable("PagoRentas");
@@ -275,9 +278,6 @@ namespace EIMRentaaCar.Migrations
                     b.Property<DateTime>("FechaIngreso")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Nivel")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -291,6 +291,9 @@ namespace EIMRentaaCar.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
+
+                    b.Property<string>("photo")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UsuarioId");
 

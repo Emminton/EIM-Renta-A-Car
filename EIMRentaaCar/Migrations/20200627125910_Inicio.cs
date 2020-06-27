@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Primera : Migration
+    public partial class Inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,12 +31,12 @@ namespace EIMRentaaCar.Migrations
                     ClienteId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UsuarioId = table.Column<int>(nullable: false),
-                    Nombre = table.Column<string>(maxLength: 30, nullable: false),
-                    Cedula = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    Direccion = table.Column<string>(maxLength: 40, nullable: false),
+                    Nombre = table.Column<string>(maxLength: 40, nullable: false),
                     FechaNacimiento = table.Column<DateTime>(nullable: false),
-                    Telefono = table.Column<string>(maxLength: 10, nullable: false)
+                    Cedula = table.Column<string>(nullable: false),
+                    Telefono = table.Column<string>(maxLength: 10, nullable: false),
+                    Direccion = table.Column<string>(maxLength: 100, nullable: false),
+                    Email = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -66,6 +66,7 @@ namespace EIMRentaaCar.Migrations
                     PagoRentaId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     RentaId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
                     Monto = table.Column<decimal>(nullable: false)
                 },
@@ -120,7 +121,7 @@ namespace EIMRentaaCar.Migrations
                     ConfirmarClave = table.Column<string>(maxLength: 60, nullable: false),
                     Nivel = table.Column<string>(nullable: false),
                     FechaIngreso = table.Column<DateTime>(nullable: false),
-                    Image = table.Column<string>(nullable: true)
+                    photo = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

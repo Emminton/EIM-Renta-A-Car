@@ -4,6 +4,8 @@
 @using EIMRentaaCar.BLL
 @using EIMRentaaCar.Models
 
+
+
 @inject IToastService toast
 
 
@@ -68,10 +70,12 @@
                     <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
                 </div>
 
-                <div class="form-group">
-                    <input type="file" @bind-value="usuarios.Image"/>
-                    <img src="@usuarios.Image"  />
+                @*<div class="custom-file">
+                    <input type="file" @bind-value="usuarios.photo" class="custom-file-input form-control" />
+                    <label class="custom-file-label">Elige una foto</label>
                 </div>
+
+                <img src="~/Images/@usuarios.photo" />*@
 
                 @*Nivel*@
                 <div class="form-group">
@@ -86,6 +90,10 @@
                     <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control"></InputDate>
                     <ValidationMessage For="@(() => usuarios.FechaIngreso)"></ValidationMessage>
                 </div>
+
+               
+
+
             </form>
         </div>
         <div class="card-footer">
@@ -107,6 +115,8 @@
     [Parameter]
     public int Id { get; set; }
 
+    public string direccion { get; set; }
+
     protected override void OnInitialized()
     {
         Nuevo();
@@ -125,7 +135,6 @@
     {
 
         bool paso;
-
         paso = UsuarioBLL.Guardar(usuarios);
 
         if (paso)
@@ -171,22 +180,22 @@
     }
 
 
-    //private byte[] ToByteArray(string value)
-    //{
-    //    char[] charArr = value.ToCharArray();
-    //    byte[] bytes = new byte[charArr.Length];
-    //    for (int i = 0; i < charArr.Length; i++)
-    //    {
-    //        byte current = Convert.ToByte(charArr[i]);
-    //        bytes[i] = current;
-    //    }
+    private byte[] ToByteArray(string value)
+    {
+        char[] charArr = value.ToCharArray();
+        byte[] bytes = new byte[charArr.Length];
+        for (int i = 0; i < charArr.Length; i++)
+        {
+            byte current = Convert.ToByte(charArr[i]);
+            bytes[i] = current;
+        }
 
-    //    return bytes;
-    //}
+        return bytes;
+    }
 
     //private void pasa()
     //{
-    //    var aux = new byte [Convert.ToByte(cadena)];
+    //    var aux = new byte[Convert.ToByte(cadena)];
 
     //    usuarios.Image = aux;
     //}
