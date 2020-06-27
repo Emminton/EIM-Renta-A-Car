@@ -5,7 +5,6 @@
 @using EIMRentaaCar.Models
 
 
-
 @inject IToastService toast
 
 
@@ -66,16 +65,9 @@
                 @*confirmar clave*@
                 <div class="form-group">
                     <label>Confirmar Clave</label>
-                    <InputText type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
+                    <InputText type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave" @onclick="Confirmar"></InputText>
                     <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
                 </div>
-
-                @*<div class="custom-file">
-                    <input type="file" @bind-value="usuarios.photo" class="custom-file-input form-control" />
-                    <label class="custom-file-label">Elige una foto</label>
-                </div>
-
-                <img src="~/Images/@usuarios.photo" />*@
 
                 @*Nivel*@
                 <div class="form-group">
@@ -90,9 +82,6 @@
                     <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control"></InputDate>
                     <ValidationMessage For="@(() => usuarios.FechaIngreso)"></ValidationMessage>
                 </div>
-
-               
-
 
             </form>
         </div>
@@ -179,25 +168,11 @@
         }
     }
 
-
-    private byte[] ToByteArray(string value)
+    private void Confirmar()
     {
-        char[] charArr = value.ToCharArray();
-        byte[] bytes = new byte[charArr.Length];
-        for (int i = 0; i < charArr.Length; i++)
+        if(usuarios.ConfirmarClave != usuarios.Clave)
         {
-            byte current = Convert.ToByte(charArr[i]);
-            bytes[i] = current;
+            toast.ShowWarning("Las claves no coinciden");
         }
-
-        return bytes;
     }
-
-    //private void pasa()
-    //{
-    //    var aux = new byte[Convert.ToByte(cadena)];
-
-    //    usuarios.Image = aux;
-    //}
-
 }
