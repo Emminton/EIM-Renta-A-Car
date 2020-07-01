@@ -46,7 +46,7 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime FechaIngreso { get; set; }
-            
+        
         public Usuarios()
         {
             UsuarioId = 0;
@@ -57,12 +57,13 @@ namespace EIMRentaaCar.Models
             Nivel = string.Empty;
             FechaIngreso = DateTime.Now;
             NombreUsuario = string.Empty;
+          
         }
 
         public static string Encriptar(string Cadena)
         {
             string resultado = string.Empty;
-            byte[] encryted = System.Text.Encoding.ASCII.GetBytes(Cadena);
+            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(Cadena);
             resultado = Convert.ToBase64String(encryted);
 
             return resultado;
@@ -72,7 +73,7 @@ namespace EIMRentaaCar.Models
         {
             string resultado = string.Empty;
             byte[] decryted = Convert.FromBase64String(Cadena);
-            resultado = System.Text.Encoding.ASCII.GetString(decryted);
+            resultado = System.Text.Encoding.Unicode.GetString(decryted);
 
             return resultado;
         }

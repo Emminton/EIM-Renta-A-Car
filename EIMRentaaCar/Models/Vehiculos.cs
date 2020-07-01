@@ -69,5 +69,20 @@ namespace EIMRentaaCar.Models
             ImportadorId = 0;
         }
 
+        public Vehiculos(int vehiculoId, int usuarioId, VehiculoEstado estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId)
+        {
+            VehiculoId = vehiculoId;
+            UsuarioId = usuarioId;
+            Estado = estado;
+            Tipo = tipo ?? throw new ArgumentNullException(nameof(tipo));
+            Modelo = modelo ?? throw new ArgumentNullException(nameof(modelo));
+            Marca = marca ?? throw new ArgumentNullException(nameof(marca));
+            Vin = vin;
+            Año = año;
+            PrecioVenta = precioVenta;
+            PrecioPorDia = precioPorDia;
+            Kilometraje = kilometraje;
+            ImportadorId = importadorId;
+        }
     }
 }

@@ -65,7 +65,7 @@
                 @*confirmar clave*@
                 <div class="form-group">
                     <label>Confirmar Clave</label>
-                    <InputText type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave" @onclick="Confirmar"></InputText>
+                    <InputText type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave" ></InputText>
                     <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
                 </div>
 
@@ -82,6 +82,8 @@
                     <InputDate @bind-Value="usuarios.FechaIngreso" class="form-control"></InputDate>
                     <ValidationMessage For="@(() => usuarios.FechaIngreso)"></ValidationMessage>
                 </div>
+
+               
 
             </form>
         </div>
@@ -111,7 +113,11 @@
         Nuevo();
         if (Id > 0)
         {
-            usuarios = UsuarioBLL.Buscar(Id);
+            var Auxclientes = UsuarioBLL.Buscar(Id);
+            if (Auxclientes != null)
+                this.usuarios = Auxclientes;
+            else
+                toast.ShowWarning("No encontrado.");
         }
     }
 
@@ -126,15 +132,26 @@
         bool paso;
         paso = UsuarioBLL.Guardar(usuarios);
 
-        if (paso)
+        if (usuarios.Clave != usuarios.ConfirmarClave)
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado Correctamente");
+            usuarios.Clave = string.Empty;
+            usuarios.ConfirmarClave = string.Empty;
+            toast.ShowWarning("Las claves no coinciden");
         }
         else
         {
-            toast.ShowError("No fue posible guardar");
+            if (paso)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado Correctamente");
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar");
+            }
         }
+
+
     }
 
     private void Buscar()
@@ -168,11 +185,4 @@
         }
     }
 
-    private void Confirmar()
-    {
-        if(usuarios.ConfirmarClave != usuarios.Clave)
-        {
-            toast.ShowWarning("Las claves no coinciden");
-        }
-    }
 }
