@@ -26,8 +26,8 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                usuario.Clave = Usuarios.Encriptar(usuario.Clave);
-                usuario.ConfirmarClave = Usuarios.Encriptar(usuario.ConfirmarClave);
+                usuario.Password = Usuarios.Encriptar(usuario.Password);
+                usuario.ConfirmarPassword = Usuarios.Encriptar(usuario.ConfirmarPassword);
                 contexto.Usuarios.Add(usuario);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -49,8 +49,8 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                usuario.Clave = Usuarios.Encriptar(usuario.Clave);
-                usuario.ConfirmarClave = Usuarios.Encriptar(usuario.ConfirmarClave);
+                usuario.Password = Usuarios.Encriptar(usuario.Password);
+                usuario.ConfirmarPassword = Usuarios.Encriptar(usuario.ConfirmarPassword);
                 contexto.Entry(usuario).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
@@ -100,8 +100,8 @@ namespace EIMRentaaCar.BLL
             try
             {
                 usuarios = contexto.Usuarios.Find(id);
-                usuarios.Clave = Usuarios.DesEncriptar(usuarios.Clave);
-                usuarios.ConfirmarClave = Usuarios.DesEncriptar(usuarios.ConfirmarClave);
+                usuarios.Password = Usuarios.DesEncriptar(usuarios.Password);
+                usuarios.ConfirmarPassword = Usuarios.DesEncriptar(usuarios.ConfirmarPassword);
             }
             catch (Exception)
             {

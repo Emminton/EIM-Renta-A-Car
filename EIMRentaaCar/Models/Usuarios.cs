@@ -27,20 +27,20 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "El nombre de usuario no puede estar vacio")]
         [MinLength(3, ErrorMessage = "Nombre de usuario muy corto")]
         [MaxLength(30, ErrorMessage = "Nombre de usuario muy largo")]
-        public string NombreUsuario { get; set; }
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "El Clave no puede estar vacío")]
         [MinLength(2, ErrorMessage = "El Clave muy corto")]
         [MaxLength(60, ErrorMessage = "Clave muy largo")]
-        public string Clave { get; set; }
+        public string Password { get; set; }
 
         [Required(ErrorMessage = "El Confirmar Clave no puede estar vacío")]
         [MinLength(2, ErrorMessage = "El Confirmar Clave es muy corto")]
         [MaxLength(60, ErrorMessage = "ConfirmarClave muy largo")]
-        public string ConfirmarClave { get; set; }
+        public string ConfirmarPassword { get; set; }
 
         [Required(ErrorMessage = "El Nivel Usuario no puede estar vacío")]
-        public string Nivel { get; set; }
+        public string Roles { get; set; }
 
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
@@ -52,11 +52,11 @@ namespace EIMRentaaCar.Models
             UsuarioId = 0;
             Nombre = string.Empty;
             Email = string.Empty;
-            Clave = string.Empty;
-            ConfirmarClave = string.Empty;
-            Nivel = string.Empty;
+            Password = string.Empty;
+            ConfirmarPassword = string.Empty;
+            Roles = string.Empty;
             FechaIngreso = DateTime.Now;
-            NombreUsuario = string.Empty;
+            UserName = string.Empty;
           
         }
 

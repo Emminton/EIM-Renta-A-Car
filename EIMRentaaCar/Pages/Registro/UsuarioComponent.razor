@@ -44,8 +44,8 @@
                 @*Nombre de usuario*@
                 <div class="form-group">
                     <label>Nombre de usuario:</label>
-                    <InputText @bind-Value="usuarios.NombreUsuario" class="form-control " />
-                    <ValidationMessage For="@(() => usuarios.NombreUsuario)" />
+                    <InputText @bind-Value="usuarios.UserName" class="form-control " />
+                    <ValidationMessage For="@(() => usuarios.UserName)" />
                 </div>
 
                 @*Email*@
@@ -58,22 +58,22 @@
                 @*Clave*@
                 <div class="form-group">
                     <label>Clave</label>
-                    <InputText type="password" class="form-control " @bind-Value="usuarios.Clave"></InputText>
-                    <ValidationMessage For="@(() => usuarios.Clave)" />
+                    <InputText type="password" class="form-control " @bind-Value="usuarios.Password"></InputText>
+                    <ValidationMessage For="@(() => usuarios.Password)" />
                 </div>
 
                 @*confirmar clave*@
                 <div class="form-group">
                     <label>Confirmar Clave</label>
-                    <InputText type="password" class="form-control " @bind-Value="usuarios.ConfirmarClave" ></InputText>
-                    <ValidationMessage For="@(() => usuarios.ConfirmarClave)" />
+                    <InputText type="password" class="form-control " @bind-Value="usuarios.ConfirmarPassword" ></InputText>
+                    <ValidationMessage For="@(() => usuarios.ConfirmarPassword)" />
                 </div>
 
                 @*Nivel*@
                 <div class="form-group">
                     <label>Nivel:</label>
-                    <InputText @bind-Value="usuarios.Nivel" class="form-control " />
-                    <ValidationMessage For="@(() => usuarios.Nivel)" />
+                    <InputText @bind-Value="usuarios.Roles" class="form-control " />
+                    <ValidationMessage For="@(() => usuarios.Roles)" />
                 </div>
 
                 @*Fecha*@
@@ -132,10 +132,10 @@
         bool paso;
         paso = UsuarioBLL.Guardar(usuarios);
 
-        if (usuarios.Clave != usuarios.ConfirmarClave)
+        if (usuarios.Password != usuarios.ConfirmarPassword)
         {
-            usuarios.Clave = string.Empty;
-            usuarios.ConfirmarClave = string.Empty;
+            usuarios.Password = string.Empty;
+            usuarios.ConfirmarPassword = string.Empty;
             toast.ShowWarning("Las claves no coinciden");
         }
         else
