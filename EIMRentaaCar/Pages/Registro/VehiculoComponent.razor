@@ -1,4 +1,6 @@
-﻿@page "/Ventas"
+﻿@page "/Vehiculos"
+@page "/Vehiculos/{Id:int}"
+
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
 
@@ -8,18 +10,18 @@
 @code
 {
     [Parameter]
-    public int VentaId { get; set; }
+    public int Id { get; set; }
 
-    Ventas ventas = new Ventas();
+    Vehiculos vehiculos = new Vehiculos();
 
     protected override void OnInitialized()
     {
         Nuevo();
-        if (VentaId > 0)
+        if (Id > 0)
         {
-            var Auxventas = VentasBLL.Buscar(VentaId);
-            if (Auxventas != null)
-                this.ventas = Auxventas;
+            var aux = VehiculosBLL.Buscar(Id);
+            if (aux != null)
+                this.vehiculos = aux;
             else
                 toast.ShowWarning("No encontrado.");
         }
@@ -27,18 +29,18 @@
 
     private void Nuevo()
     {
-        this.ventas = new Ventas();
+        this.vehiculos = new Vehiculos();
 
     }
 
     private void Buscar()
     {
-        if (ventas.VentaId> 0)
+        if (vehiculos.VehiculoId > 0)
         {
-            var encontrado = VentasBLL.Buscar(ventas.VentaId);
+            var encontrado = VehiculosBLL.Buscar(vehiculos.VehiculoId);
 
             if (encontrado != null)
-                this.ventas = encontrado;
+                this.vehiculos = encontrado;
             else
                 toast.ShowWarning("No encontrado");
         }
@@ -48,7 +50,7 @@
     {
         bool guardo;
 
-        guardo = VentasBLL.Guardar(ventas);
+        guardo = VehiculosBLL.Guardar(vehiculos);
 
         if (guardo)
         {
@@ -63,7 +65,7 @@
     {
         bool elimino;
 
-        elimino = VentasBLL.Eliminar(ventas.VentaId);
+        elimino = VehiculosBLL .Eliminar(vehiculos.VehiculoId);
 
         if (elimino)
         {
