@@ -7,6 +7,102 @@
 @inject IToastService toast
 
 
+    @*<EditForm Model="vehiculos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+
+        <div class="card w-75">
+            <div class="card-header">
+                <h3>Registro de Vehiculos</h3>
+            </div>
+
+            <div class="card-body">
+                <form>
+
+                    <div class="form-row align-items-center">
+
+                        <div class="form-group">
+                            <label>ID:</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control col-4" />
+                                <ValidationMessage For="@(() => vehiculos.VehiculoId)"></ValidationMessage>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"> <i class="fa fa-search"></i>  Buscar </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Esatdo</label>
+                        <InputText @bind-Value="vehiculos.Estado.ToString()" class="form-control " />
+                        <ValidationMessage For="@(() => vehiculos.Estado)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Importado</label>
+                        <InputText @bind-Value="vehiculos.Estado.ToString()" class="form-control " />
+                        <ValidationMessage For="@(() => vehiculos.Estado)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <InputText @bind-Value="vehiculos.Tipo" class="form-control " />
+                        <ValidationMessage For="@(() => vehiculos.Tipo)" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label>Marca:</label>
+                        <InputText @bind-Value="vehiculos.Marca" class="form-control " />
+                        <ValidationMessage For="@(() => vehiculos.Marca)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kilometraje</label>
+                        <InputNumber @bind-Value="vehiculos.Kilometraje" class="form-control"></InputNumber>
+                        <ValidationMessage For="@(() => vehiculos.Kilometraje)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Vin</label>
+                        <InputNumber @bind-Value="vehiculos.Vin" class="form-control"></InputNumber>
+                        <ValidationMessage For="@(() => vehiculos.Vin)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Año</label>
+                        <InputNumber @bind-Value="vehiculos.Año" class="form-control"></InputNumber>
+                        <ValidationMessage For="@(() => vehiculos.Año)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Precio de Venta</label>
+                        <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control"></InputNumber>
+                        <ValidationMessage For="@(() => vehiculos.PrecioVenta)" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Precio por dia</label>
+                        <InputNumber @bind-Value="vehiculos.PrecioPorDia" class="form-control"></InputNumber>
+                        <ValidationMessage For="@(() => vehiculos.PrecioPorDia)" />
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo </button>
+                    <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar </button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar </button>
+                </div>
+            </div>
+        </div>
+    </EditForm>*@
+
+
 @code
 {
     [Parameter]

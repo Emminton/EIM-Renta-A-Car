@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EIMRentaaCar.Models
@@ -60,23 +61,8 @@ namespace EIMRentaaCar.Models
           
         }
 
-        public static string Encriptar(string Cadena)
-        {
-            string resultado = string.Empty;
-            byte[] encryted = System.Text.Encoding.Unicode.GetBytes(Cadena);
-            resultado = Convert.ToBase64String(encryted);
+      
 
-            return resultado;
-        }
-
-        public static string DesEncriptar(string Cadena)
-        {
-            string resultado = string.Empty;
-            byte[] decryted = Convert.FromBase64String(Cadena);
-            resultado = System.Text.Encoding.Unicode.GetString(decryted);
-
-            return resultado;
-        }
 
     }
 }

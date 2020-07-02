@@ -159,7 +159,7 @@
         var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
         if (encontrado != null)
         {
-
+          
             this.usuarios = encontrado;
         }
         else
@@ -184,5 +184,4 @@
             toast.ShowError("No fue posible eliminar");
         }
     }
-
 }

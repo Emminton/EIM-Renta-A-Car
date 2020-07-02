@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace EIMRentaaCar.BLL
@@ -26,8 +27,8 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                usuario.Password = Usuarios.Encriptar(usuario.Password);
-                usuario.ConfirmarPassword = Usuarios.Encriptar(usuario.ConfirmarPassword);
+                usuario.Password = Encriptar(usuario.Password);
+                usuario.ConfirmarPassword = Encriptar(usuario.ConfirmarPassword);
                 contexto.Usuarios.Add(usuario);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -49,8 +50,8 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                usuario.Password = Usuarios.Encriptar(usuario.Password);
-                usuario.ConfirmarPassword = Usuarios.Encriptar(usuario.ConfirmarPassword);
+                usuario.Password = Encriptar(usuario.Password);
+                usuario.ConfirmarPassword = Encriptar(usuario.ConfirmarPassword);
                 contexto.Entry(usuario).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
@@ -99,9 +100,9 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                usuarios = contexto.Usuarios.Find(id);
-                usuarios.Password = Usuarios.DesEncriptar(usuarios.Password);
-                usuarios.ConfirmarPassword = Usuarios.DesEncriptar(usuarios.ConfirmarPassword);
+                usuarios = contexto.Usuarios.Where(A => A.UsuarioId == id).FirstOrDefault();
+                usuarios.Password = DesEncriptar(usuarios.Password);
+                usuarios.ConfirmarPassword = DesEncriptar(usuarios.ConfirmarPassword);
             }
             catch (Exception)
             {
@@ -143,6 +144,7 @@ namespace EIMRentaaCar.BLL
             try
             {
                 encontrado = contexto.Usuarios.Any(u => u.UsuarioId == id);
+               
             }
             catch (Exception)
             {
@@ -154,5 +156,33 @@ namespace EIMRentaaCar.BLL
             }
             return encontrado;
         }
+
+        public static string Encriptar(string cadena)
+        {
+            if (!string.IsNullOrEmpty(cadena))
+            {
+                string resultado = string.Empty;
+                byte[] encryted = Encoding.Unicode.GetBytes(cadena);
+                resultado = Convert.ToBase64String(encryted);
+
+                return resultado;
+            }
+            return string.Empty;
+        }
+
+        public static string DesEncriptar(string cadenaDesencriptada)
+        {
+            if (!string.IsNullOrEmpty(cadenaDesencriptada))
+            {
+                string resultado = string.Empty;
+                byte[] decryted = Convert.FromBase64String(cadenaDesencriptada);
+                resultado = System.Text.Encoding.Unicode.GetString(decryted);
+
+                return resultado;
+            }
+
+            return string.Empty;
+        }
+
     }
 }
