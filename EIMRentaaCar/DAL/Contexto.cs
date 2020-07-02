@@ -1,4 +1,5 @@
 ﻿using EIMRentaaCar.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EIMRentaaCar.DAL
 {
-    public class Contexto : DbContext
+    public class Contexto : IdentityDbContext
     {
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Rentas> Rentas { get; set; }
