@@ -32,7 +32,7 @@ namespace EIMRentaaCar.BLL
 
                 if (vehiculo != null)
                 {
-                    vehiculo.Estado = Models.Enums.VehiculoEstado.Rentado;     //Cambiando el estado del vehículo a Rentado
+                    //vehiculo.Estado = Models.Enums.VehiculoEstado.Rentado;     //Cambiando el estado del vehículo a Rentado
                     VehiculosBLL.Modificar(vehiculo);
                 }
 
