@@ -6,13 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Areas\**" />
     <Compile Remove="Images\**" />
-    <Content Remove="Areas\**" />
     <Content Remove="Images\**" />
-    <EmbeddedResource Remove="Areas\**" />
     <EmbeddedResource Remove="Images\**" />
-    <None Remove="Areas\**" />
     <None Remove="Images\**" />
   </ItemGroup>
 
@@ -28,6 +24,11 @@
 
   <ItemGroup>
     <Folder Include="Pages\Login\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Areas\Identity\Pages\Account\LogOut.cshtml" />
+    <None Include="Areas\Identity\Pages\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
 
 </Project>
