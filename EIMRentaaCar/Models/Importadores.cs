@@ -21,7 +21,7 @@ namespace EIMRentaaCar.Models
         [MinLength(3, ErrorMessage = "El campo lo minimo debe terner 3 caracteres.")]
         [MaxLength(30, ErrorMessage = "El nombre es muy largo.")]
         [RegularExpression(@"\S(.*)\S", ErrorMessage = "Debe ser un texto.")]
-        public string Nombres { get; set; }
+        public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El campo Teléfono no debe de estar vació.")]
         [Phone(ErrorMessage = "Debes de ingresar tu número telefonico.")]
@@ -36,7 +36,7 @@ namespace EIMRentaaCar.Models
         {
             ImportadorId = 0;
             UsuarioId = 0;
-            Nombres = string.Empty;
+            Nombre = string.Empty;
             Telefono = string.Empty;
             Email = string.Empty;
         }

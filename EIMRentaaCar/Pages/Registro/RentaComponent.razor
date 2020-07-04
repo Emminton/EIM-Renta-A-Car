@@ -1,0 +1,197 @@
+﻿@page "/Renta"
+@page "/Renta/{RentaId:int}"
+
+@using EIMRentaaCar.Models
+@using EIMRentaaCar.BLL
+
+@inject IToastService toast
+
+
+<EditForm Model="rentas" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro de Rentas</h1>
+        </div>
+
+        @*ClientesID y boton al lado*@
+        <div class="card-body">
+            <form />
+            <div class="form-row align-items-center">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Renta ID</label>
+                        <div class="input-group">
+                            <InputNumber @bind-Value="rentas.RentaId" class="form-control col-4" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-row">
+                    <div class="col">
+                        <label>Vehiculo ID:</label>
+                        <select class="form-control" @bind="MarcaSelecionada" @onclick="MostrarNombreMarca">
+                            @foreach (var item in ListaVehiculo)
+                            {
+                                <option value="@item.VehiculoId">@item.VehiculoId</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <label>La Marca:</label>
+                        <InputText class="form-control" readonly="true" @bind-Value="nombreMarca" />
+                    </div>
+
+                    <div class="col">
+                        <label>Cliente ID:</label>
+                        <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                            @foreach (var item in ListaCliente)
+                            {
+                                <option value="@item.ClienteId">@item.ClienteId</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <label>El Cliente:</label>
+                        <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />
+                    </div>
+
+                </div>
+            </div>
+
+            @*Fecha de la Renta*@
+            <div class="form-group">
+                <label>Fecha de la Renta</label>
+                <InputDate @bind-Value="rentas.FechaRenta" class="form-control" />
+                <ValidationMessage For="@(() => rentas.FechaRenta)" />
+            </div>
+
+            @*Tempo de Renta*@
+            <div class="form-group">
+                <label>Tiempo De Renta </label>
+                <InputNumber @bind-Value="rentas.TiempoRenta" class="form-control" />
+                <ValidationMessage For="@(() => rentas.TiempoRenta)" />
+            </div>
+
+            @*Botones*@
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</EditForm>
+
+@code
+{
+    [Parameter]
+    public int RentaId { get; set; }
+    
+    @*Datos Del Vehiculo*@
+    Rentas rentas = new Rentas();
+    public int MarcaSelecionada { get; set; }
+    public string nombreMarca { get; set; }
+    private List<Vehiculos> ListaVehiculo = new List<Vehiculos>();
+    
+    @*Datos Del Cliente*@
+    public int ClienteSelecionado { get; set; }
+    public string nombreCliente { get; set; }
+    private List<Clientes> ListaCliente = new List<Clientes>();
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (RentaId > 0)
+        {
+            var Auximportadores = RentasBLL.Buscar(RentaId);
+            if (Auximportadores != null)
+                this.rentas = Auximportadores;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.rentas = new Rentas();
+
+    }
+
+    private void MostrarNombreMarca()
+    {
+        string auxMarca = string.Empty;
+
+        var auxPrestamo = VehiculosBLL.Buscar(MarcaSelecionada);
+        if (auxPrestamo != null)
+        {
+            auxMarca = VehiculosBLL.Buscar(auxPrestamo.VehiculoId).Marca;
+            nombreMarca = auxMarca;
+        }
+    }
+
+    private void MostrarNombreCliente()
+    {
+        string auxRenta = string.Empty;
+
+        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+        if (auxCliente != null)
+        {
+            auxRenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+            nombreCliente = auxRenta;
+        }
+    }
+
+    private void Buscar()
+    {
+        if (rentas.RentaId > 0)
+        {
+            var encontrado = RentasBLL.Buscar(rentas.RentaId);
+
+            if (encontrado != null)
+                this.rentas = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+        bool guardo;
+
+        guardo = RentasBLL.Guardar(rentas);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = RentasBLL.Eliminar(rentas.RentaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+}
