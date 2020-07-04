@@ -17,25 +17,110 @@
 
         <div class="card-body">
             <form>
-
                 <div class="form-row align-items-center">
-
-                    <div class="form-group">
-                        <label>ID:</label>
-                        <div class="input-group">
-                            <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control col-4" />
-                            <ValidationMessage For="@(() => vehiculos.VehiculoId)"></ValidationMessage>
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="Buscar"> <i class="fa fa-search"></i>  Buscar </button>
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID:</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control col-4" />
+                                <ValidationMessage For="@(() => vehiculos.VehiculoId)"></ValidationMessage>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"> <i class="fa fa-search"></i>  Buscar </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
+                <div class="form-group">
+                    <div class="form-row">
 
-                </form>
+                        <div class="col">
+                            <label>Marca:</label>
+                            <InputText @bind-Value="vehiculos.Marca" class="form-control"></InputText>
+                            <ValidationMessage For="(()=>vehiculos.Marca)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Tipo:</label>
+                            <InputText @bind-Value="vehiculos.Tipo" class="form-control"></InputText>
+                            <ValidationMessage For="(()=>vehiculos.Tipo)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Modelo:</label>
+                            <InputText @bind-Value="vehiculos.Modelo" class="form-control"></InputText>
+                            <ValidationMessage For="(()=>vehiculos.Modelo)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Importador:</label>
+                            <select @bind="vehiculos.ImportadorId" class="form-control">
+                                <option value=""> Elija un Importador </option>
+                                @foreach (var item in SelectImportador())
+                                {
+                                    <option value="@item.ImportadorId">@item.Nombre</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+
+                        <div class="col">
+                            <label>Vin:</label>
+                            <InputNumber @bind-Value="vehiculos.Vin" class="form-control"></InputNumber>
+                            <ValidationMessage For="(()=>vehiculos.Vin)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Año:</label>
+                            <InputNumber @bind-Value="vehiculos.Año" class="form-control"></InputNumber>
+                            <ValidationMessage For="(()=>vehiculos.Año)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Estado:</label>
+                            <select @bind="vehiculos.Estado" class="form-control">
+                                <option value="" selected disabled>Elija una estado</option>
+                                <option value="1">Disponible</option>
+                                <option value="2">Rentado</option>
+                                <option value="3">Vendido</option>
+                            </select>
+                            <ValidationMessage For="(() => vehiculos.Estado)" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-row">
+
+                        <div class="col">
+                            <label>kilometraje:</label>
+                            <InputNumber @bind-Value="vehiculos.Kilometraje" class="form-control"></InputNumber>
+                            <ValidationMessage For="(()=>vehiculos.Kilometraje)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Precio de Venta:</label>
+                            <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control"></InputNumber>
+                            <ValidationMessage For="(()=>vehiculos.PrecioVenta)"></ValidationMessage>
+                        </div>
+
+                        <div class="col">
+                            <label>Precio por dia:</label>
+                            <InputNumber @bind-Value="vehiculos.PrecioPorDia" class="form-control"></InputNumber>
+                            <ValidationMessage For="(()=>vehiculos.PrecioPorDia)"></ValidationMessage>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
         </div>
+
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo </button>
@@ -43,9 +128,9 @@
                 <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar </button>
             </div>
         </div>
+
     </div>
 </EditForm>
-
 
 @code
 {
@@ -53,6 +138,8 @@
     public int Id { get; set; }
 
     Vehiculos vehiculos = new Vehiculos();
+
+ 
 
     protected override void OnInitialized()
     {
@@ -65,6 +152,22 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
+    }
+
+    private List<Importadores> SelectImportador()
+    {
+        List<Importadores> lista = new List<Importadores>();
+
+        try
+        {
+            lista = ImportadoresBLL.GetList(i => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
     }
 
     private void Nuevo()

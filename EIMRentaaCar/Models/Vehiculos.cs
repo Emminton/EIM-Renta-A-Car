@@ -15,8 +15,7 @@ namespace EIMRentaaCar.Models
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo tipo no puede estar vacio")]
-        [RegularExpression(@"\S(.*)\S", ErrorMessage = "Debe ser un texto.")]
-        public string Estado { get; set; }
+        public int Estado { get; set; }
 
         [Required(ErrorMessage ="El campo tipo no puede estar vacio")]
         [RegularExpression(@"\S(.*)\S", ErrorMessage = "Debe ser un texto.")]
@@ -54,7 +53,7 @@ namespace EIMRentaaCar.Models
         {
             VehiculoId = 0;
             UsuarioId = 0;
-            Estado = string.Empty;
+            Estado =0;
             Tipo = string.Empty;
             Modelo = string.Empty;
             Marca = string.Empty;
@@ -66,7 +65,7 @@ namespace EIMRentaaCar.Models
             ImportadorId = 0;
         }
 
-        public Vehiculos(int vehiculoId, int usuarioId, string estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId)
+        public Vehiculos(int vehiculoId, int usuarioId, int estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId)
         {
             VehiculoId = vehiculoId;
             UsuarioId = usuarioId;
