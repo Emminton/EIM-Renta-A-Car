@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label>ID:</label>
                             <div class="input-group">
-                                <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control col-4" />
+                                <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control" />
                                 <ValidationMessage For="@(() => vehiculos.VehiculoId)"></ValidationMessage>
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="Buscar"> <i class="fa fa-search"></i>  Buscar </button>
@@ -30,6 +30,15 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <InputDate @bind-Value="vehiculos.Fecha" class="form-control"></InputDate>
+                            <ValidationMessage For="@(() => vehiculos.Fecha)"></ValidationMessage>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="form-group">

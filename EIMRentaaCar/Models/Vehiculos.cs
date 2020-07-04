@@ -49,6 +49,11 @@ namespace EIMRentaaCar.Models
         [ForeignKey("ImportadorId")]
         public int ImportadorId { get; set; }
 
+        [DataType(DataType.DateTime)]
+        [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
+        public DateTime Fecha { get; set; }
+
         public Vehiculos()
         {
             VehiculoId = 0;
@@ -63,9 +68,10 @@ namespace EIMRentaaCar.Models
             PrecioPorDia = 0.0m;
             Kilometraje = 0;
             ImportadorId = 0;
+            Fecha = DateTime.Now;
         }
 
-        public Vehiculos(int vehiculoId, int usuarioId, int estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId)
+        public Vehiculos(int vehiculoId, int usuarioId, int estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId, DateTime fecha)
         {
             VehiculoId = vehiculoId;
             UsuarioId = usuarioId;
@@ -79,6 +85,7 @@ namespace EIMRentaaCar.Models
             PrecioPorDia = precioPorDia;
             Kilometraje = kilometraje;
             ImportadorId = importadorId;
+            Fecha = fecha;
         }
     }
 }
