@@ -38,19 +38,19 @@
                         <div class="col">
                             <label>Marca:</label>
                             <InputText @bind-Value="vehiculos.Marca" class="form-control"></InputText>
-                            <ValidationMessage For="(()=>vehiculos.Marca)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Marca)"></ValidationMessage>
                         </div>
 
                         <div class="col">
                             <label>Tipo:</label>
                             <InputText @bind-Value="vehiculos.Tipo" class="form-control"></InputText>
-                            <ValidationMessage For="(()=>vehiculos.Tipo)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Tipo)"></ValidationMessage>
                         </div>
 
                         <div class="col">
                             <label>Modelo:</label>
                             <InputText @bind-Value="vehiculos.Modelo" class="form-control"></InputText>
-                            <ValidationMessage For="(()=>vehiculos.Modelo)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Modelo)"></ValidationMessage>
                         </div>
 
                         <div class="col">
@@ -73,13 +73,13 @@
                         <div class="col">
                             <label>Vin:</label>
                             <InputNumber @bind-Value="vehiculos.Vin" class="form-control"></InputNumber>
-                            <ValidationMessage For="(()=>vehiculos.Vin)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Vin)"></ValidationMessage>
                         </div>
 
                         <div class="col">
                             <label>Año:</label>
                             <InputNumber @bind-Value="vehiculos.Año" class="form-control"></InputNumber>
-                            <ValidationMessage For="(()=>vehiculos.Año)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Año)"></ValidationMessage>
                         </div>
 
                         <div class="col">
@@ -90,7 +90,7 @@
                                 <option value="2">Rentado</option>
                                 <option value="3">Vendido</option>
                             </select>
-                            <ValidationMessage For="(() => vehiculos.Estado)" />
+                            <ValidationMessage For="@(() => vehiculos.Estado)" />
                         </div>
                     </div>
                 </div>
@@ -101,19 +101,19 @@
                         <div class="col">
                             <label>kilometraje:</label>
                             <InputNumber @bind-Value="vehiculos.Kilometraje" class="form-control"></InputNumber>
-                            <ValidationMessage For="(()=>vehiculos.Kilometraje)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.Kilometraje)"></ValidationMessage>
                         </div>
 
                         <div class="col">
                             <label>Precio de Venta:</label>
                             <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control"></InputNumber>
-                            <ValidationMessage For="(()=>vehiculos.PrecioVenta)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.PrecioVenta)"></ValidationMessage>
                         </div>
 
                         <div class="col">
                             <label>Precio por dia:</label>
                             <InputNumber @bind-Value="vehiculos.PrecioPorDia" class="form-control"></InputNumber>
-                            <ValidationMessage For="(()=>vehiculos.PrecioPorDia)"></ValidationMessage>
+                            <ValidationMessage For="@(()=>vehiculos.PrecioPorDia)"></ValidationMessage>
                         </div>
 
                     </div>

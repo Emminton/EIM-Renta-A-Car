@@ -65,14 +65,19 @@
                 @*confirmar clave*@
                 <div class="form-group">
                     <label>Confirmar Clave</label>
-                    <InputText type="password" class="form-control " @bind-Value="usuarios.ConfirmarPassword" ></InputText>
+                    <InputText type="password" class="form-control " @bind-Value="usuarios.ConfirmarPassword"></InputText>
                     <ValidationMessage For="@(() => usuarios.ConfirmarPassword)" />
                 </div>
 
-                @*Nivel*@
+                @*Rol*@
                 <div class="form-group">
-                    <label>Nivel:</label>
-                    <InputText @bind-Value="usuarios.Roles" class="form-control " />
+                    <label>Roles de usuarios</label>
+                    <InputSelect @bind-Value="@usuarios.Roles" class="form-control">
+                        <option value="" disabled selected>Seleccione un Rol</option>
+                        <option>Administrador</option>
+                        <option>Empleado</option>
+                        <option>Normal</option>
+                    </InputSelect>
                     <ValidationMessage For="@(() => usuarios.Roles)" />
                 </div>
 
@@ -83,7 +88,7 @@
                     <ValidationMessage For="@(() => usuarios.FechaIngreso)"></ValidationMessage>
                 </div>
 
-               
+
 
             </form>
         </div>
