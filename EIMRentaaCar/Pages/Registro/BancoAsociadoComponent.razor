@@ -1,5 +1,5 @@
 ﻿@page "/Bancos"
-@page "/Bancos/{BancoAsociadoId:int}"
+@page "/Bancos/{BancoId:int}"
 
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
@@ -20,7 +20,7 @@
             <div class="form-row align-items-center">
                 <div class="col">
                     <div class="form-group">
-                        <label>Banco Asociado Id</label>
+                        <label>ID</label>
                         <div class="input-group">
                             <InputNumber @bind-Value="bancosAsociados.BancoAsociadoId" class="form-control col-4" />
                             <div class="input-group-append">
@@ -76,16 +76,16 @@
 @code
 {
     [Parameter]
-    public int BancoAsociadoId { get; set; }
+    public int BancoId { get; set; }
 
     BancosAsociados bancosAsociados = new BancosAsociados();
 
     protected override void OnInitialized()
     {
         Nuevo();
-        if (BancoAsociadoId > 0)
+        if (BancoId > 0)
         {
-            var AuxbancosAsociados = BancoAsociadoBLL.Buscar(BancoAsociadoId);
+            var AuxbancosAsociados = BancoAsociadoBLL.Buscar(BancoId);
             if (AuxbancosAsociados != null)
                 this.bancosAsociados = AuxbancosAsociados;
             else

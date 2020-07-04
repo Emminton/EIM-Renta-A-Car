@@ -1,5 +1,5 @@
 ﻿@page "/Importadores"
-@page "/Importadores/{BancoAsociadoId:int}"
+@page "/Importadores/{Id:int}"
 
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
@@ -20,7 +20,7 @@
             <div class="form-row align-items-center">
                 <div class="col">
                     <div class="form-group">
-                        <label>Banco Asociado Id</label>
+                        <label>ID</label>
                         <div class="input-group">
                             <InputNumber @bind-Value="importadores.ImportadorId" class="form-control col-4" />
                             <div class="input-group-append">
@@ -69,16 +69,16 @@
 @code
 {
     [Parameter]
-    public int ImportadorId { get; set; }
+    public int Id { get; set; }
 
     Importadores importadores = new Importadores();
 
     protected override void OnInitialized()
     {
         Nuevo();
-        if (ImportadorId > 0)
+        if (Id > 0)
         {
-            var Auximportadores = ImportadoresBLL.Buscar(ImportadorId);
+            var Auximportadores = ImportadoresBLL.Buscar(Id);
             if (Auximportadores != null)
                 this.importadores = Auximportadores;
             else
