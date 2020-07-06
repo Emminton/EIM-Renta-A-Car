@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Inicio : Migration
+    public partial class inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -159,7 +159,8 @@ namespace EIMRentaaCar.Migrations
                     Password = table.Column<string>(maxLength: 60, nullable: false),
                     ConfirmarPassword = table.Column<string>(maxLength: 60, nullable: false),
                     Roles = table.Column<string>(nullable: false),
-                    FechaIngreso = table.Column<DateTime>(nullable: false)
+                    FechaIngreso = table.Column<DateTime>(nullable: false),
+                    photo = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -182,7 +183,8 @@ namespace EIMRentaaCar.Migrations
                     PrecioVenta = table.Column<decimal>(nullable: false),
                     PrecioPorDia = table.Column<decimal>(nullable: false),
                     Kilometraje = table.Column<int>(nullable: false),
-                    ImportadorId = table.Column<int>(nullable: false)
+                    ImportadorId = table.Column<int>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

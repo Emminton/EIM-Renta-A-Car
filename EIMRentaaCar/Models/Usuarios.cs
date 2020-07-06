@@ -47,7 +47,6 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
         public DateTime FechaIngreso { get; set; }
-        
         public Usuarios()
         {
             UsuarioId = 0;
@@ -58,11 +57,7 @@ namespace EIMRentaaCar.Models
             Roles = string.Empty;
             FechaIngreso = DateTime.Now;
             UserName = string.Empty;
-          
         }
-
-      
-
 
     }
 }

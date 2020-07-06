@@ -290,6 +290,9 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
 
+                    b.Property<byte[]>("photo")
+                        .HasColumnType("BLOB");
+
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
@@ -306,6 +309,9 @@ namespace EIMRentaaCar.Migrations
 
                     b.Property<int>("Estado")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ImportadorId")
                         .HasColumnType("INTEGER");

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200704113326_Inicio")]
-    partial class Inicio
+    [Migration("20200705143649_inicio")]
+    partial class inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -292,6 +292,9 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT")
                         .HasMaxLength(30);
 
+                    b.Property<byte[]>("photo")
+                        .HasColumnType("BLOB");
+
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Usuarios");
@@ -308,6 +311,9 @@ namespace EIMRentaaCar.Migrations
 
                     b.Property<int>("Estado")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("ImportadorId")
                         .HasColumnType("INTEGER");
