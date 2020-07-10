@@ -27,7 +27,6 @@ namespace EIMRentaaCar.BLL
             try
             {
                 contexto.Vehiculos.Add(vehiculos);
-                //contexto.Vehiculos.Find(vehiculos.VehiculoId).Tipo = Models.Enums.TipoVehiculo.Idefinido;
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)

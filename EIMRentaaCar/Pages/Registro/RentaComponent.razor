@@ -31,6 +31,7 @@
                 </div>
             </div>
 
+            @* Vehiculo id *@
             <div class="form-group">
                 <div class="form-row">
                     <div class="col">
@@ -42,12 +43,12 @@
                             }
                         </select>
                     </div>
-
+                    @* Marca *@
                     <div class="col">
                         <label>La Marca:</label>
                         <InputText class="form-control" readonly="true" @bind-Value="nombreMarca" />
                     </div>
-
+                    @* Cliente id *@
                     <div class="col">
                         <label>Cliente ID:</label>
                         <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
@@ -57,7 +58,7 @@
                             }
                         </select>
                     </div>
-
+                    @* cliente *@
                     <div class="col">
                         <label>El Cliente:</label>
                         <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />

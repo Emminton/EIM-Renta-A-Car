@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-
+                    @* Fecha *@
                     <div class="col">
                         <div class="form-group">
                             <label>Fecha</label>
@@ -43,25 +43,26 @@
 
                 <div class="form-group">
                     <div class="form-row">
-
+                        @* Marca *@
                         <div class="col">
                             <label>Marca:</label>
                             <InputText @bind-Value="vehiculos.Marca" class="form-control"></InputText>
                             <ValidationMessage For="@(()=>vehiculos.Marca)"></ValidationMessage>
                         </div>
-
+                        @* Tipo *@
                         <div class="col">
                             <label>Tipo:</label>
                             <InputText @bind-Value="vehiculos.Tipo" class="form-control"></InputText>
                             <ValidationMessage For="@(()=>vehiculos.Tipo)"></ValidationMessage>
                         </div>
 
+                        @*Modelo*@
                         <div class="col">
                             <label>Modelo:</label>
                             <InputText @bind-Value="vehiculos.Modelo" class="form-control"></InputText>
                             <ValidationMessage For="@(()=>vehiculos.Modelo)"></ValidationMessage>
                         </div>
-
+                        @*Importador*@
                         <div class="col">
                             <label>Importador:</label>
                             <select @bind="vehiculos.ImportadorId" class="form-control">
@@ -78,19 +79,19 @@
 
                 <div class="form-group">
                     <div class="form-row">
-
+                        @* VIN *@
                         <div class="col">
                             <label>Vin:</label>
                             <InputNumber @bind-Value="vehiculos.Vin" class="form-control"></InputNumber>
                             <ValidationMessage For="@(()=>vehiculos.Vin)"></ValidationMessage>
                         </div>
-
+                        @* Año *@
                         <div class="col">
                             <label>Año:</label>
                             <InputNumber @bind-Value="vehiculos.Año" class="form-control"></InputNumber>
                             <ValidationMessage For="@(()=>vehiculos.Año)"></ValidationMessage>
                         </div>
-
+                        @*Estado*@
                         <div class="col">
                             <label>Estado:</label>
                             <select @bind="vehiculos.Estado" class="form-control">
@@ -106,19 +107,19 @@
 
                 <div class="form-group">
                     <div class="form-row">
-
+                        @*Kilometraje*@
                         <div class="col">
                             <label>kilometraje:</label>
                             <InputNumber @bind-Value="vehiculos.Kilometraje" class="form-control"></InputNumber>
                             <ValidationMessage For="@(()=>vehiculos.Kilometraje)"></ValidationMessage>
                         </div>
-
+                        @*Precio de la venta*@
                         <div class="col">
                             <label>Precio de Venta:</label>
                             <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control"></InputNumber>
                             <ValidationMessage For="@(()=>vehiculos.PrecioVenta)"></ValidationMessage>
                         </div>
-
+                        @*Precio por dia*@
                         <div class="col">
                             <label>Precio por dia:</label>
                             <InputNumber @bind-Value="vehiculos.PrecioPorDia" class="form-control"></InputNumber>
