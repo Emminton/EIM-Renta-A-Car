@@ -34,9 +34,4 @@
     <Folder Include="Pages\Login\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="Areas\Identity\Pages\Account\LogOut.cshtml" />
-    <None Include="Areas\Identity\Pages\Shared\_LoginPartial.cshtml" />
-  </ItemGroup>
-
 </Project>

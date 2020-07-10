@@ -27,23 +27,23 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "No puede estar vació el campo marca")]
         public string Marca { get; set; }
 
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo VIN")]
         public int Vin { get; set; }
 
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo año")]
         public int Año { get; set; }
 
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo precio de venta")]
         public decimal PrecioVenta { get; set; }
 
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression(@"^\d+\.\d{2}$", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo precio por dia")]
         public decimal PrecioPorDia { get; set; }
 
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression('^[0-9]', ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo Kilometraje")]
         public int Kilometraje { get; set; }
 

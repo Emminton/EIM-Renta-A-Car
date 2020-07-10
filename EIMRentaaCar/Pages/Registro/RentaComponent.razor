@@ -36,8 +36,8 @@
                 <div class="form-row">
                     <div class="col">
                         <label>Vehiculo ID:</label>
-                        <select class="form-control" @bind="MarcaSelecionada" @onclick="MostrarNombreMarca">
-                            @foreach (var item in ListaVehiculo)
+                        <select class="form-control" @bind="MarcaSelecionada" @onclick="MostrarVehiculo">
+                            @foreach (var item in VehiculoCombo())
                             {
                                 <option value="@item.VehiculoId">@item.VehiculoId</option>
                             }
@@ -48,11 +48,18 @@
                         <label>La Marca:</label>
                         <InputText class="form-control" readonly="true" @bind-Value="nombreMarca" />
                     </div>
+
+                    @* Modelo *@
+                    <div class="col">
+                        <label>El Modelo:</label>
+                        <InputText class="form-control" readonly="true" @bind-Value="nombreModelo" />
+                    </div>
+
                     @* Cliente id *@
                     <div class="col">
                         <label>Cliente ID:</label>
                         <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
-                            @foreach (var item in ListaCliente)
+                            @foreach (var item in ClienteCombo())
                             {
                                 <option value="@item.ClienteId">@item.ClienteId</option>
                             }
@@ -96,19 +103,20 @@
 
 @code
 {
+
     [Parameter]
     public int RentaId { get; set; }
-    
+
     @*Datos Del Vehiculo*@
     Rentas rentas = new Rentas();
     public int MarcaSelecionada { get; set; }
     public string nombreMarca { get; set; }
-    private List<Vehiculos> ListaVehiculo = new List<Vehiculos>();
-    
+    public string nombreModelo { get; set; }
+
     @*Datos Del Cliente*@
     public int ClienteSelecionado { get; set; }
     public string nombreCliente { get; set; }
-    private List<Clientes> ListaCliente = new List<Clientes>();
+
 
     protected override void OnInitialized()
     {
@@ -129,16 +137,20 @@
 
     }
 
-    private void MostrarNombreMarca()
+    private void MostrarVehiculo()
     {
         string auxMarca = string.Empty;
-
-        var auxPrestamo = VehiculosBLL.Buscar(MarcaSelecionada);
-        if (auxPrestamo != null)
+        string auxModelo = string.Empty;
+        var AuxMarcas = VehiculosBLL.Buscar(MarcaSelecionada);
+        if (AuxMarcas != null)
         {
-            auxMarca = VehiculosBLL.Buscar(auxPrestamo.VehiculoId).Marca;
+            auxMarca = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Marca;
+            auxModelo = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Modelo;
             nombreMarca = auxMarca;
+            nombreModelo = auxModelo;
         }
+
+
     }
 
     private void MostrarNombreCliente()
@@ -194,5 +206,37 @@
         }
         else
             toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Clientes> ClienteCombo()
+    {
+        List<Clientes> lista = new List<Clientes>();
+
+        try
+        {
+            lista = ClientesBLL.GetList(c => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
+    }
+
+    private List<Vehiculos> VehiculoCombo()
+    {
+        List<Vehiculos> lista = new List<Vehiculos>();
+
+        try
+        {
+            lista = VehiculosBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
     }
 }

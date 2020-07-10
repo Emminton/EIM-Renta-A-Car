@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EIMRentaaCar.DAL
 {
-    public class Contexto : IdentityDbContext
+    public class Contexto : DbContext
     {
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Rentas> Rentas { get; set; }
