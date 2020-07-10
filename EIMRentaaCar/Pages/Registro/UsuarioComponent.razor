@@ -74,9 +74,9 @@
                     <label>Roles de usuarios</label>
                     <InputSelect @bind-Value="@usuarios.Roles" class="form-control">
                         <option value="" disabled selected>Seleccione un Rol</option>
-                        <option>Administrador</option>
-                        <option>Empleado</option>
-                        <option>Normal</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Empleado">Empleado</option>
+                        <option value="Normal">Normal</option>
                     </InputSelect>
                     <ValidationMessage For="@(() => usuarios.Roles)" />
                 </div>

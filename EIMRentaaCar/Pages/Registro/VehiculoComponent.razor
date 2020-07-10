@@ -95,9 +95,9 @@
                             <label>Estado:</label>
                             <select @bind="vehiculos.Estado" class="form-control">
                                 <option value="" selected disabled>Elija una estado</option>
-                                <option value="1">Disponible</option>
-                                <option value="2">Rentado</option>
-                                <option value="3">Vendido</option>
+                                <option value="Disponible">Disponible</option>
+                                <option value="Rentado">Rentado</option>
+                                <option value="Vendido">Vendido</option>
                             </select>
                             <ValidationMessage For="@(() => vehiculos.Estado)" />
                         </div>
