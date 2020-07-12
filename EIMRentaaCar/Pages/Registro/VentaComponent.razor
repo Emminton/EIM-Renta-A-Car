@@ -49,6 +49,18 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <div class="col">
+                        <label>Vehiculo Id</label>
+                        <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
+                            @foreach (var item in VehiculoCombo())
+                            {
+                                <option value="@item.VehiculoId">@item.VehiculoId</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -64,6 +76,16 @@
     @*Datos Del Cliente*@
 public int ClienteSelecionado { get; set; }
 public string nombreCliente { get; set; }
+
+    @*Datos Del Cliente*@
+public int Vehiculoseleccionado { get; set; }
+public string Marca { get; set; }
+public string Modelo { get; set; }
+public decimal Precio { get; set; }
+public int Vin { get; set; }
+public decimal KM { get; set; }
+public int Año { get; set; }
+public string Tipo { get; set; }
 
 protected override void OnInitialized()
 {
@@ -99,9 +121,8 @@ private void Buscar()
 
 private void Guardar()
 {
-    bool guardo;
 
-    guardo = VentasBLL.Guardar(ventas);
+    bool guardo = VentasBLL.Guardar(ventas);
 
     if (guardo)
     {
@@ -143,6 +164,22 @@ private List<Clientes> ClienteCombo()
     return lista;
 }
 
+private List<Vehiculos> VehiculoCombo()
+{
+    List<Vehiculos> lista = new List<Vehiculos>();
+
+    try
+    {
+        lista = VehiculosBLL.GetList(c => true);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+
+    return lista;
+}
+
 private void MostrarNombreCliente()
 {
     string auxVenta = string.Empty;
@@ -153,5 +190,37 @@ private void MostrarNombreCliente()
         auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
         nombreCliente = auxVenta;
     }
+    ventas.ClienteId = ClienteSelecionado;
+}
+
+private void MostrarVehiculo()
+{
+    string auxmarcar = string.Empty;
+    string auxModelo = string.Empty;
+    decimal auxPrecio = 0;
+    int auxVin = 0;
+    decimal auxKM = 0;
+    int auxAño = 0;
+    string auxTipo = string.Empty;
+
+    var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
+    if (auxventa != null)
+    {
+        auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
+        auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
+        auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
+        auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
+        auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
+        auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
+        auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
+        Marca = auxmarcar;
+        Modelo = auxModelo;
+        Precio = auxPrecio;
+        Vin = auxVin;
+        KM = auxKM;
+        Año = auxAño;
+        Tipo = auxTipo;
+    }
+    ventas.VehiculoId = Vehiculoseleccionado;
 }
 }

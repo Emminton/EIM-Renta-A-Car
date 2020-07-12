@@ -36,7 +36,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label>Vehiculo ID:</label>
-                            <select class="form-control" @bind="MarcaSelecionada" @onclick="MostrarVehiculo">
+                            <select class="form-control" @bind="rentas.VehiculoId" @onclick="MostrarVehiculo">
                                 @foreach (var item in VehiculoCombo())
                                 {
                                     <option value="@item.VehiculoId">@item.VehiculoId</option>
@@ -46,7 +46,7 @@
                         @* Marca *@
                         <div class="col">
                             <label>La Marca:</label>
-                            <InputText class="form-control" readonly="true" @bind-Value="nombreMarca" />
+                            <InputText class="form-control" readonly="true" @bind-Value="rentas.Marca" />
                         </div>
 
                         @* Modelo *@
@@ -58,7 +58,7 @@
                         @* Cliente id *@
                         <div class="col">
                             <label>Cliente ID:</label>
-                            <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                            <select class="form-control" @bind="rentas.ClienteId" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
                                     <option value="@item.ClienteId">@item.ClienteId</option>
@@ -145,7 +145,7 @@
         {
             auxMarca = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Marca;
             auxModelo = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Modelo;
-            nombreMarca = auxMarca;
+            rentas.Marca = auxMarca;
             nombreModelo = auxModelo;
         }
 
