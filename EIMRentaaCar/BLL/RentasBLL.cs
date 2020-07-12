@@ -27,15 +27,6 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-
-                var vehiculo = VehiculosBLL.Buscar(rentas.VehiculoId);
-
-                if (vehiculo != null)
-                {
-                    //vehiculo.Estado = Models.Enums.VehiculoEstado.Rentado;     //Cambiando el estado del vehículo a Rentado
-                    VehiculosBLL.Modificar(vehiculo);
-                }
-
                 contexto.Rentas.Add(rentas);
                 paso = contexto.SaveChanges() > 0;
             }
@@ -118,7 +109,7 @@ namespace EIMRentaaCar.BLL
             return rentas;
         }
 
-        public static List<Rentas> GetList(Expression<Func< Rentas, bool>> expression)
+        public static List<Rentas> GetList(Expression<Func<Rentas, bool>> expression)
         {
             List<Rentas> lista = new List<Rentas>();
             Contexto db = new Contexto();
@@ -146,7 +137,7 @@ namespace EIMRentaaCar.BLL
             bool encontrado = false;
             try
             {
-                encontrado = contexto.Rentas.Any(r => r.RentaId == id);
+                encontrado = contexto.Rentas.Any(c => c.RentaId == id);
             }
             catch (Exception)
             {

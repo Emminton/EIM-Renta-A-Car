@@ -30,7 +30,7 @@ namespace EIMRentaaCar.Models
         public DateTime FechaRenta { get; set; }
 
         [Required(ErrorMessage = "El campo Tiempo de renta no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public int TiempoRenta { get; set; }
 
 

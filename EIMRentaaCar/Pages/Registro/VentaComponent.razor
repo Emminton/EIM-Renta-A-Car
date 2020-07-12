@@ -7,7 +7,7 @@
 @inject IToastService toast
 
 <EditForm Model="ventas" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator/>
+    <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
             <h1>registro de ventas</h1>
@@ -20,7 +20,7 @@
                         <div class="form-group">
                             <label>ID</label>
                             <div class="input-group">
-                                <InputNumber @bind-Value="ventas.VentaId" class="form-control col-4"/>
+                                <InputNumber @bind-Value="ventas.VentaId" class="form-control col-4" />
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
                                 </div>
@@ -29,7 +29,25 @@
                     </div>
                 </div>
 
-
+                <div class="form-group">
+                    <div class="row">
+                        @* Cliente id *@
+                        <div class="col">
+                            <label>Cliente ID:</label>
+                            <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                                @foreach (var item in ClienteCombo())
+                                {
+                                    <option value="@item.ClienteId">@item.ClienteId</option>
+                                }
+                            </select>
+                        </div>
+                        @* cliente *@
+                        <div class="col">
+                            <label>El Cliente:</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />
+                        </div>
+                    </div>
+                </div>
 
             </form>
         </div>
@@ -43,65 +61,97 @@
 
     Ventas ventas = new Ventas();
 
-    protected override void OnInitialized()
+    @*Datos Del Cliente*@
+public int ClienteSelecionado { get; set; }
+public string nombreCliente { get; set; }
+
+protected override void OnInitialized()
+{
+    Nuevo();
+    if (VentaId > 0)
+    {
+        var Auxventas = VentasBLL.Buscar(VentaId);
+        if (Auxventas != null)
+            this.ventas = Auxventas;
+        else
+            toast.ShowWarning("No encontrado.");
+    }
+}
+
+private void Nuevo()
+{
+    this.ventas = new Ventas();
+
+}
+
+private void Buscar()
+{
+    if (ventas.VentaId > 0)
+    {
+        var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+        if (encontrado != null)
+            this.ventas = encontrado;
+        else
+            toast.ShowWarning("No encontrado");
+    }
+}
+
+private void Guardar()
+{
+    bool guardo;
+
+    guardo = VentasBLL.Guardar(ventas);
+
+    if (guardo)
     {
         Nuevo();
-        if (VentaId > 0)
-        {
-            var Auxventas = VentasBLL.Buscar(VentaId);
-            if (Auxventas != null)
-                this.ventas = Auxventas;
-            else
-                toast.ShowWarning("No encontrado.");
-        }
+        toast.ShowSuccess("Guardado correctamente");
     }
+    else
+        toast.ShowError("No fue posible guardar");
+}
 
-    private void Nuevo()
+private void Eliminar()
+{
+    bool elimino;
+
+    elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+    if (elimino)
     {
-        this.ventas = new Ventas();
-
+        Nuevo();
+        toast.ShowSuccess("Eliminado correctamente");
     }
+    else
+        toast.ShowError("No fue posible eliminar");
+}
 
-    private void Buscar()
+private List<Clientes> ClienteCombo()
+{
+    List<Clientes> lista = new List<Clientes>();
+
+    try
     {
-        if (ventas.VentaId > 0)
-        {
-            var encontrado = VentasBLL.Buscar(ventas.VentaId);
-
-            if (encontrado != null)
-                this.ventas = encontrado;
-            else
-                toast.ShowWarning("No encontrado");
-        }
+        lista = ClientesBLL.GetList(c => true);
     }
-
-    private void Guardar()
+    catch (Exception)
     {
-        bool guardo;
-
-        guardo = VentasBLL.Guardar(ventas);
-
-        if (guardo)
-        {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible guardar");
+        throw;
     }
 
-    private void Eliminar()
+    return lista;
+}
+
+private void MostrarNombreCliente()
+{
+    string auxVenta = string.Empty;
+
+    var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+    if (auxCliente != null)
     {
-        bool elimino;
-
-        elimino = VentasBLL.Eliminar(ventas.VentaId);
-
-        if (elimino)
-        {
-            Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible eliminar");
+        auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+        nombreCliente = auxVenta;
     }
+}
 }
