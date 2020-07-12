@@ -1,9 +1,40 @@
 ﻿@page "/Ventas"
+@page "/Ventas/{VentaId:int}"
+
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
 
 @inject IToastService toast
 
+<EditForm Model="ventas" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator/>
+    <div class="card">
+        <div class="card-header">
+            <h1>registro de ventas</h1>
+        </div>
+        <div class="card-body">
+            <form>
+
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="ventas.VentaId" class="form-control col-4"/>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </form>
+        </div>
+    </div>
+</EditForm>
 
 @code
 {
@@ -33,7 +64,7 @@
 
     private void Buscar()
     {
-        if (ventas.VentaId> 0)
+        if (ventas.VentaId > 0)
         {
             var encontrado = VentasBLL.Buscar(ventas.VentaId);
 
