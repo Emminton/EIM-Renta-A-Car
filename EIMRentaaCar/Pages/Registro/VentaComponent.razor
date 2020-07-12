@@ -100,6 +100,17 @@
                     </div>
                 </div>
 
+                <div class="form-row">
+                    <div class="col">
+                        <div class="input-group">
+                            <InputNumber @bind-Value="ventas.Cuotas" class="form-control col-4" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-info" @onclick="Agregar"><i class="fa fa-plus"> Agregar </i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -113,8 +124,8 @@
     Ventas ventas = new Ventas();
 
     @*Datos Del Cliente*@
-    public int ClienteSelecionado { get; set; }
-    public string nombreCliente { get; set; }
+public int ClienteSelecionado { get; set; }
+public string nombreCliente { get; set; }
 
     @*Datos Del Cliente*@
     public int Vehiculoseleccionado { get; set; }
@@ -126,140 +137,177 @@
     public int Año { get; set; }
     public string Tipo { get; set; }
 
-protected override void OnInitialized()
-{
-    Nuevo();
-    if (VentaId > 0)
-    {
-        var Auxventas = VentasBLL.Buscar(VentaId);
-        if (Auxventas != null)
-            this.ventas = Auxventas;
-        else
-            toast.ShowWarning("No encontrado.");
-    }
-}
-
-private void Nuevo()
-{
-    this.ventas = new Ventas();
-
-}
-
-private void Buscar()
-{
-    if (ventas.VentaId > 0)
-    {
-        var encontrado = VentasBLL.Buscar(ventas.VentaId);
-
-        if (encontrado != null)
-            this.ventas = encontrado;
-        else
-            toast.ShowWarning("No encontrado");
-    }
-}
-
-private void Guardar()
-{
-
-    bool guardo = VentasBLL.Guardar(ventas);
-
-    if (guardo)
+    protected override void OnInitialized()
     {
         Nuevo();
-        toast.ShowSuccess("Guardado correctamente");
+        if (VentaId > 0)
+        {
+            var Auxventas = VentasBLL.Buscar(VentaId);
+            if (Auxventas != null)
+                this.ventas = Auxventas;
+            else
+                toast.ShowWarning("No encontrado.");
+        }
     }
-    else
-        toast.ShowError("No fue posible guardar");
-}
 
-private void Eliminar()
-{
-    bool elimino;
-
-    elimino = VentasBLL.Eliminar(ventas.VentaId);
-
-    if (elimino)
+    private void Nuevo()
     {
-        Nuevo();
-        toast.ShowSuccess("Eliminado correctamente");
+        this.ventas = new Ventas();
+
     }
-    else
-        toast.ShowError("No fue posible eliminar");
-}
 
-private List<Clientes> ClienteCombo()
-{
-    List<Clientes> lista = new List<Clientes>();
-
-    try
+    private void Buscar()
     {
-        lista = ClientesBLL.GetList(c => true);
+        if (ventas.VentaId > 0)
+        {
+            var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+            if (encontrado != null)
+                this.ventas = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
     }
-    catch (Exception)
+
+    private void Guardar()
     {
-        throw;
+
+        bool guardo = VentasBLL.Guardar(ventas);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
     }
 
-    return lista;
-}
-
-private List<Vehiculos> VehiculoCombo()
-{
-    List<Vehiculos> lista = new List<Vehiculos>();
-
-    try
+    private void Eliminar()
     {
-        lista = VehiculosBLL.GetList(c => true);
+        bool elimino;
+
+        elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
     }
-    catch (Exception)
+
+    private List<Clientes> ClienteCombo()
     {
-        throw;
+        List<Clientes> lista = new List<Clientes>();
+
+        try
+        {
+            lista = ClientesBLL.GetList(c => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
     }
 
-    return lista;
-}
-
-private void MostrarNombreCliente()
-{
-    string auxVenta = string.Empty;
-
-    var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
-    if (auxCliente != null)
+    private List<Vehiculos> VehiculoCombo()
     {
-        auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
-        nombreCliente = auxVenta;
+        List<Vehiculos> lista = new List<Vehiculos>();
+
+        try
+        {
+            lista = VehiculosBLL.GetList(c => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
     }
-    ventas.ClienteId = ClienteSelecionado;
-}
 
-private void MostrarVehiculo()
-{
-    string auxmarcar = string.Empty;
-    string auxModelo = string.Empty;
-    decimal auxPrecio = 0;
-    int auxVin = 0;
-    decimal auxKM = 0;
-    int auxAño = 0;
-    string auxTipo = string.Empty;
-
-    var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
-    if (auxventa != null)
+    private void MostrarNombreCliente()
     {
-        auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
-        auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
-        auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
-        auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
-        auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
-        auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
-        auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
-        Marca = auxmarcar;
-        Modelo = auxModelo;
-        Precio = auxPrecio;
-        Vin = auxVin;
-        KM = auxKM;
-        Año = auxAño;
-        Tipo = auxTipo;
+        string auxVenta = string.Empty;
+
+        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+        if (auxCliente != null)
+        {
+            auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+            nombreCliente = auxVenta;
+        }
+        ventas.ClienteId = ClienteSelecionado;
     }
-    ventas.VehiculoId = Vehiculoseleccionado;
-}
+
+    private void MostrarVehiculo()
+    {
+        string auxmarcar = string.Empty;
+        string auxModelo = string.Empty;
+        decimal auxPrecio = 0;
+        int auxVin = 0;
+        decimal auxKM = 0;
+        int auxAño = 0;
+        string auxTipo = string.Empty;
+
+        var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
+        if (auxventa != null)
+        {
+            auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
+            auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
+            auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
+            auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
+            auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
+            auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
+            auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
+            Marca = auxmarcar;
+            Modelo = auxModelo;
+            Precio = auxPrecio;
+            Vin = auxVin;
+            KM = auxKM;
+            Año = auxAño;
+            Tipo = auxTipo;
+        }
+        ventas.VehiculoId = Vehiculoseleccionado;
+    }
+
+    private void Agregar()
+    {
+        if (ventas.Cuotas == 0)
+        {
+            toast.ShowWarning("Tiene que poner las cuotas.");
+            return;
+        }
+
+        if (ventas.Cuotas <= 0)
+        {
+            toast.ShowWarning("La cuotas debe ser mayor a 0.");
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < ventas.Cuotas; i++)
+            {
+                this.ventas.CuotaDetalles.Add(new CuotaDetalles
+                {
+                    CuotaId = 0,
+                    VentaId = ventas.VentaId,
+                    UsuarioId = 0,
+                    Monto = 0.0m,
+                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioPorDia,
+                    Pagada = false,
+                    Numero = (1 + i)
+                });
+            }
+
+
+
+
+        }
+
+    }
+
 }
