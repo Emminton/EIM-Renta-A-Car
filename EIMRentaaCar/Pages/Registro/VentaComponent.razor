@@ -50,14 +50,53 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col">
-                        <label>Vehiculo Id</label>
-                        <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
-                            @foreach (var item in VehiculoCombo())
-                            {
-                                <option value="@item.VehiculoId">@item.VehiculoId</option>
-                            }
-                        </select>
+                    <div class="row">
+                        <div class="col">
+                            <label>Vehiculo Id</label>
+                            <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
+                                @foreach (var item in VehiculoCombo())
+                                {
+                                    <option value="@item.VehiculoId">@item.VehiculoId</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label>Marca</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="Marca" />
+                        </div>
+
+                        <div class="col">
+                            <label>Tipo</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="Tipo" />
+                        </div>
+
+                        <div class="col">
+                            <label>Modelo</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="Modelo" />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Precio</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="Precio" />
+                        </div>
+                        <div class="col">
+                            <label>VIN</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="Vin" />
+                        </div>
+                        <div class="col">
+                            <label>KM</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="KM" />
+                        </div>
+                        <div class="col">
+                            <label>Año</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="Año" />
+                        </div>
                     </div>
                 </div>
 
@@ -74,18 +113,18 @@
     Ventas ventas = new Ventas();
 
     @*Datos Del Cliente*@
-public int ClienteSelecionado { get; set; }
-public string nombreCliente { get; set; }
+    public int ClienteSelecionado { get; set; }
+    public string nombreCliente { get; set; }
 
     @*Datos Del Cliente*@
-public int Vehiculoseleccionado { get; set; }
-public string Marca { get; set; }
-public string Modelo { get; set; }
-public decimal Precio { get; set; }
-public int Vin { get; set; }
-public decimal KM { get; set; }
-public int Año { get; set; }
-public string Tipo { get; set; }
+    public int Vehiculoseleccionado { get; set; }
+    public string Marca { get; set; }
+    public string Modelo { get; set; }
+    public decimal Precio { get; set; }
+    public int Vin { get; set; }
+    public decimal KM { get; set; }
+    public int Año { get; set; }
+    public string Tipo { get; set; }
 
 protected override void OnInitialized()
 {
