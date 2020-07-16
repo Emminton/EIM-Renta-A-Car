@@ -34,7 +34,7 @@
                         @* Cliente id *@
                         <div class="col">
                             <label>Cliente ID:</label>
-                            <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                            <select  class="form-control"  @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
                                     <option value="@item.ClienteId">@item.ClienteId</option>
@@ -159,8 +159,8 @@
     Ventas ventas = new Ventas();
 
     @*Datos del cliente*@
-public int ClienteSelecionado { get; set; }
-public string nombreCliente { get; set; }
+    public int ClienteSelecionado { get; set; }
+    public string nombreCliente { get; set; }
 
     @*Datos del vehiculo*@
     public int Vehiculoseleccionado { get; set; }
@@ -188,7 +188,16 @@ public string nombreCliente { get; set; }
     private void Nuevo()
     {
         this.ventas = new Ventas();
-
+        Marca = string.Empty;
+        Modelo = string.Empty;
+        Precio = 0;
+        Vin = 0;
+        KM = 0;
+        Año = 0;
+        Tipo = string.Empty;
+        nombreCliente = string.Empty;
+        ClienteSelecionado = 0;
+        Vehiculoseleccionado = 0;
 
     }
 
@@ -374,6 +383,8 @@ public string nombreCliente { get; set; }
             Año = 0;
             Tipo = string.Empty;
             nombreCliente = string.Empty;
+            ClienteSelecionado = 0;
+            Vehiculoseleccionado = 0;
         }
     }
 
