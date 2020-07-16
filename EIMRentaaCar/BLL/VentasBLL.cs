@@ -30,7 +30,7 @@ namespace EIMRentaaCar.BLL
 
                 if (vehiculo != null)
                 {
-                    //vehiculo.Estado = Models.Enums.VehiculoEstado.Vendido;     //Cambiando el estado del vehículo a vendido
+                    vehiculo.Estado = "Vendido";    //Cambiando el estado del vehículo a vendido
                     VehiculosBLL.Modificar(vehiculo);
                 }
 
@@ -54,9 +54,7 @@ namespace EIMRentaaCar.BLL
             Contexto contexto = new Contexto();
 
             try
-            {
-
-                contexto.Database.ExecuteSqlRaw($"Delete From CuotaDetalles Where VentaId = {ventas.VentaId}");
+            {              
 
                 foreach (CuotaDetalles item in ventas.CuotaDetalles)
                 {
@@ -92,7 +90,7 @@ namespace EIMRentaaCar.BLL
                     var auxVehiculo = contexto.Vehiculos.Find(aux.VehiculoId);
                     if (auxVehiculo != null)
                     {
-                        //auxVehiculo.Estado = Models.Enums.VehiculoEstado.Disponible;
+                         auxVehiculo.Estado = "Disponible";
                         VehiculosBLL.Modificar(auxVehiculo);
                     }
                     contexto.Ventas.Remove(aux);//remueve la informacion de la entidad relacionada

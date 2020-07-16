@@ -212,16 +212,24 @@
 
     private void Guardar()
     {
-
-        bool guardo = VentasBLL.Guardar(ventas);
-
-        if (guardo)
+        if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
+            toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
+
         }
         else
-            toast.ShowError("No fue posible guardar");
+        {
+            bool guardo = VentasBLL.Guardar(ventas);
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+            }
+            else
+                toast.ShowError("No fue posible guardar");
+        }
+
     }
 
     private void Eliminar()
@@ -311,6 +319,12 @@
             KM = auxKM;
             Año = auxAño;
             Tipo = auxTipo;
+
+            if(VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
+            {
+                toast.ShowError("Este vehiculo fue rentado");
+
+            }
         }
         ventas.VehiculoId = Vehiculoseleccionado;
     }
