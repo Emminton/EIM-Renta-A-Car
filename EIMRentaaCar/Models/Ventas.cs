@@ -23,15 +23,12 @@ namespace EIMRentaaCar.Models
 		public int Cuotas { get; set; }
 
 		[Required(ErrorMessage = "El campo Monto total no debe estar vació")]
-		[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
 		public decimal MontoTotal { get; set; }
 
 		[Required(ErrorMessage = "El campo Balance no debe estar vació")]
-		[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
 		public decimal Balance { get; set; }
 
 		[Required(ErrorMessage = "El campo Moton cuotas no debe estar vació")]
-		[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
 		public decimal MontoCuotas { get; set; }
 
 		[DataType(DataType.DateTime)]

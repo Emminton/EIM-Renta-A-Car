@@ -21,18 +21,15 @@ namespace EIMRentaaCar.Models
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo Moton no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public decimal Monto { get; set; }
 
         [Required(ErrorMessage = "El campo Balance no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public decimal Balance { get; set; }
 
         [Required(ErrorMessage ="No puede estar vació")]
         public bool Pagada { get; set; }
 
         [Required(ErrorMessage = "El campo numero no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public int Numero { get; set; }
 
         public CuotaDetalles()

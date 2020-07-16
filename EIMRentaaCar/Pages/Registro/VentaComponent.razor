@@ -110,8 +110,43 @@
                         </div>
                     </div>
                 </div>
+                <br />
+                @*Detalle*@
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Monto</th>
+                                <th>Balance</th>
+                                <th>Pago</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            @foreach (var item in ventas.CuotaDetalles)
+                            {
+                                <tr>
+                                    <td>@item.Numero</td>
+                                    <td>@item.Monto</td>
+                                    <td>@item.Balance</td>
+                                    <td><input type="checkbox" class="form-check-input" @bind="@item.Pagada" /></td>
+                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))">Remover</button></td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
 
             </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"> Nuevo </i></button>
+                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"> Guardar </i></button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"> Eliminar </i></button>
+            </div>
         </div>
     </div>
 </EditForm>
@@ -123,11 +158,11 @@
 
     Ventas ventas = new Ventas();
 
-    @*Datos Del Cliente*@
-public int ClienteSelecionado { get; set; }
-public string nombreCliente { get; set; }
+    @*Datos del cliente*@
+    public int ClienteSelecionado { get; set; }
+    public string nombreCliente { get; set; }
 
-    @*Datos Del Cliente*@
+    @*Datos del vehiculo*@
     public int Vehiculoseleccionado { get; set; }
     public string Marca { get; set; }
     public string Modelo { get; set; }
@@ -154,6 +189,7 @@ public string nombreCliente { get; set; }
     {
         this.ventas = new Ventas();
 
+
     }
 
     private void Buscar()
@@ -163,7 +199,12 @@ public string nombreCliente { get; set; }
             var encontrado = VentasBLL.Buscar(ventas.VentaId);
 
             if (encontrado != null)
+            {
                 this.ventas = encontrado;
+                ClienteSelecionado = encontrado.ClienteId;
+                Vehiculoseleccionado = encontrado.VehiculoId;
+            }
+
             else
                 toast.ShowWarning("No encontrado");
         }
@@ -282,6 +323,12 @@ public string nombreCliente { get; set; }
             return;
         }
 
+        if (ClienteSelecionado == 0 && Vehiculoseleccionado == 0)
+        {
+            toast.ShowWarning("Tiene que seleccionar un cliente y un vehiculo Id");
+            return;
+        }
+
         if (ventas.Cuotas <= 0)
         {
             toast.ShowWarning("La cuotas debe ser mayor a 0.");
@@ -296,18 +343,34 @@ public string nombreCliente { get; set; }
                     CuotaId = 0,
                     VentaId = ventas.VentaId,
                     UsuarioId = 0,
-                    Monto = 0.0m,
-                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioPorDia,
+                    Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
                     Pagada = false,
                     Numero = (1 + i)
                 });
             }
-
-
-
-
+            ClienteSelecionado = 0;
+            Vehiculoseleccionado = 0;
+            Marca = string.Empty;
+            Modelo = string.Empty;
+            Precio = 0;
+            Vin = 0;
+            KM = 0;
+            Año = 0;
+            Tipo = string.Empty;
         }
-
     }
 
+    private void EliminarOrdenDetalle(CuotaDetalles detalle)
+    {
+        try
+        {
+            ventas.CuotaDetalles.Remove(detalle);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }
