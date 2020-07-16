@@ -11,7 +11,7 @@ namespace EIMRentaaCar.Models
     {
         [Key]
         [Required(ErrorMessage = "El campo ID no puede estar vació.")]
-        [Range(1, 1000000, ErrorMessage = "El campo ID no puede ser menor que 1 o mayor que 1000000.")]
+        [Range(0, 1000000, ErrorMessage = "El campo ID no puede ser menor que 1 o mayor que 1000000.")]
         public int ClienteId { get; set; }
 
         [ForeignKey("UsuarioId")]

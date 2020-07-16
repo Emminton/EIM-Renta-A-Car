@@ -159,8 +159,8 @@
     Ventas ventas = new Ventas();
 
     @*Datos del cliente*@
-    public int ClienteSelecionado { get; set; }
-    public string nombreCliente { get; set; }
+public int ClienteSelecionado { get; set; }
+public string nombreCliente { get; set; }
 
     @*Datos del vehiculo*@
     public int Vehiculoseleccionado { get; set; }
@@ -224,6 +224,8 @@
             if (guardo)
             {
                 Nuevo();
+                ClienteSelecionado = 0;
+                Vehiculoseleccionado = 0;
                 toast.ShowSuccess("Guardado correctamente");
             }
             else
@@ -320,7 +322,7 @@
             Año = auxAño;
             Tipo = auxTipo;
 
-            if(VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
+            if (VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
             {
                 toast.ShowError("Este vehiculo fue rentado");
 
@@ -363,8 +365,7 @@
                     Numero = (1 + i)
                 });
             }
-            ClienteSelecionado = 0;
-            Vehiculoseleccionado = 0;
+
             Marca = string.Empty;
             Modelo = string.Empty;
             Precio = 0;
@@ -372,6 +373,7 @@
             KM = 0;
             Año = 0;
             Tipo = string.Empty;
+            nombreCliente = string.Empty;
         }
     }
 
