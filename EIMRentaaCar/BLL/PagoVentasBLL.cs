@@ -26,6 +26,11 @@ namespace EIMRentaaCar.BLL
 
             try
             {
+
+                //Aqui guardo los datos del pago antes de las modificaciones de la tercera y segunda tabla
+                contexto.PagoVentas.Add(pago);
+                paso = contexto.SaveChanges() > 0;
+
                 Ventas venta = VentasBLL.Buscar(pago.VentaId);
 
                 for (int i = 0; i < venta.CuotaDetalles.Count; i++)
@@ -43,19 +48,15 @@ namespace EIMRentaaCar.BLL
                     else if (pago.Monto <= venta.CuotaDetalles[i].Monto && venta.CuotaDetalles[i].Pagada == false)
                     {
                         venta.CuotaDetalles[i].Balance -= pago.Monto;
+                        pago.Monto = 0;
                         break;
                     }
                 }
-
+                venta.Balance = 0;
                 foreach (var item in venta.CuotaDetalles)
                 {
                     venta.Balance += item.Balance;
                 }
-
-
-                contexto.PagoVentas.Add(pago);
-                paso = contexto.SaveChanges() > 0;
-
                 VentasBLL.Modificar(venta);
             }
             catch (Exception)
