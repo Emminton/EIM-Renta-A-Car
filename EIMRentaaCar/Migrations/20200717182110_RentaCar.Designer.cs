@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200710212908_Inicio")]
-    partial class Inicio
+    [Migration("20200717182110_RentaCar")]
+    partial class RentaCar
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -241,13 +241,22 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Marca")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Modelo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TiempoRenta")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasMaxLength(30);
 
                     b.Property<int>("VehiculoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Vin")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("RentaId");
@@ -340,8 +349,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Vin")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("VehiculoId");
 

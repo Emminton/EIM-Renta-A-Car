@@ -239,13 +239,22 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Marca")
-                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Modelo")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nombre")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TiempoRenta")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasMaxLength(30);
 
                     b.Property<int>("VehiculoId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Vin")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("RentaId");
@@ -338,8 +347,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Vin")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("VehiculoId");
 

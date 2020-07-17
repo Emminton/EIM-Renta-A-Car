@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Inicio : Migration
+    public partial class RentaCar : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,9 +99,12 @@ namespace EIMRentaaCar.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     VehiculoId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
-                    Marca = table.Column<string>(nullable: false),
+                    Marca = table.Column<string>(nullable: true),
+                    Modelo = table.Column<string>(nullable: true),
+                    Vin = table.Column<int>(nullable: false),
                     FechaRenta = table.Column<DateTime>(nullable: false),
-                    TiempoRenta = table.Column<int>(nullable: false)
+                    TiempoRenta = table.Column<int>(maxLength: 30, nullable: false),
+                    Nombre = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -138,7 +141,7 @@ namespace EIMRentaaCar.Migrations
                     Tipo = table.Column<string>(nullable: false),
                     Modelo = table.Column<string>(nullable: false),
                     Marca = table.Column<string>(nullable: false),
-                    Vin = table.Column<int>(nullable: false),
+                    Vin = table.Column<string>(nullable: false),
                     Año = table.Column<int>(nullable: false),
                     PrecioVenta = table.Column<decimal>(nullable: false),
                     PrecioPorDia = table.Column<decimal>(nullable: false),

@@ -80,7 +80,7 @@ namespace EIMRentaaCar.Models
             Tipo = tipo ?? throw new ArgumentNullException(nameof(tipo));
             Modelo = modelo ?? throw new ArgumentNullException(nameof(modelo));
             Marca = marca ?? throw new ArgumentNullException(nameof(marca));
-            Vin = vin;
+            Vin = 0;
             Año = año;
             PrecioVenta = precioVenta;
             PrecioPorDia = precioPorDia;

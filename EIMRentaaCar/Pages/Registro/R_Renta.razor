@@ -14,7 +14,7 @@
             <h1>Registro de Rentas</h1>
         </div>
 
-        @*ClientesID y boton al lado*@
+        @*Renta ID y boton al lado*@
         <div class="card-body">
             <form>
                 <div class="form-row align-items-center">
@@ -36,7 +36,7 @@
                     <div class="form-row">
                         <div class="col">
                             <label>Vehiculo ID:</label>
-                            <select class="form-control" @bind="rentas.VehiculoId" @onclick="MostrarVehiculo">
+                            <select class="form-control" @bind="SelecionVehiculo" @onclick="MostrarVehiculo">
                                 @foreach (var item in VehiculoCombo())
                                 {
                                     <option value="@item.VehiculoId">@item.VehiculoId</option>
@@ -46,19 +46,19 @@
                         @* Marca *@
                         <div class="col">
                             <label>La Marca:</label>
-                            <InputText class="form-control" readonly="true" @bind-Value="rentas.Marca" />
+                            <InputText class="form-control" readonly="true" @bind-Value="VehiculoMarca" />
                         </div>
 
                         @* Modelo *@
                         <div class="col">
                             <label>El Modelo:</label>
-                            <InputText class="form-control" readonly="true" @bind-Value="nombreModelo" />
+                            <InputText class="form-control" readonly="true" @bind-Value="VehiculoModelo" />
                         </div>
 
                         @* Cliente id *@
                         <div class="col">
                             <label>Cliente ID:</label>
-                            <select class="form-control" @bind="rentas.ClienteId" @onclick="MostrarNombreCliente">
+                            <select class="form-control" @bind="SelecionCliente" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
                                     <option value="@item.ClienteId">@item.ClienteId</option>
@@ -81,7 +81,7 @@
                     <ValidationMessage For="@(() => rentas.FechaRenta)" />
                 </div>
 
-                @*Tempo de Renta*@
+                @*Tiempo de Renta*@
                 <div class="form-group">
                     <label>Tiempo De Renta </label>
                     <InputNumber @bind-Value="rentas.TiempoRenta" class="form-control" />
@@ -103,139 +103,137 @@
 @code
 {
 
-    [Parameter]
-    public int RentaId { get; set; }
+[Parameter]
+public int RentaId { get; set; }
+Rentas rentas = new Rentas();
+@*Datos Del Vehiculo*@
 
-    @*Datos Del Vehiculo*@
-    Rentas rentas = new Rentas();
-    public int MarcaSelecionada { get; set; }
-    public string nombreMarca { get; set; }
-    public string nombreModelo { get; set; }
+public int SelecionVehiculo {get; set;}
+public string VehiculoMarca { get; set; }
+public string VehiculoModelo { get; set; }
 
     @*Datos Del Cliente*@
-    public int ClienteSelecionado { get; set; }
-    public string nombreCliente { get; set; }
+public string nombreCliente { get; set; }
+public int SelecionCliente{ get; set; }
 
 
-    protected override void OnInitialized()
+
+protected override void OnInitialized()
+{
+    Nuevo();
+    if (RentaId > 0)
+    {
+        var AuxRenta = RentasBLL.Buscar(RentaId);
+        if (AuxRenta != null)
+            this.rentas = AuxRenta;
+        else
+            toast.ShowWarning("No encontrado.");
+    }
+}
+
+private void Nuevo()
+{
+    this.rentas = new Rentas();
+
+}
+
+private void MostrarVehiculo()
+{
+
+    var Rentavehiculos = VehiculosBLL.Buscar(SelecionVehiculo);
+
+    if (Rentavehiculos != null)
+    {
+        VehiculoMarca = Rentavehiculos.Marca;
+        VehiculoModelo = Rentavehiculos.Modelo;
+       
+
+    }
+
+}
+
+private void MostrarNombreCliente()
+{
+    var auxCliente = ClientesBLL.Buscar(SelecionCliente);
+    if (auxCliente != null)
+    {
+        nombreCliente = auxCliente.Nombre;
+
+    }
+}
+
+private void Buscar()
+{
+    if (rentas.RentaId > 0)
+    {
+        var encontrado = RentasBLL.Buscar(rentas.RentaId);
+
+        if (encontrado != null)
+            this.rentas = encontrado;
+        else
+            toast.ShowWarning("No encontrado");
+    }
+}
+
+private void Guardar()
+{
+    bool guardo;
+
+    guardo = RentasBLL.Guardar(rentas);
+
+    if (guardo)
     {
         Nuevo();
-        if (RentaId > 0)
-        {
-            var Auximportadores = RentasBLL.Buscar(RentaId);
-            if (Auximportadores != null)
-                this.rentas = Auximportadores;
-            else
-                toast.ShowWarning("No encontrado.");
-        }
+        toast.ShowSuccess("Guardado correctamente");
     }
+    else
+        toast.ShowError("No fue posible guardar");
+}
 
-    private void Nuevo()
+private void Eliminar()
+{
+    bool elimino;
+
+    elimino = RentasBLL.Eliminar(rentas.RentaId);
+
+    if (elimino)
     {
-        this.rentas = new Rentas();
-
+        Nuevo();
+        toast.ShowSuccess("Eliminado correctamente");
     }
+    else
+        toast.ShowError("No fue posible eliminar");
+}
 
-    private void MostrarVehiculo()
+private List<Clientes> ClienteCombo()
+{
+    List<Clientes> lista = new List<Clientes>();
+
+    try
     {
-        string auxMarca = string.Empty;
-        string auxModelo = string.Empty;
-        var AuxMarcas = VehiculosBLL.Buscar(MarcaSelecionada);
-        if (AuxMarcas != null)
-        {
-            auxMarca = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Marca;
-            auxModelo = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Modelo;
-            rentas.Marca = auxMarca;
-            nombreModelo = auxModelo;
-        }
-
-
+        lista = ClientesBLL.GetList(c => true);
     }
-
-    private void MostrarNombreCliente()
+    catch (Exception)
     {
-        string auxRenta = string.Empty;
-
-        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
-        if (auxCliente != null)
-        {
-            auxRenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
-            nombreCliente = auxRenta;
-        }
+        throw;
     }
 
-    private void Buscar()
+    return lista;
+}
+
+private List<Vehiculos> VehiculoCombo()
+{
+    List<Vehiculos> lista = new List<Vehiculos>();
+
+    try
     {
-        if (rentas.RentaId > 0)
-        {
-            var encontrado = RentasBLL.Buscar(rentas.RentaId);
-
-            if (encontrado != null)
-                this.rentas = encontrado;
-            else
-                toast.ShowWarning("No encontrado");
-        }
+        lista = VehiculosBLL.GetList(v => true);
     }
-
-    private void Guardar()
+    catch (Exception)
     {
-        bool guardo;
-
-        guardo = RentasBLL.Guardar(rentas);
-
-        if (guardo)
-        {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible guardar");
+        throw;
     }
 
-    private void Eliminar()
-    {
-        bool elimino;
-
-        elimino = RentasBLL.Eliminar(rentas.RentaId);
-
-        if (elimino)
-        {
-            Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible eliminar");
-    }
-
-    private List<Clientes> ClienteCombo()
-    {
-        List<Clientes> lista = new List<Clientes>();
-
-        try
-        {
-            lista = ClientesBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-
-    private List<Vehiculos> VehiculoCombo()
-    {
-        List<Vehiculos> lista = new List<Vehiculos>();
-
-        try
-        {
-            lista = VehiculosBLL.GetList(v => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
+    return lista;
+}
 }
