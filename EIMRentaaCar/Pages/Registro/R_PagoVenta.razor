@@ -1,5 +1,179 @@
-﻿<h3>R_PagoVenta</h3>
+﻿@page "/PagoVenta"
+@page "/PagoVenta/{id:int}"
+
+@using BLL
+@using Models
+
+@inject IToastService toast
+
+<EditForm Model="pago" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro de Pago de Venta</h1>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="pago.PagoVentaId" class="form-control c" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Fecha *@
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <InputDate @bind-Value="pago.Fecha" class="form-control "></InputDate>
+                            <ValidationMessage For="@(() => pago.Fecha)"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Venta Id</label>
+                            <select class="form-control" @bind="pago.VentaId" @onclick="MostrarVenta">
+                                @foreach (var item in VentaCombo())
+                                {
+                                    <option value="@item.VentaId">@item.VentaId</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label>Monto venta</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="Balance" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Monto a pagar</label>
+                    <InputNumber @bind-Value="pago.Monto" class="form-control "></InputNumber>
+                    <ValidationMessage For="@(() => pago.Monto)"></ValidationMessage>
+                </div>
+
+            </form>
+        </div>
+
+        @*Botones*@
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
 
 @code {
 
+    PagoVentas pago = new PagoVentas();
+    [Parameter]
+    public int id { get; set; }
+
+    //Datos de la venta
+    public int ventaid { get; set; }
+    public decimal Balance { get; set; }
+    public int Ventaseleccionada { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (id > 0)
+        {
+
+            if (PagoVentasBLL.Buscar(id) != null)
+                this.pago = PagoVentasBLL.Buscar(id);
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.pago = new PagoVentas();
+    }
+
+    private void Buscar()
+    {
+        if (pago.PagoVentaId > 0)
+        {
+            var encontrado = PagoVentasBLL.Buscar(pago.PagoVentaId);
+
+            if (encontrado != null)
+                this.pago = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+
+
+       bool guardo = PagoVentasBLL.Guardar(pago);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = PagoVentasBLL.Eliminar(pago.PagoVentaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Ventas> VentaCombo()
+    {
+        List<Ventas> lista = new List<Ventas>();
+
+        try
+        {
+            lista = VentasBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
+    }
+
+    private void MostrarVenta()
+    {
+
+        var aux = VentasBLL.Buscar(pago.VentaId);
+        if (aux != null)
+        {
+            Balance = aux.Balance;
+        }
+
+    }
 }

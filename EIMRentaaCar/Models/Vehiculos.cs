@@ -29,7 +29,7 @@ namespace EIMRentaaCar.Models
 
         //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo VIN")]
-        public int Vin { get; set; }
+        public string Vin { get; set; }
 
         //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         [Required(ErrorMessage = "No puede estar vació el campo año")]
@@ -63,7 +63,7 @@ namespace EIMRentaaCar.Models
             Tipo = string.Empty;
             Modelo = string.Empty;
             Marca = string.Empty;
-            Vin = 0;
+            Vin = string.Empty;
             Año = 0;
             PrecioVenta = 0.0m;
             PrecioPorDia = 0.0m;
@@ -72,7 +72,7 @@ namespace EIMRentaaCar.Models
             Fecha = DateTime.Now;
         }
 
-        public Vehiculos(int vehiculoId, int usuarioId, string estado, string tipo, string modelo, string marca, int vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId, DateTime fecha)
+        public Vehiculos(int vehiculoId, int usuarioId, string estado, string tipo, string modelo, string marca, string vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId, DateTime fecha)
         {
             VehiculoId = vehiculoId;
             UsuarioId = usuarioId;

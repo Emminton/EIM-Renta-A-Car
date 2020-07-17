@@ -43,22 +43,20 @@ namespace EIMRentaaCar.BLL
                     else if (pago.Monto <= venta.CuotaDetalles[i].Monto && venta.CuotaDetalles[i].Pagada == false)
                     {
                         venta.CuotaDetalles[i].Balance -= pago.Monto;
-                        pago.Monto = 0;
                         break;
                     }
                 }
 
-                venta.Balance = 0;
                 foreach (var item in venta.CuotaDetalles)
                 {
                     venta.Balance += item.Balance;
                 }
 
 
-                VentasBLL.Modificar(venta);
-
                 contexto.PagoVentas.Add(pago);
                 paso = contexto.SaveChanges() > 0;
+
+                VentasBLL.Modificar(venta);
             }
             catch (Exception)
             {
@@ -78,14 +76,6 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-
-                contexto.Database.ExecuteSqlRaw($"Delete From PagoDetalles Where PagoVentaId = {pago.PagoVentaId}");
-
-                foreach (PagoDetalles item in pago.PagoDetalles)
-                {
-                    contexto.Entry(item).State = EntityState.Added;
-                }
-
                 contexto.Entry(pago).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }

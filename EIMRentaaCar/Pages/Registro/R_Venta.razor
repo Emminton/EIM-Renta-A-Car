@@ -87,7 +87,7 @@
                         </div>
                         <div class="col">
                             <label>VIN</label>
-                            <InputNumber class="form-control" readonly="true" @bind-Value="Vin" />
+                            <InputText class="form-control" readonly="true" @bind-Value="Vin" />
                         </div>
                         <div class="col">
                             <label>KM</label>
@@ -130,7 +130,7 @@
                                     <td>@item.Numero</td>
                                     <td>@item.Monto</td>
                                     <td>@item.Balance</td>
-                                    <td><input type="checkbox" class="form-check-input" @bind="@item.Pagada" /></td>
+                                    <td>@item.Pagada"</td>
                                     <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
                                 </tr>
                             }
@@ -165,8 +165,7 @@
     </div>
 </EditForm>
 
-@code
-{
+@code {
     [Parameter]
     public int VentaId { get; set; }
 
@@ -181,7 +180,7 @@
     public string Marca { get; set; }
     public string Modelo { get; set; }
     public decimal Precio { get; set; }
-    public int Vin { get; set; }
+    public string Vin { get; set; }
     public decimal KM { get; set; }
     public int Año { get; set; }
     public string Tipo { get; set; }
@@ -205,7 +204,7 @@
         Marca = string.Empty;
         Modelo = string.Empty;
         Precio = 0;
-        Vin = 0;
+        Vin = string.Empty;
         KM = 0;
         Año = 0;
         Tipo = string.Empty;
@@ -252,7 +251,7 @@
                 Marca = string.Empty;
                 Modelo = string.Empty;
                 Precio = 0;
-                Vin = 0;
+                Vin = string.Empty;
                 KM = 0;
                 Año = 0;
                 Tipo = string.Empty;

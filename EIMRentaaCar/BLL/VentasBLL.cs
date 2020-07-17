@@ -52,10 +52,8 @@ namespace EIMRentaaCar.BLL
         {
             bool paso = false;
             Contexto contexto = new Contexto();
-
             try
             {              
-
                 foreach (CuotaDetalles item in ventas.CuotaDetalles)
                 {
                     contexto.Entry(item).State = EntityState.Modified;
@@ -90,7 +88,7 @@ namespace EIMRentaaCar.BLL
                     var auxVehiculo = contexto.Vehiculos.Find(aux.VehiculoId);
                     if (auxVehiculo != null)
                     {
-                         auxVehiculo.Estado = "Disponible";
+                        auxVehiculo.Estado = "Disponible";
                         VehiculosBLL.Modificar(auxVehiculo);
                     }
                     contexto.Ventas.Remove(aux);//remueve la informacion de la entidad relacionada

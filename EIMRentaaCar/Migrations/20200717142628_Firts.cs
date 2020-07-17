@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Inicio : Migration
+    public partial class Firts : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -138,7 +138,7 @@ namespace EIMRentaaCar.Migrations
                     Tipo = table.Column<string>(nullable: false),
                     Modelo = table.Column<string>(nullable: false),
                     Marca = table.Column<string>(nullable: false),
-                    Vin = table.Column<int>(nullable: false),
+                    Vin = table.Column<string>(nullable: false),
                     Año = table.Column<int>(nullable: false),
                     PrecioVenta = table.Column<decimal>(nullable: false),
                     PrecioPorDia = table.Column<decimal>(nullable: false),

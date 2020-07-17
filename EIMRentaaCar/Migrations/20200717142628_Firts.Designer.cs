@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200710212908_Inicio")]
-    partial class Inicio
+    [Migration("20200717142628_Firts")]
+    partial class Firts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5");
+                .HasAnnotation("ProductVersion", "3.1.6");
 
             modelBuilder.Entity("EIMRentaaCar.Models.BancosAsociados", b =>
                 {
@@ -340,8 +340,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Vin")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("VehiculoId");
 
