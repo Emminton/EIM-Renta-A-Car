@@ -34,7 +34,7 @@
                         @* Cliente id *@
                         <div class="col">
                             <label>Cliente ID:</label>
-                            <select  class="form-control"  @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                            <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
                                     <option value="@item.ClienteId">@item.ClienteId</option>
@@ -111,6 +111,7 @@
                     </div>
                 </div>
                 <br />
+
                 @*Detalle*@
                 <div class="table-responsive text-nowrap">
                     <table class="table table-striped">
@@ -139,6 +140,19 @@
                     </table>
                 </div>
 
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Balance</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="ventas.Balance" @onfocusin="CalcularBalance" />
+                        </div>
+                        <div class="col">
+                            <label>Moto Tota</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="ventas.MontoTotal"  />
+                        </div>                       
+                    </div>
+                </div>
+
             </form>
         </div>
         <div class="card-footer">
@@ -163,31 +177,227 @@
     public string nombreCliente { get; set; }
 
     @*Datos del vehiculo*@
-    public int Vehiculoseleccionado { get; set; }
-    public string Marca { get; set; }
-    public string Modelo { get; set; }
-    public decimal Precio { get; set; }
-    public int Vin { get; set; }
-    public decimal KM { get; set; }
-    public int Año { get; set; }
-    public string Tipo { get; set; }
+public int Vehiculoseleccionado { get; set; }
+public string Marca { get; set; }
+public string Modelo { get; set; }
+public decimal Precio { get; set; }
+public int Vin { get; set; }
+public decimal KM { get; set; }
+public int Año { get; set; }
+public string Tipo { get; set; }
 
-    protected override void OnInitialized()
+protected override void OnInitialized()
+{
+    Nuevo();
+    if (VentaId > 0)
     {
-        Nuevo();
-        if (VentaId > 0)
+        var Auxventas = VentasBLL.Buscar(VentaId);
+        if (Auxventas != null)
+            this.ventas = Auxventas;
+        else
+            toast.ShowWarning("No encontrado.");
+    }
+}
+
+private void Nuevo()
+{
+    this.ventas = new Ventas();
+    Marca = string.Empty;
+    Modelo = string.Empty;
+    Precio = 0;
+    Vin = 0;
+    KM = 0;
+    Año = 0;
+    Tipo = string.Empty;
+    nombreCliente = string.Empty;
+    ClienteSelecionado = 0;
+    Vehiculoseleccionado = 0;
+
+}
+
+private void Buscar()
+{
+    if (ventas.VentaId > 0)
+    {
+        var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+        if (encontrado != null)
         {
-            var Auxventas = VentasBLL.Buscar(VentaId);
-            if (Auxventas != null)
-                this.ventas = Auxventas;
-            else
-                toast.ShowWarning("No encontrado.");
+            this.ventas = encontrado;
+            ClienteSelecionado = encontrado.ClienteId;
+            Vehiculoseleccionado = encontrado.VehiculoId;
         }
+
+        else
+            toast.ShowWarning("No encontrado");
+    }
+}
+
+private void Guardar()
+{
+    if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
+    {
+        toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
+
+    }
+    else
+    {
+        bool guardo = VentasBLL.Guardar(ventas);
+
+        if (guardo)
+        {
+            Nuevo();
+            ClienteSelecionado = 0;
+            Vehiculoseleccionado = 0;
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
     }
 
-    private void Nuevo()
+}
+
+private void Eliminar()
+{
+    bool elimino;
+
+    elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+    if (elimino)
     {
-        this.ventas = new Ventas();
+        Nuevo();
+        toast.ShowSuccess("Eliminado correctamente");
+    }
+    else
+        toast.ShowError("No fue posible eliminar");
+}
+
+private List<Clientes> ClienteCombo()
+{
+    List<Clientes> lista = new List<Clientes>();
+
+    try
+    {
+        lista = ClientesBLL.GetList(c => true);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+
+    return lista;
+}
+
+private List<Vehiculos> VehiculoCombo()
+{
+    List<Vehiculos> lista = new List<Vehiculos>();
+
+    try
+    {
+        lista = VehiculosBLL.GetList(c => true);
+    }
+    catch (Exception)
+    {
+        throw;
+    }
+
+    return lista;
+}
+
+private void MostrarNombreCliente()
+{
+    string auxVenta = string.Empty;
+
+    var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+    if (auxCliente != null)
+    {
+        auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+        nombreCliente = auxVenta;
+    }
+    ventas.ClienteId = ClienteSelecionado;
+}
+
+private void MostrarVehiculo()
+{
+    string auxmarcar = string.Empty;
+    string auxModelo = string.Empty;
+    decimal auxPrecio = 0;
+    int auxVin = 0;
+    decimal auxKM = 0;
+    int auxAño = 0;
+    string auxTipo = string.Empty;
+
+    var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
+    if (auxventa != null)
+    {
+        auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
+        auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
+        auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
+        auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
+        auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
+        auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
+        auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
+
+        Marca = auxmarcar;
+        Modelo = auxModelo;
+        Precio = auxPrecio;
+        Vin = auxVin;
+        KM = auxKM;
+        Año = auxAño;
+        Tipo = auxTipo;
+
+        //aqui paso el precio del vehiculo al monto
+        ventas.MontoTotal = Precio;
+
+        if (VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
+        {
+            toast.ShowError("Este vehiculo fue rentado");
+
+        }
+    }
+    ventas.VehiculoId = Vehiculoseleccionado;
+}
+
+private void Agregar()
+{
+    if (ventas.Cuotas == 0)
+    {
+        toast.ShowWarning("Tiene que poner las cuotas.");
+        return;
+    }
+
+    if (ClienteSelecionado == 0 && Vehiculoseleccionado == 0)
+    {
+        toast.ShowWarning("Tiene que seleccionar un cliente y un vehiculo Id");
+        return;
+    }
+
+    if (ventas.Cuotas <= 0)
+    {
+        toast.ShowWarning("La cuotas debe ser mayor a 0.");
+        return;
+    }
+    else
+    {
+        for (int i = 0; i < ventas.Cuotas; i++)
+        {
+            this.ventas.CuotaDetalles.Add(new CuotaDetalles
+            {
+                CuotaId = 0,
+                VentaId = ventas.VentaId,
+                UsuarioId = 0,
+                Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                Pagada = false,
+                Numero = (1 + i)
+            });
+        }
+
+        if (ventas.CuotaDetalles.Count > 0)
+        {
+            ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
+        }
+
         Marca = string.Empty;
         Modelo = string.Empty;
         Precio = 0;
@@ -198,206 +408,35 @@
         nombreCliente = string.Empty;
         ClienteSelecionado = 0;
         Vehiculoseleccionado = 0;
-
     }
+}
 
-    private void Buscar()
+private void EliminarOrdenDetalle(CuotaDetalles detalle)
+{
+    try
     {
-        if (ventas.VentaId > 0)
-        {
-            var encontrado = VentasBLL.Buscar(ventas.VentaId);
-
-            if (encontrado != null)
-            {
-                this.ventas = encontrado;
-                ClienteSelecionado = encontrado.ClienteId;
-                Vehiculoseleccionado = encontrado.VehiculoId;
-            }
-
-            else
-                toast.ShowWarning("No encontrado");
-        }
+        ventas.CuotaDetalles.Remove(detalle);
     }
-
-    private void Guardar()
+    catch (Exception)
     {
-        if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
-        {
-            toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
 
-        }
-        else
-        {
-            bool guardo = VentasBLL.Guardar(ventas);
-
-            if (guardo)
-            {
-                Nuevo();
-                ClienteSelecionado = 0;
-                Vehiculoseleccionado = 0;
-                toast.ShowSuccess("Guardado correctamente");
-            }
-            else
-                toast.ShowError("No fue posible guardar");
-        }
-
+        throw;
     }
+}
 
-    private void Eliminar()
+private void CalcularBalance()
+{
+    ventas.Balance = 0;
+    foreach (CuotaDetalles cuota in ventas.CuotaDetalles)
     {
-        bool elimino;
-
-        elimino = VentasBLL.Eliminar(ventas.VentaId);
-
-        if (elimino)
+        if (!cuota.Pagada)
         {
-            Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible eliminar");
-    }
-
-    private List<Clientes> ClienteCombo()
-    {
-        List<Clientes> lista = new List<Clientes>();
-
-        try
-        {
-            lista = ClientesBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-
-    private List<Vehiculos> VehiculoCombo()
-    {
-        List<Vehiculos> lista = new List<Vehiculos>();
-
-        try
-        {
-            lista = VehiculosBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-
-    private void MostrarNombreCliente()
-    {
-        string auxVenta = string.Empty;
-
-        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
-        if (auxCliente != null)
-        {
-            auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
-            nombreCliente = auxVenta;
-        }
-        ventas.ClienteId = ClienteSelecionado;
-    }
-
-    private void MostrarVehiculo()
-    {
-        string auxmarcar = string.Empty;
-        string auxModelo = string.Empty;
-        decimal auxPrecio = 0;
-        int auxVin = 0;
-        decimal auxKM = 0;
-        int auxAño = 0;
-        string auxTipo = string.Empty;
-
-        var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
-        if (auxventa != null)
-        {
-            auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
-            auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
-            auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
-            auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
-            auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
-            auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
-            auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
-            Marca = auxmarcar;
-            Modelo = auxModelo;
-            Precio = auxPrecio;
-            Vin = auxVin;
-            KM = auxKM;
-            Año = auxAño;
-            Tipo = auxTipo;
-
-            if (VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
-            {
-                toast.ShowError("Este vehiculo fue rentado");
-
-            }
-        }
-        ventas.VehiculoId = Vehiculoseleccionado;
-    }
-
-    private void Agregar()
-    {
-        if (ventas.Cuotas == 0)
-        {
-            toast.ShowWarning("Tiene que poner las cuotas.");
-            return;
-        }
-
-        if (ClienteSelecionado == 0 && Vehiculoseleccionado == 0)
-        {
-            toast.ShowWarning("Tiene que seleccionar un cliente y un vehiculo Id");
-            return;
-        }
-
-        if (ventas.Cuotas <= 0)
-        {
-            toast.ShowWarning("La cuotas debe ser mayor a 0.");
-            return;
-        }
-        else
-        {
-            for (int i = 0; i < ventas.Cuotas; i++)
-            {
-                this.ventas.CuotaDetalles.Add(new CuotaDetalles
-                {
-                    CuotaId = 0,
-                    VentaId = ventas.VentaId,
-                    UsuarioId = 0,
-                    Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
-                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
-                    Pagada = false,
-                    Numero = (1 + i)
-                });
-            }
-
-            Marca = string.Empty;
-            Modelo = string.Empty;
-            Precio = 0;
-            Vin = 0;
-            KM = 0;
-            Año = 0;
-            Tipo = string.Empty;
-            nombreCliente = string.Empty;
-            ClienteSelecionado = 0;
-            Vehiculoseleccionado = 0;
+            ventas.Balance += cuota.Balance;
         }
     }
 
-    private void EliminarOrdenDetalle(CuotaDetalles detalle)
-    {
-        try
-        {
-            ventas.CuotaDetalles.Remove(detalle);
-        }
-        catch (Exception)
-        {
+}
 
-            throw;
-        }
-    }
+
+
 }
