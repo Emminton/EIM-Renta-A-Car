@@ -105,6 +105,7 @@
     private void Nuevo()
     {
         this.pago = new PagoVentas();
+        Balance = 0;
     }
 
     private void Buscar()
@@ -124,7 +125,7 @@
     {
 
 
-       bool guardo = PagoVentasBLL.Guardar(pago);
+        bool guardo = PagoVentasBLL.Guardar(pago);
 
         if (guardo)
         {

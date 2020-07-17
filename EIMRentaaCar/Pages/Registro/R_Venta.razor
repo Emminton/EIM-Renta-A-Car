@@ -120,7 +120,8 @@
                                 <th>#</th>
                                 <th>Monto</th>
                                 <th>Balance</th>
-                                <th>Pago</th>
+                                <th>Estado de Pago</th>
+                                <th>        </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
@@ -130,7 +131,7 @@
                                     <td>@item.Numero</td>
                                     <td>@item.Monto</td>
                                     <td>@item.Balance</td>
-                                    <td>@item.Pagada"</td>
+                                    <td><input type="checkbox"  @bind="item.Pagada" /></td>
                                     <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
                                 </tr>
                             }
