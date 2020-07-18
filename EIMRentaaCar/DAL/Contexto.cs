@@ -42,7 +42,7 @@ namespace EIMRentaaCar.DAL
                 ConfirmarPassword = UsuarioBLL.Encriptar("1234"),
                 Roles = "Administrador",
                 FechaIngreso = DateTime.Now,
-                UserName = "MA"
+                UserName = "admin"
 
             });
         }
