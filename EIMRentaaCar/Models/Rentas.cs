@@ -19,10 +19,9 @@ namespace EIMRentaaCar.Models
 
         [ForeignKey("ClienteId")]
         public int ClienteId { get; set; }
-
-        [Required(ErrorMessage ="No puede estar vació el campo marca")]
-        [RegularExpression(@"\S(.*)\S", ErrorMessage = "Debe ser un texto.")]
         public string Marca { get; set; }
+        public string Modelo { get; set; }
+        public int Vin { get; set; }
 
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
@@ -30,8 +29,11 @@ namespace EIMRentaaCar.Models
         public DateTime FechaRenta { get; set; }
 
         [Required(ErrorMessage = "El campo Tiempo de renta no debe estar vació")]
-        //[RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        [MinLength(1, ErrorMessage = "El campo lo minimo debe terner 3 caracteres.")]
+        [MaxLength(30, ErrorMessage = "El nombre es muy largo.")]
         public int TiempoRenta { get; set; }
+        public string Nombre { get; set; }
+        public decimal  Balance { get; set; }
 
 
         public Rentas()
@@ -39,10 +41,12 @@ namespace EIMRentaaCar.Models
             RentaId = 0;
             VehiculoId = 0;
             Marca = string.Empty;
+            Modelo = string.Empty;
             FechaRenta = DateTime.Now;
             ClienteId = 0;
             TiempoRenta = 0;
-
+            Vin = 0;
+            Nombre = string.Empty;
         }
     }
 }

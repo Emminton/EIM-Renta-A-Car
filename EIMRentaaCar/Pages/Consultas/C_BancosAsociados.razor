@@ -1,0 +1,109 @@
+﻿@page "/ConsultaBanco"
+
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
+
+@inject IToastService toast
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Consultas De Banco Asociados</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="input-group mb-4">
+                <div class="input-group">
+                    <label for="filtro">Filtro: </label>
+                    <select class="form-control ml-3 mr-3" @bind="Filtro">
+                        <option value="" disabled selected>Seleccione un filtro</option>
+                        <option value="Todo">Todo</option>
+                        <option value="Id">ID</option>
+                        <option value="Nombre">Nombre</option>
+                    </select>
+
+                    <label for="criterio ml-3 mr-3"> Criterio: </label>
+                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                </div>
+            </div>
+
+            <table class=" table mb-3 mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lista)
+                    {
+                    <tr class="table-striped">
+                        <td>@item.BancoAsociadoId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Telefono</td>
+
+                    </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private List<BancosAsociados> lista { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+    private decimal TotalInventario { get; set; }
+    public string mensaje;
+
+    protected override void OnInitialized()
+    {
+        lista = new List<BancosAsociados>();
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            if (Filtro == null)
+            {
+                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+            }
+            else
+            {
+                lista = BancoAsociadoBLL.GetList(a => true);
+
+                if (lista.Count == 0)
+                {
+                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                }
+                else
+                {
+                    mensaje = "";
+                    switch (Filtro)
+                    {
+                        case "Todo":
+                            lista = BancoAsociadoBLL.GetList(e => true);
+                            break;
+                        case "ID":
+                            lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId== Convert.ToInt32(Criterio));
+                            break;
+                        case "Nombre":
+                            lista = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
+                            break;
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+ }
