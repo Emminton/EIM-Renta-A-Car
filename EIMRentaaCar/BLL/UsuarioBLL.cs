@@ -186,7 +186,7 @@ namespace EIMRentaaCar.BLL
 
         public static string Rol(string Usuario)
         {
-            string nivel = "Empleado";
+            string nivel;
             Contexto contexto = new Contexto();
             try
             {
@@ -217,11 +217,6 @@ namespace EIMRentaaCar.BLL
                     paso = true;
 
                 }
-
-                //if (NombreUsuario == "Administrador" && clave == "1234")
-                //{
-                //    paso = true;
-                //}
 
             }
             catch (Exception)

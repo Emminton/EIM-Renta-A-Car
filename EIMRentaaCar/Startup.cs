@@ -38,6 +38,7 @@ namespace EIMRentaaCar
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddBlazoredToast();
+
             services.AddHttpContextAccessor();
             services.AddScoped<HttpContextAccessor>();
             services.AddHttpClient();
