@@ -225,5 +225,26 @@ namespace EIMRentaaCar.BLL
             }
             return paso;
         }
+
+        public static Usuarios Buscar(string usuario)
+        {
+            Usuarios Usuario;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+                Usuario = contexto.Usuarios.Where(U => U.UserName == usuario).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+
+            return Usuario;
+        }
     }
 }

@@ -5,79 +5,86 @@
 @using EIMRentaaCar.BLL
 
 @inject IToastService toast
+@inject IJSRuntime js
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <EditForm Model="bancosAsociados" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <div class="card w-75">
+            <div class="card-header">
+                <h1>Registro de Clientes</h1>
+            </div>
 
-<EditForm Model="bancosAsociados" OnValidSubmit="Guardar">
-    <DataAnnotationsValidator />
-    <div class="card w-75">
-        <div class="card-header">
-            <h1>Registro de Clientes</h1>
-        </div>
-
-        @*Banco Asociado Id y boton al lado*@
-        <div class="card-body">
-            <form />
-            <div class="form-row align-items-center">
-                <div class="col">
-                    <div class="form-group">
-                        <label>ID</label>
-                        <div class="input-group">
-                            <InputNumber @bind-Value="bancosAsociados.BancoAsociadoId" class="form-control col-4" />
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+            @*Banco Asociado Id y boton al lado*@
+            <div class="card-body">
+                <form />
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="bancosAsociados.BancoAsociadoId" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                @*Nombres*@
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <InputText @bind-Value="bancosAsociados.Nombre" class="form-control" />
+                    <ValidationMessage For="@(() => bancosAsociados.Nombre)" />
+                </div>
+
+                @*Telefono*@
+                <div class="form-group">
+                    <label>Teléfono </label>
+                    <InputText @bind-Value="bancosAsociados.Telefono" class="form-control" />
+                    <ValidationMessage For="@(() => bancosAsociados.Telefono)" />
+                </div>
+
+                @*Gmail*@
+                <div class="form-group">
+                    <label>Email</label>
+                    <InputText @bind-Value="bancosAsociados.Email" class="form-control" />
+                    <ValidationMessage For="@(() => bancosAsociados.Email)" />
+                </div>
+
+                @*Pagina Web*@
+                <div class="form-group">
+                    <label>Pagina Web</label>
+                    <InputText @bind-Value="bancosAsociados.PaginaWeb" class="form-control" />
+                    <ValidationMessage For="@(() => bancosAsociados.PaginaWeb)" />
+                </div>
             </div>
 
-            @*Nombres*@
-            <div class="form-group">
-                <label>Nombre</label>
-                <InputText @bind-Value="bancosAsociados.Nombre" class="form-control" />
-                <ValidationMessage For="@(() => bancosAsociados.Nombre)" />
+            @*Botones*@
+            <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+                </div>
             </div>
 
-            @*Telefono*@
-            <div class="form-group">
-                <label>Teléfono </label>
-                <InputText @bind-Value="bancosAsociados.Telefono" class="form-control" />
-                <ValidationMessage For="@(() => bancosAsociados.Telefono)" />
-            </div>
-
-            @*Gmail*@
-            <div class="form-group">
-                <label>Email</label>
-                <InputText @bind-Value="bancosAsociados.Email" class="form-control" />
-                <ValidationMessage For="@(() => bancosAsociados.Email)" />
-            </div>
-
-            @*Pagina Web*@
-            <div class="form-group">
-                <label>Pagina Web</label>
-                <InputText @bind-Value="bancosAsociados.PaginaWeb" class="form-control" />
-                <ValidationMessage For="@(() => bancosAsociados.PaginaWeb)" />
-            </div>
         </div>
+    </EditForm>
+}
 
-        @*Botones*@
-        <div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
-            </div>
-        </div>
 
-    </div>
-</EditForm>
 
 
 @code
 {
     [Parameter]
     public int BancoId { get; set; }
-
+    Usuarios usuarios = new Usuarios();
     BancosAsociados bancosAsociados = new BancosAsociados();
 
     protected override void OnInitialized()
@@ -91,6 +98,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
+        ObtenerUsuario();
     }
 
     private void Nuevo()
@@ -141,4 +149,26 @@
         else
             toast.ShowError("No fue posible eliminar");
     }
+
+    public void ObtenerUsuario()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            usuarios = usuario;
+        }
+    }
+
+    public bool VerificarRol()
+    {
+        bool paso = false;
+
+        if (usuarios.Roles == "Administrador" || usuarios.Roles == "Empleado")
+        {
+            paso = true;
+        }
+        return paso;
+    }
+
 }
