@@ -3,14 +3,16 @@ using System;
 using EIMRentaaCar.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20200718003710_segunda")]
+    partial class segunda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,9 +234,6 @@ namespace EIMRentaaCar.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("TEXT");
-
                     b.Property<int>("ClienteId")
                         .HasColumnType("INTEGER");
 
@@ -242,22 +241,13 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Marca")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Modelo")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nombre")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TiempoRenta")
-                        .HasColumnType("INTEGER")
-                        .HasMaxLength(30);
-
-                    b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Vin")
+                    b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("RentaId");

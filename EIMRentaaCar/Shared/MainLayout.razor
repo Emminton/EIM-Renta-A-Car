@@ -2,26 +2,44 @@
 
 @using Blazored.Toast.Configuration
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+    <AuthorizeView>
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
+                <div class="top-row px-4" style="background-color: #d2d5d7">
+                    <b class="text-white">Bienvenido, @context.User.Identity.Name!</b>
+                    <a class="ml-md-auto btn btn-danger" href="/logout?returnUrl=/" target="_top" style="color: white"><i class="oi oi-account-logout"></i> Logout</a>
+                </div>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
 
-<div class="main">
-    <div class="top-row px-4 auth">
-        <LoginDisplay />
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+        </Authorized>
 
-    <div class="content px-4">
-        @Body
-    </div>
-    <BlazoredToasts Position="ToastPosition.TopRight"
-                    Timeout="5"
-                    IconType="IconType.FontAwesome"
-                    SuccessIcon="fa fa-check"
-                    ErrorIcon="fa fa-times"
-                    InfoIcon="fa fa-info"
-                    WarningIcon="fa fa-warning" 
-                    ShowProgressBar="@true" />
-</div>
+        <NotAuthorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
+                <div class="top-row px-4" style="background-color: #d2d5d7">
+                </div>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
+        </NotAuthorized>
 
+    </AuthorizeView>
+
+
+<BlazoredToasts Position="ToastPosition.TopRight"
+                Timeout="5"
+                IconType="IconType.FontAwesome"
+                SuccessIcon="fa fa-check"
+                ErrorIcon="fa fa-times"
+                InfoIcon="fa fa-info"
+                WarningIcon="fa fa-warning"
+                ShowProgressBar="@true" />

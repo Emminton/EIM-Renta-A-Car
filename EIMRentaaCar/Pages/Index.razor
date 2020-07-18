@@ -1,157 +1,170 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authenticationStateProvider
 
-Welcome to your new app.
+<AuthorizeView>
+    <Authorized>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <div id="inam" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-
-
-                    <div class="carousel-item active">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card" style="width: 300px;margin: auto;">
-                                        <img src="/Imagen/clientes.jpg" class="card-img-top" width="320" height="180" />
-                                        <div class="card-body">
-                                            <div class=" text-center">
-                                                <a href="Cliente" class="btn btn-outline-primary">Registro de Clientes</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card" style="width: 300px;">
-                                        <img src="/Imagen/user.jpg" width="320" height="180" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class=" text-center">
-                                                <a href="Usuarios" class="btn btn-outline-primary">Registro de Usuarios</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col">
-                                    <div class="card" style="width: 300px;">
-                                        <img src="/Imagen/bancos.jpg" width="320" height="180" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                                <a href="Bancos" class="btn btn-outline-primary">Registro de Bancos</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    @*Es la divisionn oara gregar nuevos item al carousel*@
-
-                    <div class="carousel-item">
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col-sm-12 col-lg-4">
-                                    <div class="card" style="width: 300px;margin: auto;">
-                                        <img src="/Imagen/importador.jpg" width="320" height="180" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                                <a href="Importadores" class="btn btn-outline-primary">Registro de Importadores</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card" style="width: 300px;">
-                                        <img src="/Imagen/ventas.jpg" width="320" height="180" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                                <a href="" class="btn btn-outline-primary">Registro de Ventas</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col">
-                                    <div class="card" style="width: 300px;">
-                                        <img src="/Imagen/vehiculos.jpg" width="320" height="180" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                                <a href="Vehiculos" class="btn btn-outline-primary">Registro de Vehiculos</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="carousel-item">
-                        <div class="container">
-                            <div class="row">
-
-                                <div class="col">
-                                    <div class="card" style="width: 300px;margin: auto;">
-                                        <img src="/Imagen/renta.jpg" class="card-img-top" />
-                                        <div class="card-body">
-                                            <div class="text-center">
-                                                <a href="Renta" class="btn btn-outline-primary">Registro de Renta</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @*<div class="col-sm-12 col-lg-4">
-                                        <div class="card" style="width: 300px;">
-                                            <img src="https://image.freepik.com/vector-gratis/vendedor-autos-vende-carro_37895-162.jpg" width="320" height="180" class="card-img-top" />
-                                            <div class="card-body">
-                                                <h4 class="card-title">Registro de Ventas</h4>
-                                                <div class="text-center">
-                                                    <a href="" class="btn btn-outline-primary">Ir a Registro de Ventas</a>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div id="inam" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;margin: auto;">
+                                                <img src="/Imagen/clientes.jpg" class="card-img-top" width="320" height="180" />
+                                                <div class="card-body">
+                                                    <div class=" text-center">
+                                                        <a href="Cliente" class="btn btn-outline-primary">Registro de Clientes</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="col-sm-12 col-lg-4">
-                                        <div class="card" style="width: 300px;">
-                                            <img src="https://cdn.group.renault.com/ren/master/renault-new-cars/product-plans/twizy/m09e-twizy/m09e-twizy-ph1/2560x1440-responsive-format/renault-twizy1-ph1-exterior-3d-006.jpg.ximg.small.jpg/1539015231565.jpg" width="320" height="180" class="card-img-top" />
-                                            <div class="card-body">
-                                                <h4 class="card-title">Registro de Vehiculos</h4>
-                                                <div class="text-center">
-                                                    <a href="Vehiculos" class="btn btn-outline-primary">Ir a Registro de Vehiculos</a>
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;">
+                                                <img src="/Imagen/user.jpg" width="320" height="180" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class=" text-center">
+                                                        <a href="Usuarios" class="btn btn-outline-primary">Registro de Usuarios</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;">
+                                                <img src="/Imagen/bancos.jpg" width="320" height="180" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <a href="Bancos" class="btn btn-outline-primary">Registro de Bancos</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>*@
 
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
+                            @*Es la divisionn oara gregar nuevos item al carousel*@
+
+                            <div class="carousel-item">
+                                <div class="container">
+                                    <div class="row">
+
+                                        <div class="col-sm-12 col-lg-4">
+                                            <div class="card" style="width: 300px;margin: auto;">
+                                                <img src="/Imagen/importador.jpg" width="320" height="180" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <a href="Importadores" class="btn btn-outline-primary">Registro de Importadores</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;">
+                                                <img src="/Imagen/ventas.jpg" width="320" height="180" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <a href="" class="btn btn-outline-primary">Registro de Ventas</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;">
+                                                <img src="/Imagen/vehiculos.jpg" width="320" height="180" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <a href="Vehiculos" class="btn btn-outline-primary">Registro de Vehiculos</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <div class="container">
+                                    <div class="row">
+
+                                        <div class="col">
+                                            <div class="card" style="width: 300px;margin: auto;">
+                                                <img src="/Imagen/renta.jpg" class="card-img-top" />
+                                                <div class="card-body">
+                                                    <div class="text-center">
+                                                        <a href="Renta" class="btn btn-outline-primary">Registro de Renta</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-sm-12 col-lg-4">
+                                                <div class="card" style="width: 300px;">
+                                                    <img src="https://image.freepik.com/vector-gratis/vendedor-autos-vende-carro_37895-162.jpg" width="320" height="180" class="card-img-top" />
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Registro de Ventas</h4>
+                                                        <div class="text-center">
+                                                            <a href="" class="btn btn-outline-primary">Ir a Registro de Ventas</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12 col-lg-4">
+                                                <div class="card" style="width: 300px;">
+                                                    <img src="https://cdn.group.renault.com/ren/master/renault-new-cars/product-plans/twizy/m09e-twizy/m09e-twizy-ph1/2560x1440-responsive-format/renault-twizy1-ph1-exterior-3d-006.jpg.ximg.small.jpg/1539015231565.jpg" width="320" height="180" class="card-img-top" />
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Registro de Vehiculos</h4>
+                                                        <div class="text-center">
+                                                            <a href="Vehiculos" class="btn btn-outline-primary">Ir a Registro de Vehiculos</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>*@
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <a class="carousel-control-prev" href="#inam" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#inam" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+
+                    </div>
                 </div>
-
-                <a class="carousel-control-prev" href="#inam" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#inam" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-
             </div>
         </div>
-    </div>
-</div>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <div class="container-fluid">
+            <Login />
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+
+
 
 @*<SurveyPrompt Title="How is Blazor working for you?" />*@

@@ -184,5 +184,46 @@ namespace EIMRentaaCar.BLL
             return string.Empty;
         }
 
+        public static string Rol(string Usuario)
+        {
+            string nivel;
+            Contexto contexto = new Contexto();
+            try
+            {
+                nivel = contexto.Usuarios.Where(A => A.Roles.Equals(Usuario)).Select(A => A.Roles).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+
+            return nivel;
+        }
+
+        public static bool VerificarUsuario(string NombreUsuario, string clave)
+        {
+            bool paso = false;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+                if (contexto.Usuarios.Any(A => A.UserName == NombreUsuario && A.Password == clave))
+                {
+                    paso = true;
+
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return paso;
+        }
     }
 }
