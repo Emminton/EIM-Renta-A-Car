@@ -5,12 +5,7 @@
 @using EIMRentaaCar.BLL
 
 @inject IToastService toast
-@inject IJSRuntime js
-@inject NavigationManager Navigation
-@inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-{
     <EditForm Model="rentas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         <div class="card">
@@ -103,7 +98,7 @@
             </div>
         </div>
     </EditForm>
-}
+
 
 @code
 {
@@ -118,150 +113,150 @@
     public string nombreModelo { get; set; }
 
     @*Datos Del Cliente*@
-    public int ClienteSelecionado { get; set; }
-    public string nombreCliente { get; set; }
+public int ClienteSelecionado { get; set; }
+public string nombreCliente { get; set; }
 
-    Usuarios usuarios = new Usuarios();
+Usuarios usuarios = new Usuarios();
 
-    protected override void OnInitialized()
+protected override void OnInitialized()
+{
+    Nuevo();
+    if (RentaId > 0)
+    {
+        var Auximportadores = RentasBLL.Buscar(RentaId);
+        if (Auximportadores != null)
+            this.rentas = Auximportadores;
+        else
+            toast.ShowWarning("No encontrado.");
+    }
+}
+
+private void Nuevo()
+{
+    this.rentas = new Rentas();
+
+}
+
+private void MostrarVehiculo()
+{
+    string auxMarca = string.Empty;
+    string auxModelo = string.Empty;
+    var AuxMarcas = VehiculosBLL.Buscar(MarcaSelecionada);
+    if (AuxMarcas != null)
+    {
+        auxMarca = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Marca;
+        auxModelo = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Modelo;
+        rentas.Marca = auxMarca;
+        nombreModelo = auxModelo;
+    }
+
+
+}
+
+private void MostrarNombreCliente()
+{
+    string auxRenta = string.Empty;
+
+    var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+    if (auxCliente != null)
+    {
+        auxRenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+        nombreCliente = auxRenta;
+    }
+}
+
+private void Buscar()
+{
+    if (rentas.RentaId > 0)
+    {
+        var encontrado = RentasBLL.Buscar(rentas.RentaId);
+
+        if (encontrado != null)
+            this.rentas = encontrado;
+        else
+            toast.ShowWarning("No encontrado");
+    }
+}
+
+private void Guardar()
+{
+    bool guardo;
+
+    guardo = RentasBLL.Guardar(rentas);
+
+    if (guardo)
     {
         Nuevo();
-        if (RentaId > 0)
-        {
-            var Auximportadores = RentasBLL.Buscar(RentaId);
-            if (Auximportadores != null)
-                this.rentas = Auximportadores;
-            else
-                toast.ShowWarning("No encontrado.");
-        }
+        toast.ShowSuccess("Guardado correctamente");
     }
+    else
+        toast.ShowError("No fue posible guardar");
+}
 
-    private void Nuevo()
+private void Eliminar()
+{
+    bool elimino;
+
+    elimino = RentasBLL.Eliminar(rentas.RentaId);
+
+    if (elimino)
     {
-        this.rentas = new Rentas();
-
+        Nuevo();
+        toast.ShowSuccess("Eliminado correctamente");
     }
+    else
+        toast.ShowError("No fue posible eliminar");
+}
 
-    private void MostrarVehiculo()
+private List<Clientes> ClienteCombo()
+{
+    List<Clientes> lista = new List<Clientes>();
+
+    try
     {
-        string auxMarca = string.Empty;
-        string auxModelo = string.Empty;
-        var AuxMarcas = VehiculosBLL.Buscar(MarcaSelecionada);
-        if (AuxMarcas != null)
-        {
-            auxMarca = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Marca;
-            auxModelo = VehiculosBLL.Buscar(AuxMarcas.VehiculoId).Modelo;
-            rentas.Marca = auxMarca;
-            nombreModelo = auxModelo;
-        }
-
-
+        lista = ClientesBLL.GetList(c => true);
     }
-
-    private void MostrarNombreCliente()
+    catch (Exception)
     {
-        string auxRenta = string.Empty;
-
-        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
-        if (auxCliente != null)
-        {
-            auxRenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
-            nombreCliente = auxRenta;
-        }
+        throw;
     }
 
-    private void Buscar()
+    return lista;
+}
+
+private List<Vehiculos> VehiculoCombo()
+{
+    List<Vehiculos> lista = new List<Vehiculos>();
+
+    try
     {
-        if (rentas.RentaId > 0)
-        {
-            var encontrado = RentasBLL.Buscar(rentas.RentaId);
-
-            if (encontrado != null)
-                this.rentas = encontrado;
-            else
-                toast.ShowWarning("No encontrado");
-        }
+        lista = VehiculosBLL.GetList(v => true);
     }
-
-    private void Guardar()
+    catch (Exception)
     {
-        bool guardo;
-
-        guardo = RentasBLL.Guardar(rentas);
-
-        if (guardo)
-        {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible guardar");
+        throw;
     }
 
-    private void Eliminar()
-    {
-        bool elimino;
+    return lista;
+}
+//public void ObtenerUsuario()
+//{
+//    Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
-        elimino = RentasBLL.Eliminar(rentas.RentaId);
+//    if (usuario != null)
+//    {
+//        usuarios = usuario;
+//    }
+//}
 
-        if (elimino)
-        {
-            Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
-        }
-        else
-            toast.ShowError("No fue posible eliminar");
-    }
+//public bool VerificarRol()
+//{
+//    bool paso = false;
 
-    private List<Clientes> ClienteCombo()
-    {
-        List<Clientes> lista = new List<Clientes>();
-
-        try
-        {
-            lista = ClientesBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-
-    private List<Vehiculos> VehiculoCombo()
-    {
-        List<Vehiculos> lista = new List<Vehiculos>();
-
-        try
-        {
-            lista = VehiculosBLL.GetList(v => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-    public void ObtenerUsuario()
-    {
-        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
-
-        if (usuario != null)
-        {
-            usuarios = usuario;
-        }
-    }
-
-    public bool VerificarRol()
-    {
-        bool paso = false;
-
-        if (usuarios.Roles == "Administrador" || usuarios.Roles == "Empleado")
-        {
-            paso = true;
-        }
-        return paso;
-    }
+//    if (usuarios.Roles == "Administrador" || usuarios.Roles == "Empleado")
+//    {
+//        paso = true;
+//    }
+//    return paso;
+//}
 }
