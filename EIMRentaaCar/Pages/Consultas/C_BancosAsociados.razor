@@ -15,12 +15,14 @@
         <div class="card-body">
             <div class="input-group mb-4">
                 <div class="input-group">
+
                     <label for="filtro">Filtro: </label>
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
                         <option value="Id">ID</option>
                         <option value="Nombre">Nombre</option>
+
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -38,15 +40,16 @@
                         <th>Telefono</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in lista)
                     {
-                    <tr class="table-striped">
-                        <td>@item.BancoAsociadoId</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Telefono</td>
+                        <tr class="table-striped">
+                            <td>@item.BancoAsociadoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Telefono</td>
 
-                    </tr>
+                        </tr>
                      }
                 </tbody>
             </table>
