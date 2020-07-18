@@ -2,21 +2,37 @@
 
 @using Blazored.Toast.Configuration
 
+    <AuthorizeView>
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
+                <div class="top-row px-4" style="background-color: #514848">
+                    <b class="text-white">Bienvenido, @context.User.Identity.Name!</b>
+                    <a class="ml-md-auto btn btn-danger" href="/logout?returnUrl=/" target="_top" style="color: #000000"><i class="oi oi-account-logout"></i> Logout</a>
+                </div>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+        </Authorized>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        <a class="ml-md-auto btn btn-danger" href="/logout?returnUrl=/" target="_top" style="color: #000000"><i class="oi oi-account-logout"></i> Logout</a>
-    </div>
+        <NotAuthorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
+                <div class="top-row px-4" style="background-color: #514848">                                    
+                </div>
+                <div class="content px-4">
+                    @Body
+                </div>
+            </div>
+        </NotAuthorized>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+    </AuthorizeView>
 
 
 <BlazoredToasts Position="ToastPosition.TopRight"
