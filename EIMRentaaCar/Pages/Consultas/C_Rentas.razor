@@ -1,0 +1,115 @@
+﻿@page "/ConsultaRentas"
+
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
+
+@inject IToastService toast
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Consultas De Rentas</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="input-group mb-4">
+                <div class="input-group">
+                    <label for="filtro">Filtro: </label>
+                    <select class="form-control ml-3 mr-3" @bind="Filtro">
+                        <option value="" disabled selected>Seleccione un filtro</option>
+                        <option value="Todo">Todo</option>
+                        <option value="Id">Vehiculo ID</option>
+                        <option value="Nombre">ClienteId</option>
+                    </select>
+
+                    <label for="criterio ml-3 mr-3"> Criterio: </label>
+                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                </div>
+            </div>
+
+            <table class=" table mb-3 mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Vehiculo ID</th>
+                        <th>Cliente ID</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Vin</th>
+                        <th>Dias Renta</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lista)
+                    {
+                    <tr class="table-striped">
+                        <td>@item.VehiculoId</td>
+                        <td>@item.ClienteId</td>
+                        <td>@item.Marca</td>
+                        <td>@item.Modelo</td>
+                        <td>@item.Vin</td>
+                        <td>@item.TiempoRenta</td>
+                        <td>@item.FechaRenta</td>
+                    </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</EditForm>
+
+@code { private List<Rentas> lista { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+    private decimal TotalInventario { get; set; }
+    public string mensaje;
+
+    protected override void OnInitialized()
+    {
+        lista = new List<Rentas>();
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            if (Filtro == null)
+            {
+                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+            }
+            else
+            {
+                lista = RentasBLL.GetList(a => true);
+
+                if (lista.Count == 0)
+                {
+                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                }
+                else
+                {
+                    mensaje = "";
+                    switch (Filtro)
+                    {
+                        case "Todo":
+                            lista = RentasBLL.GetList(e => true);
+                            break;
+                        case "ID":
+                            lista = RentasBLL.GetList(e => e.RentaId== Convert.ToInt32(Criterio));
+                            break;
+                        case "ClienteId":
+                            lista = RentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                            break;
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+}

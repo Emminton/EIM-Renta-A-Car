@@ -24,60 +24,102 @@
 
         <li class="nav-item px-1">
             <NavLink class="nav-link" @onclick="ToggleRegistrosMenu">
-                <span class="oi oi-document" aria-hidden="true"></span> Registros 
+                <span class="oi oi-document" aria-hidden="true"></span> Registros
             </NavLink>
             @if (stateRegister)
-             {
+            {
+                <ul class="children">
+
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Cliente">
+                            <span class="oi oi-people" aria-hidden="true"></span> Clientes
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Usuarios">
+                            <span class="oi oi-people" aria-hidden="true"></span> Usuarios
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Importadores">
+                            <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Importadores
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Bancos">
+                            <span class="fa fa-bank" aria-hidden="true">  </span>   Bancos
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Vehiculos">
+                            <span class="fa fa-car" aria-hidden="true"></span> Vehiculos
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Ventas">
+                            <span class="oi oi-dollar" aria-hidden="true"></span> Ventas
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="Renta">
+                            <span class="oi oi-dollar" aria-hidden="true"></span> Rentas
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="PagoVenta">
+                            <span class="oi oi-dollar" aria-hidden="true"></span> Pago Venta
+                        </NavLink>
+                    </li>
+                    <li class="list-unstyled">
+                        <NavLink class="nav-link" href="PagoRenta">
+                            <span class="oi oi-dollar" aria-hidden="true"></span> Pago Renta
+                        </NavLink>
+                    </li>
+                </ul>
+            }
+            <NavLink class="nav-link" @onclick="ToggleConsultasMenu">
+                <span class="oi oi-document" aria-hidden="true"></span> Consultas
+            </NavLink>
+            @if (stateConsultas)
+            {
         <ul class="children">
 
             <li class="list-unstyled">
-                <NavLink class="nav-link" href="Cliente">
+                <NavLink class="nav-link" href="ConsultaCliente">
                     <span class="oi oi-people" aria-hidden="true"></span> Clientes
                 </NavLink>
             </li>
+
             <li class="list-unstyled">
-                <NavLink class="nav-link" href="Usuarios">
-                    <span class="oi oi-people" aria-hidden="true"></span> Usuarios
-                </NavLink>
-            </li>
-            <li class="list-unstyled">
-                <NavLink class="nav-link" href="Importadores">
-                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Importadores
-                </NavLink>
-            </li>
-            <li class="list-unstyled">
-                <NavLink class="nav-link" href="Bancos">
+                <NavLink class="nav-link" href="ConsultaBanco">
                     <span class="fa fa-bank" aria-hidden="true">  </span>   Bancos
                 </NavLink>
             </li>
             <li class="list-unstyled">
-                <NavLink class="nav-link" href="Vehiculos">
-                    <span class="fa fa-car" aria-hidden="true"></span> Vehiculos
+                <NavLink class="nav-link" href="ConsultaImportador">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true">  </span> Importadores
                 </NavLink>
             </li>
+
             <li class="list-unstyled">
-                <NavLink class="nav-link" href="Ventas">
-                    <span class="oi oi-dollar" aria-hidden="true"></span> Ventas
-                </NavLink>
-            </li>
-            <li class="list-unstyled">
-                <NavLink class="nav-link" href="Renta">
+                <NavLink class="nav-link" href="ConsultaRentas">
                     <span class="oi oi-dollar" aria-hidden="true"></span> Rentas
                 </NavLink>
             </li>
             <li class="list-unstyled">
-                <NavLink class="nav-link" href="PagoVenta">
-                    <span class="oi oi-dollar" aria-hidden="true"></span> Pago Venta
+                <NavLink class="nav-link" href="ConsultaVentas">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Ventas
                 </NavLink>
             </li>
-        </ul>
+
+        </ul>               
              }
         </li>
 
-    </ul>
+   </ul>
 </div>
 
-@code {
+@code {  
     private bool collapseNavMenu = true;
     private bool stateRegister = false;
     private bool stateConsultas = false;

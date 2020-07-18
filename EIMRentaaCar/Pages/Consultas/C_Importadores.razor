@@ -1,0 +1,108 @@
+﻿@page "/ConsultaImportador"
+
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
+
+@inject IToastService toast
+
+<EditForm Model="lista">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Consultas De Importadores</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="input-group mb-4">
+                <div class="input-group">
+                    <label for="filtro">Filtro: </label>
+                    <select class="form-control ml-3 mr-3" @bind="Filtro">
+                        <option value="" disabled selected>Seleccione un filtro</option>
+                        <option value="Todo">Todo</option>
+                        <option value="Id">ID</option>
+                        <option value="Nombre">Nombre</option>
+                    </select>
+
+                    <label for="criterio ml-3 mr-3"> Criterio: </label>
+                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                </div>
+            </div>
+
+            <table class=" table mb-3 mt-3">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in lista)
+                    {
+                        <tr class="table-striped">
+                            <td>@item.ImportadorId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Telefono</td>
+                        </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    private List<Importadores> lista { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+    private decimal TotalInventario { get; set; }
+    public string mensaje;
+
+    protected override void OnInitialized()
+    {
+        lista = new List<Importadores>();
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            if (Filtro == null)
+            {
+                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+            }
+            else
+            {
+                lista = ImportadoresBLL.GetList(a => true);
+
+                if (lista.Count == 0)
+                {
+                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                }
+                else
+                {
+                    mensaje = "";
+                    switch (Filtro)
+                    {
+                        case "Todo":
+                            lista = ImportadoresBLL.GetList(e => true);
+                            break;
+                        case "ID":
+                            lista = ImportadoresBLL.GetList(e => e.ImportadorId== Convert.ToInt32(Criterio));
+                            break;
+                        case "Nombre":
+                            lista = ImportadoresBLL.GetList(e => e.Nombre == Criterio);
+                            break;
+                    }
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+ }

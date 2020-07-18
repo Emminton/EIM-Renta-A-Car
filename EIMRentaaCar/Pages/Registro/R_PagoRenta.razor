@@ -1,0 +1,178 @@
+﻿@page "/PagoRenta"
+@page "/PagoRenta/{id:int}"
+
+@using BLL
+@using Models
+
+@inject IToastService toast
+
+<EditForm Model="pagorenta" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h1>Registro de Pago Renta</h1>
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="pagorenta.PagoRentaId" class="form-control c" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Fecha *@
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <InputDate @bind-Value="pagorenta.Fecha" class="form-control "></InputDate>
+                            <ValidationMessage For="@(() => pagorenta.Fecha)"></ValidationMessage>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Renta ID</label>
+                            <select class="form-control" @bind="pagorenta.RentaId" @onclick="MostrarRenta">
+                                @foreach (var item in RentaCombo())
+                                {
+                                    <option value="@item.RentaId">@item.RentaId</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col">
+                            <label>Monto </label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="Balance" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Monto a pagar</label>
+                    <InputNumber @bind-Value="pagorenta.Monto" class="form-control "></InputNumber>
+                    <ValidationMessage For="@(() => pagorenta.Monto)"></ValidationMessage>
+                </div>
+
+            </form>
+        </div>
+
+        @*Botones*@
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    PagoRentas pagorenta = new PagoRentas();
+    [Parameter]
+    public int id { get; set; }
+
+    //Datos de la venta
+    public int RentaId { get; set; }
+    public decimal Balance { get; set; }
+    public int Ventaseleccionada { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (id > 0)
+        {
+
+            if (PagoVentasBLL.Buscar(id) != null)
+                this.pagorenta = PagoRentasBLL.Buscar(id);
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.pagorenta = new PagoRentas();
+        Balance = 0;
+    }
+
+    private void Buscar()
+    {
+        if (pagorenta.PagoRentaId> 0)
+        {
+            var encontrado = PagoRentasBLL.Buscar(pagorenta.PagoRentaId);
+
+            if (encontrado != null)
+                this.pagorenta = encontrado;
+            else
+                toast.ShowWarning("No encontrado");
+        }
+    }
+
+    private void Guardar()
+    {
+        bool guardo = PagoRentasBLL.Guardar(pagorenta);
+
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible guardar");
+    }
+
+    private void Eliminar()
+    {
+        bool elimino;
+
+        elimino = PagoRentasBLL.Eliminar(pagorenta.PagoRentaId);
+
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private List<Rentas> RentaCombo()
+    {
+        List<Rentas> lista = new List<Rentas>();
+
+        try
+        {
+            lista = RentasBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
+    }
+
+    private void MostrarRenta()
+    {
+
+        var aux = RentasBLL.Buscar(pagorenta.RentaId);
+        if (aux != null)
+        {
+            Balance = aux.Balance;
+        }
+
+    }
+}

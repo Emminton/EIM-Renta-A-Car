@@ -34,6 +34,24 @@
                 @* Vehiculo id *@
                 <div class="form-group">
                     <div class="form-row">
+
+                        @* Cliente id *@
+                        <div class="col">
+                            <label>Cliente ID:</label>
+                            <select class="form-control" @bind="SelecionCliente" @onclick="MostrarNombreCliente">
+                                @foreach (var item in ClienteCombo())
+                                {
+                                    <option value="@item.ClienteId">@item.ClienteId</option>
+                                }
+                            </select>
+                        </div>
+
+                        @* cliente *@
+                        <div class="col">
+                            <label>El Cliente:</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />
+                        </div>
+
                         <div class="col">
                             <label>Vehiculo ID:</label>
                             <select class="form-control" @bind="SelecionVehiculo" @onclick="MostrarVehiculo">
@@ -55,22 +73,27 @@
                             <InputText class="form-control" readonly="true" @bind-Value="VehiculoModelo" />
                         </div>
 
-                        @* Cliente id *@
-                        <div class="col">
-                            <label>Cliente ID:</label>
-                            <select class="form-control" @bind="SelecionCliente" @onclick="MostrarNombreCliente">
-                                @foreach (var item in ClienteCombo())
-                                {
-                                    <option value="@item.ClienteId">@item.ClienteId</option>
-                                }
-                            </select>
-                        </div>
-                        @* cliente *@
-                        <div class="col">
-                            <label>El Cliente:</label>
-                            <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />
-                        </div>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Precio</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="VehiculoPrescioDia" />
+                        </div>
+                        <div class="col">
+                            <label>VIN</label>
+                            <InputText class="form-control" readonly="true" @bind-Value="VehiculoVin" />
+                        </div>
+                        <div class="col">
+                            <label>Kilometro</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="VehiculoKilometro" />
+                        </div>
+                        <div class="col">
+                            <label>Año</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="VehiculoAno" />
+                        </div>
                     </div>
                 </div>
 
@@ -111,6 +134,11 @@ Rentas rentas = new Rentas();
 public int SelecionVehiculo {get; set;}
 public string VehiculoMarca { get; set; }
 public string VehiculoModelo { get; set; }
+public decimal VehiculoPrescioDia { get; set; }
+public int VehiculoKilometro { get; set; }
+public string VehiculoVin { get; set; }
+public int VehiculoAno { get; set; }
+
 
     @*Datos Del Cliente*@
 public string nombreCliente { get; set; }
@@ -146,7 +174,11 @@ private void MostrarVehiculo()
     {
         VehiculoMarca = Rentavehiculos.Marca;
         VehiculoModelo = Rentavehiculos.Modelo;
-       
+        VehiculoPrescioDia = Rentavehiculos.PrecioPorDia;
+        VehiculoKilometro = Rentavehiculos.Kilometraje;
+        VehiculoVin = Rentavehiculos.Vin;
+        VehiculoAno = Rentavehiculos.Año;
+
 
     }
 

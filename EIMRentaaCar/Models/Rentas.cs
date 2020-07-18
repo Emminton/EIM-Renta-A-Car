@@ -33,6 +33,7 @@ namespace EIMRentaaCar.Models
         [MaxLength(30, ErrorMessage = "El nombre es muy largo.")]
         public int TiempoRenta { get; set; }
         public string Nombre { get; set; }
+        public decimal  Balance { get; set; }
 
 
         public Rentas()
