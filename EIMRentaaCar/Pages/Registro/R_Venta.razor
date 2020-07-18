@@ -37,7 +37,7 @@
                             <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
-                                    <option value="@item.ClienteId">@item.ClienteId</option>
+                                    <option value="@item.ClienteId">@item.Cedula</option>
                                 }
                             </select>
                         </div>
@@ -56,7 +56,7 @@
                             <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
                                 @foreach (var item in VehiculoCombo())
                                 {
-                                    <option value="@item.VehiculoId">@item.VehiculoId</option>
+                                    <option value="@item.VehiculoId">@item.Vin</option>
                                 }
                             </select>
                         </div>

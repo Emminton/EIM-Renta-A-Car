@@ -30,11 +30,9 @@ namespace EIMRentaaCar.Models
         public DateTime Fecha { get; set; }
 
         [Required(ErrorMessage ="El campo monto no debe estar vació")]
-        [RegularExpression("^[0-9]",ErrorMessage ="Debe ser numeros")]
         public decimal Monto { get; set; }
 
         [Required(ErrorMessage = "El campo cuota no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public decimal Cuotas { get; set; }
 
         public PagoDetalles()
