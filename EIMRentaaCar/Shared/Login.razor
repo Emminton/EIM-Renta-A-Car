@@ -10,7 +10,7 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
-@inject IJSRuntime jsRunTime
+
 
     <AuthorizeView>
         <Authorized>
@@ -144,19 +144,12 @@
 
     protected override void OnInitialized()
     {
-        num += 1;
 
-        if (num > 1)
-        {
-            
-        }
     }
 
-
-
-    private string encode(string param)
+    private string encode(string datos)
     {
-        return HttpUtility.UrlEncode(param);
+        return HttpUtility.UrlEncode(datos);
     }
 
 }
