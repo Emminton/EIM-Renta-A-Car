@@ -1,4 +1,5 @@
-﻿using EIMRentaaCar.Models;
+﻿using EIMRentaaCar.BLL;
+using EIMRentaaCar.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,5 +29,22 @@ namespace EIMRentaaCar.DAL
             optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
         }
 
+        protected override void OnModelCreating(ModelBuilder model)
+        {
+
+
+            model.Entity<Usuarios>().HasData(new Usuarios
+            {
+                UsuarioId = 1,
+                Nombre = "Admistrador",
+                Email = "Admin@gamil.com",
+                Password = UsuarioBLL.Encriptar("1234"),
+                ConfirmarPassword = UsuarioBLL.Encriptar("1234"),
+                Roles = "Administrador",
+                FechaIngreso = DateTime.Now,
+                UserName = "MA"
+
+            });
+        }
     }
 }
