@@ -44,21 +44,19 @@
                 <tbody>
                     @foreach (var item in lista)
                     {
-                        <tr class="table-striped">
-                            <td>@item.BancoAsociadoId</td>
-                            <td>@item.Nombre</td>
-                            <td>@item.Telefono</td>
+    <tr class="table-striped">
+        <td>@item.BancoAsociadoId</td>
+        <td>@item.Nombre</td>
+        <td>@item.Telefono</td>
 
-                        </tr>
-                     }
+    </tr>}
                 </tbody>
             </table>
         </div>
     </div>
 </EditForm>
 
-@code {
-    private List<BancosAsociados> lista { get; set; }
+@code { private List<BancosAsociados> lista { get; set; }
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
@@ -95,7 +93,7 @@
                             lista = BancoAsociadoBLL.GetList(e => true);
                             break;
                         case "ID":
-                            lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId== Convert.ToInt32(Criterio));
+                            lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
                             break;
                         case "Nombre":
                             lista = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
@@ -108,5 +106,6 @@
         {
             throw;
         }
-    }
- }
+    } 
+}
+

@@ -1,4 +1,4 @@
-﻿@page "/ConsultaCliente"
+﻿@page "/ConsultaVhiculos"
 
 @using EIMRentaaCar.BLL
 @using EIMRentaaCar.Models
@@ -9,7 +9,7 @@
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
-            <h3>Consultas De Clientes</h3>
+            <h3>Consultas De Vehiculo</h3>
         </div>
 
         <div class="card-body">
@@ -20,9 +20,10 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="Id">ID</option>
-                        <option value="Nombre">Nombre</option>
-                        <option value="Cedula">Cedula</option>                       
+                        <option value="Id">Vehiculo ID</option>
+                        <option value="Nombre">Vin</option>
+                        <option value="Nombre">Marca</option>
+                        <option value="Nombre">Modelo</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -35,30 +36,40 @@
             <table class=" table mb-3 mt-3">
                 <thead class="thead-light">
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Cedula</th>  
-                        <th>Telefono</th>
+                        <th>Vehiculo ID</th>
+                        <th>Vin</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Kilometraje</th>
+                        <th>Año</th>
+                        <th>Tipo</th>
+                        <th>PrecioPorDia</th>
+                        <th>PrecioVenta</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @foreach (var item in lista)
                     {
-                        <tr class="table-striped">
-                            <td>@item.ClienteId</td>
-                            <td>@item.Nombre</td>
-                            <td>@item.Cedula</td> 
-                            <td>@item.Telefono</td>
-                        </tr>
-                     }
+                    <tr class="table-striped">
+                        <td>@item.VehiculoId</td>
+                        <td>@item.Vin</td>
+                        <td>@item.Marca</td>
+                        <td>@item.Modelo</td>
+                        <td>@item.Kilometraje</td>
+                        <td>@item.Año</td>
+                        <td>@item.Tipo</td>
+                        <td>@item.PrecioPorDia</td>
+                        <td>@item.PrecioVenta</td>
+
+                    </tr>}
                 </tbody>
             </table>
         </div>
     </div>
 </EditForm>
 
-@code { 
-    private List<Clientes> lista { get; set; }
+@code { private List<Vehiculos> lista { get; set; }
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
@@ -67,7 +78,7 @@
 
     protected override void OnInitialized()
     {
-        lista = new List<Clientes>();
+        lista = new List<Vehiculos>();
     }
 
     private void Buscar()
@@ -80,7 +91,7 @@
             }
             else
             {
-                lista = ClientesBLL.GetList(a => true);
+                lista = VehiculosBLL.GetList(a => true);
 
                 if (lista.Count == 0)
                 {
@@ -92,18 +103,20 @@
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = ClientesBLL.GetList(e => true);
+                            lista = VehiculosBLL.GetList(e => true);
                             break;
-                        case "ID":
-                            lista = ClientesBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                        case "VehiculoId":
+                            lista = VehiculosBLL.GetList(e => e.VehiculoId== Convert.ToInt32(Criterio));
                             break;
-                        case "Nombre":
-                            lista = ClientesBLL.GetList(e => e.Nombre == Criterio);
+                        case "Vin":
+                            lista = VehiculosBLL.GetList(e => e.Vin == Criterio);
                             break;
-                        case "Cedula":
-                            lista = ClientesBLL.GetList(e => e.Cedula == Criterio);
+                        case "Marca":
+                            lista = VehiculosBLL.GetList(e => e.Marca == Criterio);
                             break;
-
+                        case "Modelo":
+                            lista = VehiculosBLL.GetList(e => e.Modelo == Criterio);
+                            break;
                     }
                 }
             }
@@ -114,4 +127,3 @@
         }
     }
 }
-
