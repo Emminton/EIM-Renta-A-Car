@@ -34,7 +34,7 @@
                         @* Cliente id *@
                         <div class="col">
                             <label>Cliente ID:</label>
-                            <select  class="form-control"  @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
+                            <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
                                 @foreach (var item in ClienteCombo())
                                 {
                                     <option value="@item.ClienteId">@item.ClienteId</option>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="col">
                             <label>VIN</label>
-                            <InputNumber class="form-control" readonly="true" @bind-Value="Vin" />
+                            <InputText class="form-control" readonly="true" @bind-Value="Vin" />
                         </div>
                         <div class="col">
                             <label>KM</label>
@@ -111,6 +111,7 @@
                     </div>
                 </div>
                 <br />
+
                 @*Detalle*@
                 <div class="table-responsive text-nowrap">
                     <table class="table table-striped">
@@ -119,7 +120,8 @@
                                 <th>#</th>
                                 <th>Monto</th>
                                 <th>Balance</th>
-                                <th>Pago</th>
+                                <th>Estado de Pago</th>
+                                <th>        </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white">
@@ -129,14 +131,27 @@
                                     <td>@item.Numero</td>
                                     <td>@item.Monto</td>
                                     <td>@item.Balance</td>
-                                    <td><input type="checkbox" class="form-check-input" @bind="@item.Pagada" /></td>
-                                    <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))">Remover</button></td>
+                                    <td><input type="checkbox"  @bind="item.Pagada" /></td>
+                                    <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
                                 </tr>
                             }
 
                         </tbody>
 
                     </table>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label>Balance</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="ventas.Balance" />
+                        </div>
+                        <div class="col">
+                            <label>Moto Tota</label>
+                            <InputNumber class="form-control" readonly="true" @bind-Value="ventas.MontoTotal" />
+                        </div>
+                    </div>
                 </div>
 
             </form>
@@ -151,8 +166,7 @@
     </div>
 </EditForm>
 
-@code
-{
+@code {
     [Parameter]
     public int VentaId { get; set; }
 
@@ -167,7 +181,7 @@
     public string Marca { get; set; }
     public string Modelo { get; set; }
     public decimal Precio { get; set; }
-    public int Vin { get; set; }
+    public string Vin { get; set; }
     public decimal KM { get; set; }
     public int Año { get; set; }
     public string Tipo { get; set; }
@@ -191,7 +205,7 @@
         Marca = string.Empty;
         Modelo = string.Empty;
         Precio = 0;
-        Vin = 0;
+        Vin = string.Empty;
         KM = 0;
         Año = 0;
         Tipo = string.Empty;
@@ -235,6 +249,14 @@
                 Nuevo();
                 ClienteSelecionado = 0;
                 Vehiculoseleccionado = 0;
+                Marca = string.Empty;
+                Modelo = string.Empty;
+                Precio = 0;
+                Vin = string.Empty;
+                KM = 0;
+                Año = 0;
+                Tipo = string.Empty;
+                nombreCliente = string.Empty;
                 toast.ShowSuccess("Guardado correctamente");
             }
             else
@@ -305,33 +327,21 @@
 
     private void MostrarVehiculo()
     {
-        string auxmarcar = string.Empty;
-        string auxModelo = string.Empty;
-        decimal auxPrecio = 0;
-        int auxVin = 0;
-        decimal auxKM = 0;
-        int auxAño = 0;
-        string auxTipo = string.Empty;
-
         var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
         if (auxventa != null)
         {
-            auxmarcar = VehiculosBLL.Buscar(auxventa.VehiculoId).Marca;
-            auxModelo = VehiculosBLL.Buscar(auxventa.VehiculoId).Modelo;
-            auxPrecio = VehiculosBLL.Buscar(auxventa.VehiculoId).PrecioVenta;
-            auxVin = VehiculosBLL.Buscar(auxventa.VehiculoId).Vin;
-            auxKM = VehiculosBLL.Buscar(auxventa.VehiculoId).Kilometraje;
-            auxAño = VehiculosBLL.Buscar(auxventa.VehiculoId).Año;
-            auxTipo = VehiculosBLL.Buscar(auxventa.VehiculoId).Tipo;
-            Marca = auxmarcar;
-            Modelo = auxModelo;
-            Precio = auxPrecio;
-            Vin = auxVin;
-            KM = auxKM;
-            Año = auxAño;
-            Tipo = auxTipo;
+            Marca = auxventa.Marca;
+            Modelo = auxventa.Modelo;
+            Precio = auxventa.PrecioVenta;
+            Vin = auxventa.Vin;
+            KM = auxventa.Kilometraje;
+            Año = auxventa.Año;
+            Tipo = auxventa.Tipo;
 
-            if (VehiculosBLL.Buscar(auxventa.VehiculoId).Estado == "Rentado")
+            //aqui paso el precio del vehiculo al monto
+            ventas.MontoTotal = Precio;
+
+            if (auxventa.Estado == "Rentado")
             {
                 toast.ShowError("Este vehiculo fue rentado");
 
@@ -375,16 +385,12 @@
                 });
             }
 
-            Marca = string.Empty;
-            Modelo = string.Empty;
-            Precio = 0;
-            Vin = 0;
-            KM = 0;
-            Año = 0;
-            Tipo = string.Empty;
-            nombreCliente = string.Empty;
-            ClienteSelecionado = 0;
-            Vehiculoseleccionado = 0;
+            if (ventas.CuotaDetalles.Count > 0)
+            {
+                ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
+            }
+
+            CalcularBalance();
         }
     }
 
@@ -399,5 +405,18 @@
 
             throw;
         }
+    }
+
+    private void CalcularBalance()
+    {
+        ventas.Balance = 0;
+        foreach (CuotaDetalles cuota in ventas.CuotaDetalles)
+        {
+            if (!cuota.Pagada)
+            {
+                ventas.Balance += cuota.Balance;
+            }
+        }
+
     }
 }

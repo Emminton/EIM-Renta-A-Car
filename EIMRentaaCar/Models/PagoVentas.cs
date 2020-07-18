@@ -26,7 +26,6 @@ namespace EIMRentaaCar.Models
         public DateTime Fecha { get; set; }
 
         [Required(ErrorMessage = "El campo monto no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public decimal Monto { get; set; }
 
         [ForeignKey("PagoVentaId")]

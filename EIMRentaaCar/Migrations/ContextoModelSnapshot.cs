@@ -14,7 +14,7 @@ namespace EIMRentaaCar.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5");
+                .HasAnnotation("ProductVersion", "3.1.6");
 
             modelBuilder.Entity("EIMRentaaCar.Models.BancosAsociados", b =>
                 {

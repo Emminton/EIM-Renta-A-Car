@@ -26,6 +26,11 @@ namespace EIMRentaaCar.BLL
 
             try
             {
+
+                //Aqui guardo los datos del pago antes de las modificaciones de la tercera y segunda tabla
+                contexto.PagoVentas.Add(pago);
+                paso = contexto.SaveChanges() > 0;
+
                 Ventas venta = VentasBLL.Buscar(pago.VentaId);
 
                 for (int i = 0; i < venta.CuotaDetalles.Count; i++)
@@ -47,18 +52,12 @@ namespace EIMRentaaCar.BLL
                         break;
                     }
                 }
-
                 venta.Balance = 0;
                 foreach (var item in venta.CuotaDetalles)
                 {
                     venta.Balance += item.Balance;
                 }
-
-
                 VentasBLL.Modificar(venta);
-
-                contexto.PagoVentas.Add(pago);
-                paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -78,14 +77,6 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-
-                contexto.Database.ExecuteSqlRaw($"Delete From PagoDetalles Where PagoVentaId = {pago.PagoVentaId}");
-
-                foreach (PagoDetalles item in pago.PagoDetalles)
-                {
-                    contexto.Entry(item).State = EntityState.Added;
-                }
-
                 contexto.Entry(pago).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
