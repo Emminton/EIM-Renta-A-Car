@@ -1,40 +1,63 @@
 ﻿@inherits LayoutComponentBase
 
 @using Blazored.Toast.Configuration
+@using BLL
+@using Models
+@using System.Web;
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <AuthorizeView>
-        <Authorized>
-            <div class="sidebar">
-                <NavMenu />
+<AuthorizeView>
+    <Authorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <div class="main">
+            <div class="top-row px-4" style="background-color: #d2d5d7">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalScrollable">User </button>
             </div>
-            <div class="main">
-                <div class="top-row px-4" style="background-color: #d2d5d7">
-                    <b class="text-white">Bienvenido, @context.User.Identity.Name!</b>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+
+    </Authorized>
+
+    <NotAuthorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <div class="main">
+            <div class="top-row px-4" style="background-color: #d2d5d7">
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalScrollableTitle">Usuario</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <b> </b>
+                </div>
+                <div class="modal-footer text-center">
                     <a class="ml-md-auto btn btn-danger" href="/logout?returnUrl=/" target="_top" style="color: white"><i class="oi oi-account-logout"></i> Logout</a>
                 </div>
-                <div class="content px-4">
-                    @Body
-                </div>
             </div>
-
-        </Authorized>
-
-        <NotAuthorized>
-            <div class="sidebar">
-                <NavMenu />
-            </div>
-            <div class="main">
-                <div class="top-row px-4" style="background-color: #d2d5d7">
-                </div>
-                <div class="content px-4">
-                    @Body
-                </div>
-            </div>
-        </NotAuthorized>
-
-    </AuthorizeView>
-
-
+        </div>
+    </div>
+}
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="5"
                 IconType="IconType.FontAwesome"
@@ -43,3 +66,29 @@
                 InfoIcon="fa fa-info"
                 WarningIcon="fa fa-warning"
                 ShowProgressBar="@true" />
+
+@code{
+
+
+    private string getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.Nombre;
+        }
+        return null;
+    }
+
+    private string getRol()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.Roles;
+        }
+        return null;
+    }
+}

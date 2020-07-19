@@ -1,7 +1,9 @@
 ﻿@page "/"
 
 @inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider authenticationStateProvider
+@using BLL
+@using Models
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <AuthorizeView>
     <Authorized>
@@ -154,6 +156,9 @@
             </div>
         </div>
 
+
+
+
     </Authorized>
 
     <NotAuthorized>
@@ -165,6 +170,9 @@
 </AuthorizeView>
 
 
+@*@code{
+
+}
 
 
-@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+*@
