@@ -4,12 +4,11 @@
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
 @inject IJSRuntime js
-@inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @inject IToastService toast
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())
 {
     <EditForm Model="cliente" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
@@ -104,7 +103,7 @@ else
     public int ClienteId { get; set; }
     Clientes cliente = new Clientes();
     private Usuarios Usuario = new Usuarios();
-
+    public bool paso { get; set; }
     protected override void OnInitialized()
     {
         Nuevo();
@@ -117,7 +116,7 @@ else
                 toast.ShowWarning("No encontrado.");
         }
 
-        ObtenerUsuario();
+        cliente.UsuarioId = getUser();
     }
 
     private void Nuevo()
@@ -141,9 +140,7 @@ else
 
     private void Guardar()
     {
-        bool guardo;
-
-        guardo = ClientesBLL.Guardar(cliente);
+        bool guardo = ClientesBLL.Guardar(cliente);
 
         if (guardo)
         {
@@ -169,25 +166,27 @@ else
             toast.ShowError("No fue posible eliminar");
     }
 
-    public void ObtenerUsuario()
+    private int getUser()
     {
         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
         if (usuario != null)
         {
-            Usuario = usuario;
-            cliente.UsuarioId = Usuario.UsuarioId;
+            return usuario.UsuarioId;
         }
+        return 0;
     }
 
-    public bool VerificarRol()
+    private bool getRol()
     {
-        bool paso = false;
+        
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
-        if (Usuario.Roles == "Administrador" || Usuario.Roles == "Empleado")
+        if (usuario.Roles ==  "Administrador" || usuario.Roles =="Empleado")
         {
-            paso = true;
+            return paso = true;
         }
-        return paso;
+        return paso = false;
     }
+
 }

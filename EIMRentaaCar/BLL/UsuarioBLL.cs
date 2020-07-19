@@ -209,7 +209,6 @@ namespace EIMRentaaCar.BLL
         {
             bool paso = false;
             Contexto contexto = new Contexto();
-
             try
             {
                 if (contexto.Usuarios.Any(A => A.UserName == NombreUsuario && A.Password == clave))

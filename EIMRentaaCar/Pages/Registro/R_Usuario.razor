@@ -7,10 +7,9 @@
 
 @inject IToastService toast
 @inject IJSRuntime js
-@inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
 {
     <EditForm Model="usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
