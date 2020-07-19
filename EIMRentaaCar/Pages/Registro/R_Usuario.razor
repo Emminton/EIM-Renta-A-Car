@@ -9,7 +9,7 @@
 @inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())
 {
     <EditForm Model="usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
@@ -72,18 +72,20 @@
                         <ValidationMessage For="@(() => usuarios.ConfirmarPassword)" />
                     </div>
 
-                    @*Rol*@
-                    <div class="form-group">
-                        <label>Roles de usuarios</label>
-                        <InputSelect @bind-Value="@usuarios.Roles" class="form-control">
-                            <option value="" disabled selected>Seleccione un Rol</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Empleado">Empleado</option>
-                            <option value="Normal">Normal</option>
-                        </InputSelect>
-                        <ValidationMessage For="@(() => usuarios.Roles)" />
-                    </div>
-
+                    @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
+                    {
+                        @*Rol*@
+                        <div class="form-group">
+                            <label>Roles de usuarios</label>
+                            <InputSelect @bind-Value="@usuarios.Roles" class="form-control">
+                                <option value="" disabled selected>Seleccione un Rol</option>
+                                <option value="Administrador">Administrador</option>
+                                <option value="Empleado">Empleado</option>
+                                <option value="Normal">Normal</option>
+                            </InputSelect>
+                            <ValidationMessage For="@(() => usuarios.Roles)" />
+                        </div>
+                    }
                     @*Fecha*@
                     <div class="form-group">
                         <label>Fecha</label>
@@ -115,7 +117,7 @@
 
     [Parameter]
     public int Id { get; set; }
-
+    public bool paso { get; set; }
     public string direccion { get; set; }
 
     protected override void OnInitialized()
@@ -142,38 +144,52 @@
 
         bool paso;
         paso = UsuarioBLL.Guardar(usuarios);
-
-        if (usuarios.Password != usuarios.ConfirmarPassword)
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
         {
-            usuarios.Password = string.Empty;
-            usuarios.ConfirmarPassword = string.Empty;
-            toast.ShowWarning("Las claves no coinciden");
-        }
-        else
-        {
-            if (paso)
+            var validar = UsuarioBLL.ConfirmarClaves(usuarios.Password, usuarios.ConfirmarPassword);
+            if ( validar != true)
             {
-                Nuevo();
-                toast.ShowSuccess("Guardado Correctamente");
+
+                toast.ShowWarning("Las claves no coinciden");
             }
             else
             {
-                toast.ShowError("No fue posible guardar");
+                if (paso)
+                {
+                    Nuevo();
+                    toast.ShowSuccess("Guardado Correctamente");
+                }
+                else
+                {
+                    toast.ShowError("No fue posible guardar");
+                }
             }
         }
+        else
+        {
+            toast.ShowError("No puedes modificar tu datos porque no eres administrador");
+        }
+
     }
 
     private void Buscar()
     {
-        var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
-        if (encontrado != null)
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
         {
+            var encontrado = UsuarioBLL.Buscar(usuarios.UsuarioId);
+            if (encontrado != null)
+            {
 
-            this.usuarios = encontrado;
+                this.usuarios = encontrado;
+            }
+            else
+            {
+                toast.ShowWarning("No encontrado");
+            }
         }
         else
         {
-            toast.ShowWarning("No encontrado");
+            toast.ShowError("No puedes buscar datos porque no eres administrador");
         }
     }
 
@@ -183,14 +199,21 @@
 
         eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
 
-        if (eliminar)
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
         {
-            Nuevo();
-            toast.ShowSuccess("Eliminado Correctamente");
+            if (eliminar)
+            {
+                Nuevo();
+                toast.ShowSuccess("Eliminado Correctamente");
+            }
+            else
+            {
+                toast.ShowError("No fue posible eliminar");
+            }
         }
         else
         {
-            toast.ShowError("No fue posible eliminar");
+            toast.ShowError("No puedes eliminar datos porque no eres administrador");
         }
     }
 
@@ -204,15 +227,16 @@
         }
     }
 
-    public bool VerificarRol()
+    private bool getRol()
     {
-        bool paso = false;
 
-        if (usuarios.Roles == "Administrador")
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
         {
-            paso = true;
+            return paso = true;
         }
-        return paso;
+        return paso = false;
     }
 
 }

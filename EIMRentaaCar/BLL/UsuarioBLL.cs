@@ -245,5 +245,22 @@ namespace EIMRentaaCar.BLL
 
             return Usuario;
         }
+
+        public static bool ConfirmarClaves(string clave, string clave2)
+        {
+            bool paso = false;
+            if(clave != clave2)
+            {
+                clave = string.Empty;
+                clave2 = string.Empty;
+                paso = false;
+            }
+            else
+            {
+                paso = true;
+            }
+
+            return paso;
+        }
     }
 }
