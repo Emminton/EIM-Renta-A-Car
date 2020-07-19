@@ -14,7 +14,9 @@
         <div class="main">
 
             <div class="top-row px-4" style="background-color: #d2d5d7">
-                <a  class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalScrollable">Perfil</a>
+                <a class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalScrollable">Perfil</a>
+                <br />
+                <a class="btn text-dark " data-toggle="modal" data-target="#ntf"><i class="fa fa-bell"></i></a>
             </div>
 
             <div class="content px-4">
@@ -52,7 +54,7 @@
                 </div>
                 <div class="modal-body">
                     <i class="oi oi-person"></i> Nombre de usuario: <span> @getUser()</span>
-                                                <br />
+                    <br />
                     <i class="oi oi-wrench"></i>Rol del usuario: <span> @getRol()</span>
                 </div>
                 <div class="modal-footer align-items-center ">
@@ -70,6 +72,9 @@
                 InfoIcon="fa fa-info"
                 WarningIcon="fa fa-warning"
                 ShowProgressBar="@true" />
+
+
+
 
 @code{
 

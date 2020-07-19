@@ -22,7 +22,7 @@
                         <option value="Todo">Todo</option>
                         <option value="Id">ID</option>
                         <option value="Nombre">Nombre</option>
-                        <option value="Cedula">Cedula</option>                       
+                        <option value="Cedula">Cedula</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -37,7 +37,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Cedula</th>  
+                        <th>Cedula</th>
                         <th>Telefono</th>
                     </tr>
                 </thead>
@@ -47,29 +47,83 @@
                         <tr class="table-striped">
                             <td>@item.ClienteId</td>
                             <td>@item.Nombre</td>
-                            <td>@item.Cedula</td> 
+                            <td>@item.Cedula</td>
                             <td>@item.Telefono</td>
                         </tr>
-                     }
+                    }
                 </tbody>
             </table>
+        </div>
+        <br />
+        <div>
+            <button class="btn btn-danger" @onclick="@(e => Navegar("first"))">@("<<")</button>
+            <button class="btn btn-danger" @onclick="@(e => Navegar("prev"))">Prev</button>
+            @for (int i = 0; i < TotalPages; i++)
+            {
+                var pageNumber = i;
+                <button class="btn @(CurrentPage == pageNumber? "btn-dark":"btn-info")"
+                        @onclick="@(e => UpdateList(pageNumber))">
+                    @(i + 1)
+                </button>
+            }
+            <button class="btn btn-danger" @onclick="@(e => Navegar("next"))">Next</button>
+            <button class="btn btn-danger" @onclick="@(e => Navegar("last"))">@(">>")</button>
         </div>
     </div>
 </EditForm>
 
-@*//cambio*@s
 
 @code { 
+
     private List<Clientes> lista { get; set; }
+    private List<Clientes> listas { get; set; }// lista necesaria para nevegar entre pagina
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
     private decimal TotalInventario { get; set; }
     public string mensaje;
 
+    //datos para la paginacion
+    public int PageSize { get; set; }
+    public int TotalPages { get; set; }
+    public int CurrentPage { get; set; }
+
     protected override void OnInitialized()
     {
         lista = new List<Clientes>();
+        PageSize = 5;
+
+        if (listas != null)
+        {
+            lista = listas.Take(PageSize).ToList();
+            TotalPages = (int)Math.Ceiling(listas.Count() / (decimal)PageSize);
+        }
+    }
+
+
+    private void UpdateList(int pageNumber = 0)
+    {
+        if (listas != null)
+        {
+            //pageNumber * pageSize -> take 5
+            lista = listas.Skip(pageNumber * PageSize).Take(PageSize).ToList();
+            TotalPages = (int)Math.Ceiling(listas.Count() / (decimal)PageSize);
+            CurrentPage = pageNumber;
+        }
+    }
+
+    private void Navegar(string direction)
+    {
+        if (direction == "prev" && CurrentPage != 0)
+            CurrentPage -= 1;
+        if (direction == "next" && CurrentPage != TotalPages - 1)
+            CurrentPage += 1;
+        if (direction == "first")
+            CurrentPage = 0;
+        if (direction == "last")
+            CurrentPage = TotalPages - 1;
+
+        UpdateList(CurrentPage);
     }
 
     private void Buscar()
