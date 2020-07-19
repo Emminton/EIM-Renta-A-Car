@@ -254,6 +254,9 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("INTEGER")
                         .HasMaxLength(30);
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");
 
@@ -312,7 +315,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 18, 16, 54, 55, 145, DateTimeKind.Local).AddTicks(2501),
+                            FechaIngreso = new DateTime(2020, 7, 19, 10, 45, 6, 352, DateTimeKind.Local).AddTicks(9168),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",
@@ -395,6 +398,9 @@ namespace EIMRentaaCar.Migrations
 
                     b.Property<decimal>("MontoTotal")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");

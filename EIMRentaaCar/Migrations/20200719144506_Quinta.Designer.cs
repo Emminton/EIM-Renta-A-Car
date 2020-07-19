@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200718205455_Inicio")]
-    partial class Inicio
+    [Migration("20200719144506_Quinta")]
+    partial class Quinta
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,6 +256,9 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("INTEGER")
                         .HasMaxLength(30);
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");
 
@@ -314,7 +317,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 18, 16, 54, 55, 145, DateTimeKind.Local).AddTicks(2501),
+                            FechaIngreso = new DateTime(2020, 7, 19, 10, 45, 6, 352, DateTimeKind.Local).AddTicks(9168),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",
@@ -397,6 +400,9 @@ namespace EIMRentaaCar.Migrations
 
                     b.Property<decimal>("MontoTotal")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("VehiculoId")
                         .HasColumnType("INTEGER");
