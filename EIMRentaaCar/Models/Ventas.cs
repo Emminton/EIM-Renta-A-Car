@@ -19,8 +19,8 @@ namespace EIMRentaaCar.Models
 
 		[ForeignKey("VehiculoId")]
 		public int VehiculoId { get; set; }
-
-		public int Cuotas { get; set; }
+        public int UsuarioId { get; set; }
+        public int Cuotas { get; set; }
 
 		[Required(ErrorMessage = "El campo Monto total no debe estar vació")]
 		public decimal MontoTotal { get; set; }

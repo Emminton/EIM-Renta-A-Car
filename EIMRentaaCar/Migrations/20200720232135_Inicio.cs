@@ -99,6 +99,7 @@ namespace EIMRentaaCar.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     VehiculoId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
                     Marca = table.Column<string>(nullable: true),
                     Modelo = table.Column<string>(nullable: true),
                     Vin = table.Column<int>(nullable: false),
@@ -163,6 +164,7 @@ namespace EIMRentaaCar.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     ClienteId = table.Column<int>(nullable: false),
                     VehiculoId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
                     Cuotas = table.Column<int>(nullable: false),
                     MontoTotal = table.Column<decimal>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false),
@@ -231,7 +233,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 18, 16, 54, 55, 145, DateTimeKind.Local).AddTicks(2501), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 20, 19, 21, 35, 219, DateTimeKind.Local).AddTicks(7285), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",

@@ -6,10 +6,9 @@
 
 @inject IToastService toast
 @inject IJSRuntime js
-@inject NavigationManager Navigation
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())
 {
     <EditForm Model="ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
@@ -173,6 +172,7 @@
 }
 
 @code {
+
     [Parameter]
     public int VentaId { get; set; }
     Ventas ventas = new Ventas();
@@ -191,7 +191,9 @@
     public int Año { get; set; }
     public string Tipo { get; set; }
 
+    @*Datos del usuario*@
     Usuarios usuarios = new Usuarios();
+    public bool paso { get; set; }
 
     protected override void OnInitialized()
     {
@@ -204,7 +206,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        ObtenerUsuario();
+        ventas.UsuarioId = getUser();
     }
 
     private void Nuevo()
@@ -427,24 +429,27 @@
         }
 
     }
-    public void ObtenerUsuario()
+
+    private int getUser()
     {
         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
         if (usuario != null)
         {
-            usuarios = usuario;
+            return usuario.UsuarioId;
         }
+        return 0;
     }
 
-    public bool VerificarRol()
+    private bool getRol()
     {
-        bool paso = false;
 
-        if (usuarios.Roles == "Administrador" || usuarios.Roles == "Empleado")
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
         {
-            paso = true;
+            return paso = true;
         }
-        return paso;
+        return paso = false;
     }
 }

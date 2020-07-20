@@ -22,7 +22,7 @@
                         <option value="Todo">Todo</option>
                         <option value="Id">ID</option>
                         <option value="Nombre">Nombre</option>
-                        <option value="Cedula">Cedula</option>                       
+                        <option value="Cedula">Cedula</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -32,12 +32,12 @@
                 </div>
             </div>
 
-            <table class=" table mb-3 mt-3">
+            <table class=" table mb-3 mt-3" id="example">
                 <thead class="thead-light">
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Cedula</th>  
+                        <th>Cedula</th>
                         <th>Telefono</th>
                     </tr>
                 </thead>
@@ -47,19 +47,19 @@
                         <tr class="table-striped">
                             <td>@item.ClienteId</td>
                             <td>@item.Nombre</td>
-                            <td>@item.Cedula</td> 
+                            <td>@item.Cedula</td>
                             <td>@item.Telefono</td>
                         </tr>
-                     }
+                    }
                 </tbody>
             </table>
         </div>
     </div>
 </EditForm>
 
-@*//cambio*@s
 
 @code { 
+
     private List<Clientes> lista { get; set; }
 
     private string Filtro { get; set; }
@@ -67,10 +67,12 @@
     private decimal TotalInventario { get; set; }
     public string mensaje;
 
+
     protected override void OnInitialized()
     {
         lista = new List<Clientes>();
     }
+
 
     private void Buscar()
     {
