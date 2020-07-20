@@ -19,7 +19,6 @@ namespace EIMRentaaCar.Models
 
         [ForeignKey("ClienteId")]
         public int ClienteId { get; set; }
-
         public int UsuarioId { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }

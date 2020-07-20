@@ -22,6 +22,7 @@ namespace EIMRentaaCar.DAL
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<PagoDetalles> PagoDetalles { get; set; }
         public DbSet<CuotaDetalles> CuotaDetalles { get; set; }
+        public DbSet<Notificaciones> Notificaciones { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

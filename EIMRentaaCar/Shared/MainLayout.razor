@@ -6,40 +6,40 @@
 @using System.Web;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-<AuthorizeView>
-    <Authorized>
-        <div class="sidebar">
-            <NavMenu />
-        </div>
-        <div class="main">
+    <AuthorizeView>
+        <Authorized>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
 
-            <div class="top-row px-4" style="background-color: #d2d5d7">
-                <a class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalScrollable">Perfil</a>
-                <br />
-                <a class="btn text-dark " data-toggle="modal" data-target="#ntf"><i class="fa fa-bell"></i></a>
+                <div class="top-row px-4" style="background-color: #d2d5d7">
+                    <a class="btn btn-outline-danger" data-toggle="modal" data-target="#exampleModalScrollable">Perfil</a>
+                    <br />
+                    <a class="btn text-dark " data-toggle="modal" data-target="#ntf"><i class="fa fa-bell"></i></a>
+                </div>
+
+                <div class="content px-4">
+                    @Body
+                </div>
             </div>
 
-            <div class="content px-4">
-                @Body
-            </div>
-        </div>
+        </Authorized>
 
-    </Authorized>
-
-    <NotAuthorized>
-        <div class="sidebar">
-            <NavMenu />
-        </div>
-        <div class="main">
-            <div class="top-row px-4" style="background-color: #d2d5d7">
+        <NotAuthorized>
+            <div class="sidebar">
+                <NavMenu />
             </div>
-            <div class="content px-4">
-                @Body
+            <div class="main">
+                <div class="top-row px-4" style="background-color: #d2d5d7">
+                </div>
+                <div class="content px-4">
+                    @Body
+                </div>
             </div>
-        </div>
-    </NotAuthorized>
+        </NotAuthorized>
 
-</AuthorizeView>
+    </AuthorizeView>
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {

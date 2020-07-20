@@ -101,9 +101,14 @@ else
 
     [Parameter]
     public int ClienteId { get; set; }
+
     Clientes cliente = new Clientes();
     private Usuarios Usuario = new Usuarios();
+
+    Notificaciones notificaciones = new Notificaciones();
+
     public bool paso { get; set; }
+
     protected override void OnInitialized()
     {
         Nuevo();
@@ -132,9 +137,13 @@ else
             var encontrado = ClientesBLL.Buscar(cliente.ClienteId);
 
             if (encontrado != null)
+            {
                 this.cliente = encontrado;
+            }
             else
+            {
                 toast.ShowWarning("No encontrado");
+            }
         }
     }
 
@@ -179,7 +188,7 @@ else
 
     private bool getRol()
     {
-        
+
         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
         if (usuario.Roles ==  "Administrador" || usuario.Roles =="Empleado")
