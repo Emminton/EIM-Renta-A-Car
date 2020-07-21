@@ -20,7 +20,7 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="Id">ID</option>
+                        <option value="ID">ID</option>
                         <option value="Nombre">Nombre</option>
                         <option value="Cedula">Cedula</option>
                     </select>
@@ -42,21 +42,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in listapaginada)
+                    @if (listapaginada.Count == 0)
                     {
-                        <tr class="table-striped">
-                            <td>@item.ClienteId</td>
-                            <td>@item.Nombre</td>
-                            <td>@item.Cedula</td>
-                            <td>@item.Telefono</td>
-                        </tr>
+                        toast.ShowWarning("No hay datos");
                     }
+                    else
+                    {
+                        @foreach (var item in listapaginada)
+                        {
+                            <tr class="table-striped">
+                                <td>@item.ClienteId</td>
+                                <td>@item.Nombre</td>
+                                <td>@item.Cedula</td>
+                                <td>@item.Telefono</td>
+                            </tr>
+                        }
+                    }
+
                 </tbody>
             </table>
         </div>
         <div class="form-row col-12 justify-content-center">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination text-d">
+            <nav>
+                <ul class="pagination">
                     <li class="page-item bt">
                         <a class="page-link" @onclick="PaginaAnterior">
                             <span class="oi oi-media-skip-backward "></span>
@@ -65,7 +73,7 @@
 
                     @for (int i = 1; i <= Paginas; i++)
                     {
-                        <li class=" @(PaginaActual == i? "text-danger":"page-item")" @onclick="Mover"> <a class="page-link">@i</a></li>
+                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
 
                     }
 
@@ -99,7 +107,8 @@
 
     protected override void OnInitialized()
     {
-        lista = ClientesBLL.GetList(c=>true);
+        lista = ClientesBLL.GetList(C => true);
+        Filtro = "Todo";
         IniciarPaginacion();
     }
 
@@ -163,34 +172,32 @@
         {
             if (Filtro == null)
             {
-                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+                toast.ShowWarning("Selecciones un filtro");
             }
             else
             {
-                lista = ClientesBLL.GetList(a => true);
+                if (Filtro != string.Empty && Criterio != null)
+                {
 
-                if (lista.Count == 0)
-                {
-                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
-                }
-                else
-                {
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = ClientesBLL.GetList(e => true);
+                            listapaginada = ClientesBLL.GetList(e => true);
                             break;
                         case "ID":
-                            lista = ClientesBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                            listapaginada = ClientesBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
                             break;
                         case "Nombre":
-                            lista = ClientesBLL.GetList(e => e.Nombre == Criterio);
+                            listapaginada = ClientesBLL.GetList(e => e.Nombre == Criterio);
                             break;
                         case "Cedula":
-                            lista = ClientesBLL.GetList(e => e.Cedula == Criterio);
+                            listapaginada = ClientesBLL.GetList(e => e.Cedula == Criterio);
                             break;
-
                     }
+                }
+                else
+                {
+                    toast.ShowWarning("debes de insertar un dato al criterio");
                 }
             }
         }
@@ -200,4 +207,5 @@
         }
     }
 }
+
 
