@@ -143,6 +143,13 @@ else
             else
             {
                 toast.ShowWarning("No encontrado");
+
+                notificaciones.NotificacionId = 0;
+                notificaciones.Titulo = "Error";
+                notificaciones.Asunto = "Error en la busqueda en el registro de cliente";
+                notificaciones.Fecha = DateTime.Now;
+                notificaciones.UsuarioId = getUser();
+                NotificacionBLL.Guardar(notificaciones);
             }
         }
     }

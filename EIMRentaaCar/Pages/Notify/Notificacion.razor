@@ -1,16 +1,68 @@
 ﻿@page "/Notify"
 
+@using EIMRentaaCar.Models
+@using EIMRentaaCar.BLL
 
-    <div class="list-group w-50">
-        <a class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h4>Asteroid detected near earth</h4>
-                <small>1 days ago</small>
+@inject IToastService toast
+@inject IJSRuntime js
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    @foreach (var item in Datos())
+    {
+        @if (item.UsuarioId == getUser())
+        {
+            <div class="list-group w-50">
+                <a class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h4>@item.Titulo</h4>
+                        <small>@item.Fecha</small>
+                    </div>
+                    <p>@item.Asunto</p>
+                </a>
             </div>
-            <p>Pulvinar leo id risus pellentesque vestibulum. Sed diam libero, sodales eget sapien vel, porttitor bibendum enim. Donec sed nibh vitae lorem porttitor blandit in nec ante.</p>
-        </a> 
-    </div>
+        }
+
+    }
+}
 
 @code{
+
+    Notificaciones notificaciones = new Notificaciones();
+
+
+    protected override void OnInitialized()
+    {
+
+
+    }
+
+    private int getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.UsuarioId;
+        }
+        return 0;
+    }
+
+    private List<Notificaciones> Datos()
+    {
+        List<Notificaciones> lista = new List<Notificaciones>();
+
+        try
+        {
+            lista = NotificacionBLL.GetList(n => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista;
+    }
 
 }
