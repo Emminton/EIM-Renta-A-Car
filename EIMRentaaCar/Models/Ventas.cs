@@ -36,7 +36,6 @@ namespace EIMRentaaCar.Models
 		[DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
 		public DateTime FechaVenta { get; set; }
 	
-
 		[ForeignKey("VentaId")]
 		public virtual List<CuotaDetalles> CuotaDetalles { get; set; }
 

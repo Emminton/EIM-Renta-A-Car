@@ -13,6 +13,7 @@ namespace EIMRentaaCar.Models
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int NotificacionId { get; set; }
         public int UsuarioId { get; set; }
+
         [Required(ErrorMessage = "El campo nombre no puede estar vació.")]
         public string Titulo { get; set; }
         [Required(ErrorMessage = "El campo nombre no puede estar vació.")]

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Inicio : Migration
+    public partial class inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -116,12 +116,8 @@ namespace EIMRentaaCar.Migrations
                     VehiculoId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
-                    Marca = table.Column<string>(nullable: true),
-                    Modelo = table.Column<string>(nullable: true),
-                    Vin = table.Column<int>(nullable: false),
                     FechaRenta = table.Column<DateTime>(nullable: false),
                     TiempoRenta = table.Column<int>(maxLength: 30, nullable: false),
-                    Nombre = table.Column<string>(nullable: true),
                     Balance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -249,7 +245,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 20, 20, 33, 0, 539, DateTimeKind.Local).AddTicks(3445), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 20, 22, 36, 18, 132, DateTimeKind.Local).AddTicks(6164), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",

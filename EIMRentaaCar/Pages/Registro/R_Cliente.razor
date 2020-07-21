@@ -103,11 +103,12 @@ else
     public int ClienteId { get; set; }
 
     Clientes cliente = new Clientes();
+
     private Usuarios Usuario = new Usuarios();
 
-    Notificaciones notificaciones = new Notificaciones();
-
     public bool paso { get; set; }
+
+    Notificaciones notificaciones = new Notificaciones();
 
     protected override void OnInitialized()
     {

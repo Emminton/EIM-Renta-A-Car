@@ -25,23 +25,50 @@
             </NavLink>
         </li>
 
-        <li class="nav-item px-3">
-            <NavLink class="nav-link notification" href="Notify">
-                <span class=" fa fa-bell" aria-hidden="true"></span> &nbsp; Notificaciones
-                @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-                {
-                    @foreach (var item in Datos())
-                    {
-                        @if (item.UsuarioId == getUser())
-                        {
-                            <span class="badge">@Datos().Count()</span>
-                        }
 
+        <li class="nav-item px-1">
+
+            <NavLink class="nav-link" @onclick="TogglePerfil">
+                <span class="oi oi-person" aria-hidden="true"></span> Cuenta &nbsp; <span class="fa fa-chevron-down"></span>
+            </NavLink>
+            @if (statePerfil)
+            {
+                <ul class="children">
+                    @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+                    {
+                        <li class="list-unstyled" style="color:white">
+                            <NavLink>
+                                <i class="oi oi-person"></i>Usuario: <span> @getName().Nombre</span>
+                            </NavLink>
+                        </li>
+                        <li class="list-unstyled" style="color:white">
+                            <NavLink>
+                                <i class="oi oi-wrench"></i>Rol: <span> @getRol()</span>
+                            </NavLink>
+                        </li>
+                        <li class="list-unstyled">
+                            <NavLink class="nav-link" href="/logout?returnUrl=/">
+                                <span class="oi oi-account-logout text-danger" aria-hidden="true"></span> Logout
+                            </NavLink>
+                        </li>
                     }
 
-                }
-            </NavLink>
+                </ul>
 
+             }
+
+        </li>
+
+        <li class="nav-item px-3">
+            <NavLink class="nav-link " href="Notify">
+                <div class="text-center align-items-center">
+                    <span class="fa fa-bell" aria-hidden="true"></span>
+                    @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+                    { 
+                      <span class="badge">@Contador()</span>     
+                    }
+                </div>
+            </NavLink>
         </li>
 
         <li class="nav-item px-1">
@@ -144,15 +171,22 @@
     </ul>
 </div>
 
+<style>
+    .badge {
+        border-radius: 60% ;
+        background-color: red;
+    }
+</style>
 
 
 @code {
 
-   Notificaciones notificaciones = new Notificaciones();
+    Notificaciones notificaciones = new Notificaciones();
 
     private bool collapseNavMenu = true;
     private bool stateRegister = false;
     private bool stateConsultas = false;
+    private bool statePerfil = false;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
@@ -173,15 +207,34 @@
         stateRegister = false;
     }
 
-    private int getUser()
+    private void TogglePerfil()
+    {
+        statePerfil = !statePerfil;
+        stateRegister = false;
+        stateConsultas = false;
+    }
+
+    private string getRol()
     {
         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
         if (usuario != null)
         {
-            return usuario.UsuarioId;
+            return usuario.Roles;
         }
-        return 0;
+        return null;
+    }
+
+
+    private Usuarios getName()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario;
+        }
+        return null;
     }
 
     private List<Notificaciones> Datos()
@@ -198,6 +251,22 @@
         }
 
         return lista;
+    }
+
+    private int Contador()
+    {
+        List<Notificaciones> lista = new List<Notificaciones>();
+
+        try
+        {
+            lista = NotificacionBLL.GetList(n => n.UsuarioId == getName().UsuarioId);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista.Count();
     }
 
 }
