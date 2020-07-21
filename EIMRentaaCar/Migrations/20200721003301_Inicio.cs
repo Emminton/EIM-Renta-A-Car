@@ -60,6 +60,22 @@ namespace EIMRentaaCar.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notificaciones",
+                columns: table => new
+                {
+                    NotificacionId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UsuarioId = table.Column<int>(nullable: false),
+                    Titulo = table.Column<string>(nullable: false),
+                    Asunto = table.Column<string>(nullable: false),
+                    Fecha = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notificaciones", x => x.NotificacionId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PagoRentas",
                 columns: table => new
                 {
@@ -233,7 +249,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 20, 19, 21, 35, 219, DateTimeKind.Local).AddTicks(7285), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 20, 20, 33, 0, 539, DateTimeKind.Local).AddTicks(3445), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",
@@ -264,6 +280,9 @@ namespace EIMRentaaCar.Migrations
 
             migrationBuilder.DropTable(
                 name: "Importadores");
+
+            migrationBuilder.DropTable(
+                name: "Notificaciones");
 
             migrationBuilder.DropTable(
                 name: "PagoDetalles");

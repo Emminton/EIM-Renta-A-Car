@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200720232135_Inicio")]
+    [Migration("20200721003301_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -147,6 +147,31 @@ namespace EIMRentaaCar.Migrations
                     b.HasKey("ImportadorId");
 
                     b.ToTable("Importadores");
+                });
+
+            modelBuilder.Entity("EIMRentaaCar.Models.Notificaciones", b =>
+                {
+                    b.Property<int>("NotificacionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Asunto")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("NotificacionId");
+
+                    b.ToTable("Notificaciones");
                 });
 
             modelBuilder.Entity("EIMRentaaCar.Models.PagoDetalles", b =>
@@ -317,7 +342,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 20, 19, 21, 35, 219, DateTimeKind.Local).AddTicks(7285),
+                            FechaIngreso = new DateTime(2020, 7, 20, 20, 33, 0, 539, DateTimeKind.Local).AddTicks(3445),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",

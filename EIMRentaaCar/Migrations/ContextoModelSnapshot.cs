@@ -340,7 +340,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 20, 19, 57, 20, 244, DateTimeKind.Local).AddTicks(9222),
+                            FechaIngreso = new DateTime(2020, 7, 20, 20, 33, 0, 539, DateTimeKind.Local).AddTicks(3445),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",
