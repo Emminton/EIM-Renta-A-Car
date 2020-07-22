@@ -153,8 +153,22 @@ namespace EIMRentaaCar.BLL
 
         public static void Mensaje(int id,string titulo, string asunto)
         {
-            Notificaciones ntf = new Notificaciones(0, id, titulo, asunto, DateTime.Now);
-            Guardar(ntf);
+            Contexto contexto = new Contexto();
+            try
+            {
+                Notificaciones ntf = new Notificaciones(0, id, titulo, asunto, DateTime.Now);
+                ntf.visto = false;
+                Guardar(ntf);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+           
         }
     }
 }

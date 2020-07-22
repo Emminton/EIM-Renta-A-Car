@@ -68,7 +68,8 @@ namespace EIMRentaaCar.Migrations
                     UsuarioId = table.Column<int>(nullable: false),
                     Titulo = table.Column<string>(nullable: false),
                     Asunto = table.Column<string>(nullable: false),
-                    Fecha = table.Column<DateTime>(nullable: false)
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    visto = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,7 +246,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 21, 20, 0, 54, 486, DateTimeKind.Local).AddTicks(5199), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 22, 8, 47, 17, 13, DateTimeKind.Local).AddTicks(6681), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",

@@ -11,7 +11,7 @@
 {
     @foreach (var item in lista)
     {
-        @if (item.UsuarioId == getUser())
+        @if (item.UsuarioId == getUser() && item.visto == false)
         {
             <div class="list-group w-50">
                 <a class="list-group-item list-group-item-action">
@@ -29,12 +29,13 @@
                         {
                             <h4>@item.Titulo</h4>
                         }
-                             <small>@item.Fecha</small>
-                     </div>
-                        <p>@item.Asunto</p>
-                        <br />
-                        <span type="button" class="btn" @onclick="(() => Eliminar(item.NotificacionId))"><i class="oi oi-trash text-danger"></i></span>
-                 </a>
+                        <small>@item.Fecha</small>
+                    </div>
+                    <p>@item.Asunto</p>
+                    <br />
+                    <span type="button" class="btn" @onclick="(() => Eliminar(item.NotificacionId))"><i class="oi oi-trash text-danger"></i></span>
+                    <span type="button" class="btn" @onclick="(() => Leido(item))"><i class="oi oi-eye text-info"></i></span>
+                </a>
              </div>
            }
     }
@@ -76,4 +77,14 @@
             toast.ShowError("No fue posible eliminar");
     }
 
+    private void Leido(Notificaciones notificaciones)
+    {
+        bool paso = true;
+        notificaciones.visto = paso;
+        if (NotificacionBLL.Guardar(notificaciones))
+        {
+            toast.ShowSuccess("Has leido la notificacion");
+        }
+
+    }
 }

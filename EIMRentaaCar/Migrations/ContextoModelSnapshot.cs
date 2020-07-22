@@ -167,6 +167,9 @@ namespace EIMRentaaCar.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("visto")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("NotificacionId");
 
                     b.ToTable("Notificaciones");
@@ -328,7 +331,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 20, 22, 36, 18, 132, DateTimeKind.Local).AddTicks(6164),
+                            FechaIngreso = new DateTime(2020, 7, 22, 8, 47, 17, 13, DateTimeKind.Local).AddTicks(6681),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",

@@ -14,14 +14,15 @@ namespace EIMRentaaCar.Models
         public int NotificacionId { get; set; }
         public int UsuarioId { get; set; }
 
-        [Required(ErrorMessage = "El campo nombre no puede estar vació.")]
+        [Required(ErrorMessage = "El campo titulo no puede estar vació.")]
         public string Titulo { get; set; }
-        [Required(ErrorMessage = "El campo nombre no puede estar vació.")]
+        [Required(ErrorMessage = "El campo Asunto no puede estar vació.")]
         public string Asunto { get; set; }
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
         [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
         public DateTime Fecha { get; set; }
+        public bool visto { get; set; }
 
         public Notificaciones()
         {
@@ -29,6 +30,7 @@ namespace EIMRentaaCar.Models
             UsuarioId = 0;
             Titulo = string.Empty;
             Asunto = string.Empty;
+            visto = false;
             Fecha = DateTime.Now;
         }
 
