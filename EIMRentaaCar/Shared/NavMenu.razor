@@ -1,10 +1,8 @@
 ﻿
-@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
-
 
 <div class="text-center">
     <img src="/Imagen/E&M.gif" width="140" height="128" />
@@ -38,7 +36,7 @@
                     {
                         <li class="list-unstyled" style="color:white">
                             <NavLink>
-                                <i class="oi oi-person"></i>Usuario: <span> @getName().Nombre</span>
+                                <i class="oi oi-person"></i>Usuario: <span> @getName()</span>
                             </NavLink>
                         </li>
                         <li class="list-unstyled" style="color:white">
@@ -186,6 +184,8 @@
 
     Notificaciones notificaciones = new Notificaciones();
 
+    public List<Notificaciones> lista { get; set; }
+
     private bool collapseNavMenu = true;
     private bool stateRegister = false;
     private bool stateConsultas = false;
@@ -225,45 +225,37 @@
         {
             return usuario.Roles;
         }
-        return null;
+        else
+        {
+            return null;
+        }
+
     }
 
 
-    private Usuarios getName()
+    private string getName()
     {
         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
         if (usuario != null)
         {
-            return usuario;
+            return usuario.Nombre;
         }
-        return null;
-    }
-
-    private List<Notificaciones> Datos()
-    {
-        List<Notificaciones> lista = new List<Notificaciones>();
-
-        try
+        else
         {
-            lista = NotificacionBLL.GetList(n => true);
-        }
-        catch (Exception)
-        {
-            throw;
+            return null;
         }
 
-        return lista;
     }
 
     private int Contador() // aqui devuelvo la cantidad de notificaciones de los usuarios
     {
-        List<Notificaciones> lista = new List<Notificaciones>();
+        lista = NotificacionBLL.GetList(n => true);
 
         try
         {
-          
-            lista = NotificacionBLL.GetList(n => n.UsuarioId == getName().UsuarioId && n.visto == false);
+
+            lista = lista.Where(e => e.UsuarioId == getUser() && e.visto == false).ToList();
 
         }
         catch (Exception)
@@ -272,6 +264,17 @@
         }
 
         return lista.Count();
+    }
+
+    private int getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.UsuarioId;
+        }
+        return 0;
     }
 
 }

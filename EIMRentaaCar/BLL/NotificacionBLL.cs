@@ -153,22 +153,9 @@ namespace EIMRentaaCar.BLL
 
         public static void Mensaje(int id,string titulo, string asunto) // esto me permite crear la notificaciones
         {
-            Contexto contexto = new Contexto();
-            try
-            {
-                Notificaciones ntf = new Notificaciones(0, id, titulo, asunto, DateTime.Now);
-                ntf.visto = false;
-                Guardar(ntf);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                contexto.Dispose();
-            }
-           
+               Notificaciones ntf = new Notificaciones(0, id, titulo, asunto, DateTime.Now);
+               ntf.visto = false;
+               Guardar(ntf); 
         }
     }
 }

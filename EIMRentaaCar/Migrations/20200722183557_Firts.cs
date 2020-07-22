@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Inicio : Migration
+    public partial class Firts : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -246,7 +246,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 22, 8, 47, 17, 13, DateTimeKind.Local).AddTicks(6681), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 22, 14, 35, 57, 402, DateTimeKind.Local).AddTicks(4121), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",
