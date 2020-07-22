@@ -151,7 +151,7 @@ namespace EIMRentaaCar.BLL
             return encontrado;
         }
 
-        public static void Mensaje(int id,string titulo, string asunto)
+        public static void Mensaje(int id,string titulo, string asunto) // esto me permite crear la notificaciones
         {
             Contexto contexto = new Contexto();
             try

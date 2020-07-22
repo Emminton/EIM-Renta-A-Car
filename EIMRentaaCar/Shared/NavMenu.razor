@@ -64,9 +64,12 @@
                 <div class="text-center align-items-center">
                     <span class="fa fa-bell" aria-hidden="true"></span>
                     @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-                    { 
-                      <span class="badge">@Contador()</span>     
-                    }
+                     {
+                        @if (Contador() > 0)
+                         {
+                            <span class="badge">@Contador()</span> //muestra la cantidad de notificacion respectivamente a cada usuario
+                         }
+                     }
                 </div>
             </NavLink>
         </li>
@@ -253,7 +256,7 @@
         return lista;
     }
 
-    private int Contador()
+    private int Contador() // aqui devuelvo la cantidad de notificaciones de los usuarios
     {
         List<Notificaciones> lista = new List<Notificaciones>();
 

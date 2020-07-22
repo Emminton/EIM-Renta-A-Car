@@ -11,7 +11,7 @@
 {
     @foreach (var item in lista)
     {
-        @if (item.UsuarioId == getUser() && item.visto == false)
+        @if (item.UsuarioId == getUser() && item.visto == false) // aqui valido si la notificacion no fueron leidas por el usuario
         {
             <div class="list-group w-50">
                 <a class="list-group-item list-group-item-action">
@@ -63,7 +63,7 @@
         return 0;
     }
 
-    private void Eliminar(int id)
+    private void Eliminar(int id) //aqui se elimina la notificación
     {
         bool elimino;
 
@@ -77,7 +77,7 @@
             toast.ShowError("No fue posible eliminar");
     }
 
-    private void Leido(Notificaciones notificaciones)
+    private void Leido(Notificaciones notificaciones) // aqui modifico la notificacion a leida o vista
     {
         bool paso = true;
         notificaciones.visto = paso;
