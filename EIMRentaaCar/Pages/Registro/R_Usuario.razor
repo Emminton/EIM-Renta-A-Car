@@ -204,12 +204,12 @@
 
     private void Eliminar()
     {
-        bool eliminar;
-
-        eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
 
         if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
         {
+            bool eliminar;
+            eliminar = UsuarioBLL.Eliminar(usuarios.UsuarioId);
+
             if (eliminar)
             {
                 Nuevo();
