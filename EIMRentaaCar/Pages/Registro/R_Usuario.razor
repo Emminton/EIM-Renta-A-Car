@@ -123,13 +123,16 @@
     protected override void OnInitialized()
     {
         Nuevo();
-        if (Id > 0)
+        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
         {
-            var Auxclientes = UsuarioBLL.Buscar(Id);
-            if (Auxclientes != null)
-                this.usuarios = Auxclientes;
-            else
-                toast.ShowWarning("No encontrado.");
+            if (Id > 0)
+            {
+                var Auxclientes = UsuarioBLL.Buscar(Id);
+                if (Auxclientes != null)
+                    this.usuarios = Auxclientes;
+                else
+                    toast.ShowWarning("No encontrado.");
+            }
         }
     }
 
@@ -150,6 +153,7 @@
             {
 
                 toast.ShowWarning("Las claves no coinciden");
+                NotificacionBLL.Mensaje(getUser(), "Info", "Las clave que ha insertado no coincide");
             }
             else
             {
@@ -157,16 +161,19 @@
                 {
                     Nuevo();
                     toast.ShowSuccess("Guardado Correctamente");
+                    NotificacionBLL.Mensaje(getUser(), "Success", "Se ha agregado un nuevo usuario");
                 }
                 else
                 {
                     toast.ShowError("No fue posible guardar");
+                    NotificacionBLL.Mensaje(getUser(), "Error", "Se ha eliminado un usuario de la base de datos");
                 }
             }
         }
         else
         {
             toast.ShowError("No puedes modificar tu datos porque no eres administrador");
+            NotificacionBLL.Mensaje(getUser(), "Info", "No puedes modificar tu datos porque no eres administrador");
         }
 
     }
@@ -180,15 +187,19 @@
             {
 
                 this.usuarios = encontrado;
+                usuarios.Password = UsuarioBLL.DesEncriptar(usuarios.Password);
+                usuarios.ConfirmarPassword = UsuarioBLL.DesEncriptar(usuarios.ConfirmarPassword);
             }
             else
             {
                 toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el usuario en la base de datos");
             }
         }
         else
         {
             toast.ShowError("No puedes buscar datos porque no eres administrador");
+            NotificacionBLL.Mensaje(getUser(), "Info", "No puedes buscar datos porque no eres administrador");
         }
     }
 
@@ -204,15 +215,18 @@
             {
                 Nuevo();
                 toast.ShowSuccess("Eliminado Correctamente");
+                NotificacionBLL.Mensaje(getUser(), "Succes", "Se ha eliminado el usuario de la base de datos");
             }
             else
             {
                 toast.ShowError("No fue posible eliminar");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible eliminar el usuario de la base de datos");
             }
         }
         else
         {
             toast.ShowError("No puedes eliminar datos porque no eres administrador");
+            NotificacionBLL.Mensaje(getUser(), "Info", "No puedes eliminar datos porque no eres administrador");
         }
     }
 
@@ -236,6 +250,17 @@
             return paso = true;
         }
         return paso = false;
+    }
+
+    private int getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.UsuarioId;
+        }
+        return 0;
     }
 
 }

@@ -101,8 +101,7 @@ namespace EIMRentaaCar.BLL
             try
             {
                 usuarios = contexto.Usuarios.Where(A => A.UsuarioId == id).FirstOrDefault();
-                usuarios.Password = DesEncriptar(usuarios.Password);
-                usuarios.ConfirmarPassword = DesEncriptar(usuarios.ConfirmarPassword);
+                
             }
             catch (Exception)
             {

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace EIMRentaaCar.BLL
@@ -148,6 +149,12 @@ namespace EIMRentaaCar.BLL
                 contexto.Dispose();
             }
             return encontrado;
+        }
+
+        public static void Mensaje(int id,string titulo, string asunto)
+        {
+            Notificaciones ntf = new Notificaciones(0, id, titulo, asunto, DateTime.Now);
+            Guardar(ntf);
         }
     }
 }

@@ -125,7 +125,10 @@
             if (encontrado != null)
                 this.pago = encontrado;
             else
+            {
                 toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el pago de la venta en la base de datos");
+            }
         }
     }
 
@@ -137,9 +140,13 @@
         {
             Nuevo();
             toast.ShowSuccess("Guardado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el pado de la venta en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible guardar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha podido guardar el pago de venta en la base de datos");
+        }
     }
 
     private void Eliminar()
@@ -152,9 +159,14 @@
         {
             Nuevo();
             toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado un pago de venta en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se pudo eliminar el pago de venta en la base de datos");
+        }
+
     }
 
     private List<Ventas> VentaCombo()

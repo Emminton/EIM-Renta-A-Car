@@ -9,7 +9,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    @foreach (var item in Datos())
+    @foreach (var item in lista)
     {
         @if (item.UsuarioId == getUser())
         {
@@ -18,13 +18,13 @@
                     <div class="d-flex w-100 justify-content-between">
                         @if (item.Titulo == "Error")
                         {
-                            <h4 class="text-danger"><i class="fa fa-warning"></i>@item.Titulo</h4> }
+                            <h4 class="text-danger"><i class="fa fa-warning "></i>@item.Titulo</h4> }
                         else if (item.Titulo == "Success")
                         {
-                            <h4 class="text-success"><i class="fa fa-check"></i>@item.Titulo</h4> }
+                            <h4 class="text-success"><i class="fa fa-check "></i>@item.Titulo</h4> }
                         else if (item.Titulo == "Info")
                         {
-                            <h4 class="text-info"><i class="fa fa-info"></i>@item.Titulo</h4> }
+                            <h4 class="text-info"><i class="fa fa-info "></i>@item.Titulo</h4> }
                         else
                         {
                             <h4>@item.Titulo</h4>
@@ -40,13 +40,15 @@
     }
 }
 
-@code{ Notificaciones notificaciones = new Notificaciones();
+@code{ 
 
+    Notificaciones notificaciones = new Notificaciones();
+    public List<Notificaciones> lista { get; set; }
 
     protected override void OnInitialized()
     {
-        Datos();
 
+        lista = NotificacionBLL.GetList(n => true);
     }
 
     private int getUser()
@@ -59,23 +61,6 @@
         }
         return 0;
     }
-
-    private List<Notificaciones> Datos()
-    {
-        List<Notificaciones> lista = new List<Notificaciones>();
-
-        try
-        {
-            lista = NotificacionBLL.GetList(n => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
-    }
-
 
     private void Eliminar(int id)
     {

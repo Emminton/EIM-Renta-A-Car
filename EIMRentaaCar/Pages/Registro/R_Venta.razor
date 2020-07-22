@@ -60,7 +60,10 @@
                                 <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
                                     @foreach (var item in VehiculoCombo())
                                     {
-                                        <option value="@item.VehiculoId">@item.Vin</option>
+                                        @if (item.Estado == "Disponible")
+                                        {
+                                           <option value="@item.VehiculoId">@item.Vin</option>
+                                        }          
                                     }
                                 </select>
                             </div>
@@ -239,7 +242,10 @@
             }
 
             else
+            {
                 toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado la venta en la base de datos");
+            }
         }
     }
 
@@ -268,9 +274,13 @@
                 Tipo = string.Empty;
                 nombreCliente = string.Empty;
                 toast.ShowSuccess("Guardado correctamente");
+                NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado la venta en al base de datos");
             }
             else
+            {
                 toast.ShowError("No fue posible guardar");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No fue pos posible guardar la venta en la base de datos");
+            }
         }
 
     }
@@ -285,9 +295,14 @@
         {
             Nuevo();
             toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado la venta en al base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible eliminar la venta");
+        }
+
     }
 
     private List<Clientes> ClienteCombo()

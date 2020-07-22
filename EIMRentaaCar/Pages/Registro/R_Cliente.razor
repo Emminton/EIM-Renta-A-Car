@@ -109,8 +109,6 @@ else
 
     public bool paso { get; set; }
 
-    Notificaciones notificaciones = new Notificaciones();
-
     protected override void OnInitialized()
     {
         Nuevo();
@@ -146,12 +144,7 @@ else
             {
                 toast.ShowWarning("No encontrado");
 
-                notificaciones.NotificacionId = 0;
-                notificaciones.Titulo = "Error";
-                notificaciones.Asunto = "Error en la busqueda en el registro de cliente";
-                notificaciones.Fecha = DateTime.Now;
-                notificaciones.UsuarioId = getUser();
-                NotificacionBLL.Guardar(notificaciones);
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el cliente en la base de datos");
             }
         }
     }
@@ -164,9 +157,13 @@ else
         {
             Nuevo();
             toast.ShowSuccess("Guardado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el cliente en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible guardar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el cliente en la base de datos");
+        }
     }
 
     private void Eliminar()
@@ -179,9 +176,13 @@ else
         {
             Nuevo();
             toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado el cliente en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha eliminado el cliente en la base de datos");
+        }
     }
 
     private int getUser()

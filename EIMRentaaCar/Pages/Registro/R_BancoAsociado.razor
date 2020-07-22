@@ -97,7 +97,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        bancosAsociados.UsuarioId = getUser();  
+        bancosAsociados.UsuarioId = getUser();
     }
 
     private void Nuevo()
@@ -115,7 +115,10 @@
             if (encontrado != null)
                 this.bancosAsociados = encontrado;
             else
+            {
                 toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el banco en la base de datos");
+            }
         }
     }
 
@@ -129,9 +132,13 @@
         {
             Nuevo();
             toast.ShowSuccess("Guardado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el banco en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible guardar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el banco en la base de datos");
+        }
     }
 
     private void Eliminar()
@@ -144,9 +151,13 @@
         {
             Nuevo();
             toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado el banco en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha eliminado en la base de datos");
+        }
     }
 
     private int getUser()

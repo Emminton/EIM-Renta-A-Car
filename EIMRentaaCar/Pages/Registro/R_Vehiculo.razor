@@ -201,7 +201,10 @@
             if (encontrado != null)
                 this.vehiculos = encontrado;
             else
+            {
                 toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encotrado el vehiculo en la base de datos");
+            }
         }
     }
 
@@ -215,9 +218,13 @@
         {
             Nuevo();
             toast.ShowSuccess("Guardado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado un vehiculo en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible guardar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible guardar el vehiculo");
+        }
     }
 
     private void Eliminar()
@@ -230,9 +237,13 @@
         {
             Nuevo();
             toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado el vehiculo en la base de datos");
         }
         else
+        {
             toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible eliminar el vehiculo en la base de datos");
+        }
     }
 
     private int getUser()
