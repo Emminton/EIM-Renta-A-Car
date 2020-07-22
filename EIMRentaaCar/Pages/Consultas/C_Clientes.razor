@@ -5,7 +5,7 @@
 
 @inject IToastService toast
 
-<EditForm Model="lista">
+<EditForm Model="listapaginada">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -183,6 +183,7 @@
                     {
                         case "Todo":
                             listapaginada = ClientesBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
                             listapaginada = ClientesBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));

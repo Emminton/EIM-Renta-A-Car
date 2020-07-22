@@ -16,20 +16,31 @@
             <div class="list-group w-50">
                 <a class="list-group-item list-group-item-action">
                     <div class="d-flex w-100 justify-content-between">
-                        <h4>@item.Titulo</h4>
-                        <small>@item.Fecha</small>
-                    </div>
-                    <p>@item.Asunto</p>
-                </a>
-            </div>
-        }
-
+                        @if (item.Titulo == "Error")
+                        {
+                            <h4 class="text-danger"><i class="fa fa-warning"></i>@item.Titulo</h4> }
+                        else if (item.Titulo == "Success")
+                        {
+                            <h4 class="text-success"><i class="fa fa-check"></i>@item.Titulo</h4> }
+                        else if (item.Titulo == "Info")
+                        {
+                            <h4 class="text-info"><i class="fa fa-info"></i>@item.Titulo</h4> }
+                        else
+                        {
+                            <h4>@item.Titulo</h4>
+                        }
+                             <small>@item.Fecha</small>
+                     </div>
+                        <p>@item.Asunto</p>
+                        <br />
+                        <span type="button" class="btn" @onclick="(() => Eliminar(item.NotificacionId))"><i class="oi oi-trash text-danger"></i></span>
+                 </a>
+             </div>
+           }
     }
 }
 
-@code{
-
-    Notificaciones notificaciones = new Notificaciones();
+@code{ Notificaciones notificaciones = new Notificaciones();
 
 
     protected override void OnInitialized()
@@ -63,6 +74,21 @@
         }
 
         return lista;
+    }
+
+
+    private void Eliminar(int id)
+    {
+        bool elimino;
+
+        elimino = NotificacionBLL.Eliminar(id);
+
+        if (elimino)
+        {
+            toast.ShowSuccess("Eliminado correctamente");
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
     }
 
 }
