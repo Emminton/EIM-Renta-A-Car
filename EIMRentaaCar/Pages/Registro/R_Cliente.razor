@@ -6,7 +6,6 @@
 
 @inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
 @inject IToastService toast
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())

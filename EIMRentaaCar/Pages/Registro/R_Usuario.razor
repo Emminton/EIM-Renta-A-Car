@@ -110,7 +110,6 @@
 
 
 
-
 @code {
 
     Usuarios usuarios = new Usuarios();
@@ -227,16 +226,6 @@
         {
             toast.ShowError("No puedes eliminar datos porque no eres administrador");
             NotificacionBLL.Mensaje(getUser(), "Info", "No puedes eliminar datos porque no eres administrador");
-        }
-    }
-
-    public void ObtenerUsuario()
-    {
-        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
-
-        if (usuario != null)
-        {
-            usuarios = usuario;
         }
     }
 
