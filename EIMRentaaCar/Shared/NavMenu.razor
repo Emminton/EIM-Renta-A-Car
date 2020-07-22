@@ -262,7 +262,9 @@
 
         try
         {
-            lista = NotificacionBLL.GetList(n => n.UsuarioId == getName().UsuarioId);
+          
+            lista = NotificacionBLL.GetList(n => n.UsuarioId == getName().UsuarioId && n.visto == false);
+
         }
         catch (Exception)
         {
