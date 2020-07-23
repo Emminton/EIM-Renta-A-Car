@@ -37,7 +37,7 @@
                         <div class="row">
                             @* Cliente id *@
                             <div class="col">
-                                <label>Cliente ID:</label>
+                                <label>Cliente Cedula:</label>
                                 <select class="form-control" @bind="ClienteSelecionado" @onclick="MostrarNombreCliente">
                                     @foreach (var item in ClienteCombo())
                                     {
@@ -56,13 +56,13 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <label>Vehiculo Id</label>
+                                <label>Vehiculo id</label>
                                 <select class="form-control" @bind="Vehiculoseleccionado" @onclick="MostrarVehiculo">
                                     @foreach (var item in VehiculoCombo())
                                     {
                                         @if (item.Estado == "Disponible")
                                         {
-                                           <option value="@item.VehiculoId">@item.Vin</option>
+                                           <option value="@item.VehiculoId">@item.VehiculoId</option>
                                         }          
                                     }
                                 </select>
@@ -109,6 +109,7 @@
 
                     <div class="form-row">
                         <div class="col">
+                            <label>No. Cuotas</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="ventas.Cuotas" class="form-control col-4" />
                                 <div class="input-group-append">
