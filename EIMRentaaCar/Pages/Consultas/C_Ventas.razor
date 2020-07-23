@@ -5,7 +5,7 @@
 
 @inject IToastService toast
 
-<EditForm Model="lista">
+<EditForm Model="listapaginada">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -43,7 +43,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var item in lista)
+                    @foreach (var item in listapaginada)
                     {
                         <tr class="table-striped">
                             <td>@item.VehiculoId</td>
