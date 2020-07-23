@@ -5,7 +5,7 @@
 
 @inject IToastService toast
 
-<EditForm Model="lista">
+<EditForm Model="listapaginada">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -43,32 +43,125 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var item in lista)
+                    @if (listapaginada.Count == 0)
                     {
-                        <tr class="table-striped">
-                            <td>@item.VehiculoId</td>
-                            <td>@item.ClienteId</td>
-                            <td>@item.FechaVenta</td>
-                            <td>@item.Cuotas</td>
-                            <td>@item.Balance</td>
-                        </tr>
-                     }
-                </tbody>
+                        toast.ShowWarning("No hay datos");
+                    }
+                    else
+                    {
+                        @foreach (var item in listapaginada)
+                        {
+                            <tr class="table-striped">
+                                <td>@item.VehiculoId</td>
+                                <td>@item.ClienteId</td>
+                                <td>@item.FechaVenta</td>
+                                <td>@item.Cuotas</td>
+                                <td>@item.Balance</td>
+                            </tr>
+                        }
+                    }
+                 </tbody>
             </table>
+        </div>
+        <div class="form-row col-12 justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item bt">
+                        <a class="page-link" @onclick="PaginaAnterior">
+                            <span class="oi oi-media-skip-backward "></span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= Paginas; i++)
+                    {
+                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link" @onclick="PaginaSiguiente">
+                            <span class="oi oi-media-skip-forward "></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </EditForm>
 
-@code { private List<Ventas> lista { get; set; }
+@code { 
+    private List<Ventas> lista { get; set; }
+    private List<Ventas> listapaginada { get; set; }
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    Paginacion paginacion = new Paginacion();
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
-    private decimal TotalInventario { get; set; }
-    public string mensaje;
+
 
     protected override void OnInitialized()
     {
-        lista = new List<Ventas>();
+        lista = VentasBLL.GetList(C => true);
+        Filtro = "Todo";
+        IniciarPaginacion();
+    }
+
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = lista.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        listapaginada = lista.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void Mover()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+        else if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
     }
 
     private void Buscar()
@@ -89,7 +182,7 @@
                 }
                 else
                 {
-                    mensaje = "";
+                   
                     switch (Filtro)
                     {
                         case "Todo":
@@ -109,5 +202,5 @@
         {
             throw;
         }
-    } 
+    }
 }
