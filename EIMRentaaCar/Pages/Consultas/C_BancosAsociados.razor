@@ -5,7 +5,7 @@
 
 @inject IToastService toast
 
-<EditForm Model="lista">
+<EditForm Model="listapaginada">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -20,9 +20,9 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="Id">ID</option>
+                        <option value="ID">ID</option>
                         <option value="Nombre">Nombre</option>
-
+                        <option value="Telefono">Telefono</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -42,31 +42,118 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var item in lista)
+                    @foreach (var item in listapaginada)
                     {
-    <tr class="table-striped">
-        <td>@item.BancoAsociadoId</td>
-        <td>@item.Nombre</td>
-        <td>@item.Telefono</td>
+                        <tr class="table-striped">
+                            <td>@item.BancoAsociadoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Telefono</td>
 
-    </tr>}
+                        </tr>
+                    }
                 </tbody>
             </table>
+        </div>
+        <div class="form-row col-12 justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item bt">
+                        <a class="page-link" @onclick="PaginaAnterior">
+                            <span class="oi oi-media-skip-backward "></span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= Paginas; i++)
+                    {
+                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link" @onclick="PaginaSiguiente">
+                            <span class="oi oi-media-skip-forward "></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </EditForm>
 
 @code { 
     private List<BancosAsociados> lista { get; set; }
-
+    private List<BancosAsociados> listapaginada { get; set; }
     private string Filtro { get; set; }
     private string Criterio { get; set; }
-    private decimal TotalInventario { get; set; }
+
     public string mensaje;
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    Paginacion paginacion = new Paginacion();
+
 
     protected override void OnInitialized()
     {
-        lista = new List<BancosAsociados>();
+        lista = BancoAsociadoBLL.GetList(b => true);
+        Filtro = "Todo";
+        IniciarPaginacion();
+    }
+
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = lista.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        listapaginada = lista.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void Mover()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+        else if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
     }
 
     private void Buscar()
@@ -79,25 +166,27 @@
             }
             else
             {
-                lista = BancoAsociadoBLL.GetList(a => true);
 
                 if (lista.Count == 0)
                 {
-                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                    toast.ShowWarning("No hay bancos Registrados", "Aviso");
                 }
                 else
                 {
-                    mensaje = "";
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = BancoAsociadoBLL.GetList(e => true);
+                            listapaginada = BancoAsociadoBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
+                            listapaginada = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
                             break;
                         case "Nombre":
-                            lista = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
+                            listapaginada = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
+                            break;
+                        case "Telefono":
+                            listapaginada = BancoAsociadoBLL.GetList(e => e.Telefono == Criterio);
                             break;
                     }
                 }
@@ -107,6 +196,6 @@
         {
             throw;
         }
-    } 
+    }
 }
 

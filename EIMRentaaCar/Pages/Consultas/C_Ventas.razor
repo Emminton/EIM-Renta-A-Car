@@ -20,8 +20,8 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="Id">Vehiculo ID</option>
-                        <option value="Nombre">ClienteId</option>
+                        <option value="ID">Vehiculo ID</option>
+                        <option value="ClienteId">ClienteId</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -59,16 +59,81 @@
     </div>
 </EditForm>
 
-@code { private List<Ventas> lista { get; set; }
+@code { 
+    
+    private List<Ventas> lista { get; set; }
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
-    private decimal TotalInventario { get; set; }
-    public string mensaje;
+
+    private List<Ventas> listapaginada { get; set; }
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    Paginacion paginacion = new Paginacion();
+
 
     protected override void OnInitialized()
     {
-        lista = new List<Ventas>();
+        lista = VentasBLL.GetList(v => true);
+        Filtro = "Todo";
+        IniciarPaginacion();
+    }
+
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = lista.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        listapaginada = lista.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void Mover()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+        else if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
     }
 
     private void Buscar()
@@ -81,25 +146,25 @@
             }
             else
             {
-                lista = VentasBLL.GetList(a => true);
 
                 if (lista.Count == 0)
                 {
-                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                    toast.ShowWarning("No hay venta registrados", "Aviso");
                 }
                 else
                 {
-                    mensaje = "";
+
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = VentasBLL.GetList(e => true);
+                            listapaginada = VentasBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = VentasBLL.GetList(e => e.VentaId == Convert.ToInt32(Criterio));
+                            listapaginada = VentasBLL.GetList(e => e.VentaId == Convert.ToInt32(Criterio));
                             break;
                         case "ClienteId":
-                            lista = VentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                            listapaginada = VentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
                             break;
                     }
                 }
@@ -109,5 +174,5 @@
         {
             throw;
         }
-    } 
+    }
 }

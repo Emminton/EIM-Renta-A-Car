@@ -96,7 +96,7 @@
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
-    private decimal TotalInventario { get; set; }
+
 
     double Paginas = 0;
     double Elementos = 0;
@@ -176,7 +176,7 @@
             }
             else
             {
-                if (Filtro != string.Empty && Criterio != null)
+                if (Filtro != null)
                 {
 
                     switch (Filtro)
