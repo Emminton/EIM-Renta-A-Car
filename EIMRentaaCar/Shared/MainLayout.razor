@@ -18,17 +18,17 @@
 
                 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
                 {
-                    @if (Contador() > 0)
-                    {
-                        <a class="ml-md-0 btn text-white fa fa-bell-o" href="Notify"></a>
-                        <span class="badge">@Contador()</span>//muestra la cantidad de notificacion respectivamente a cada usuario
-                    }
-                }
+                        <a class="ml-md-0 btn text-white fa fa-bell-o" href="Notify">
+                            @if (Contador() > 0)
+                            {
+                                <span class="badge">@Contador()</span>
+                                //muestra la cantidad de notificacion respectivamente a cada usuario
+                            }
 
-                <a class="ml-auto btn btn-danger oi oi-account-logout"
-                   href="/logout?returnUrl=/"
-                   target="_top"> Logout</a>
-            </div>
+                        </a>
+                 }
+                 <a class="ml-auto btn btn-danger oi oi-account-logout" href="/logout?returnUrl=/"target="_top"> Logout</a>
+                </div>
             <div class="content px-4">
                 @Body
             </div>

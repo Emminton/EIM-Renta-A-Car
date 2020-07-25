@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,8 @@ namespace EIMRentaaCar.Models
         public int TiempoRenta { get; set; }
         public decimal  Balance { get; set; }
 
+        [ForeignKey("RentaId")]
+        public virtual List<PagoDetalles> PagoDetalle { get; set; }
 
         public Rentas()
         {
@@ -32,6 +35,7 @@ namespace EIMRentaaCar.Models
             ClienteId = 0;
             TiempoRenta = 0;
             Balance = 0;
+            PagoDetalle = new List<PagoDetalles>();
         }
     }
 }
