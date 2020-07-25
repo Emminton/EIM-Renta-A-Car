@@ -12,22 +12,22 @@ namespace EIMRentaaCar.BLL
     public class RentasBLL
     {
 
-        public static bool Guardar(Rentas rentas)
+        public static bool Guardar(Rentas Rentas)
         {
-            if (!Existe(rentas.RentaId))// si no existe se inserta
-                return Insertar(rentas);
+            if (!Existe(Rentas.RentaId))// si no existe se inserta
+                return Insertar(Rentas);
             else
-                return Modificar(rentas);
+                return Modificar(Rentas);
         }
 
-        private static bool Insertar(Rentas rentas)
+        private static bool Insertar(Rentas Rentas)
         {
             bool paso = false;
             Contexto contexto = new Contexto();
 
             try
             {
-                contexto.Rentas.Add(rentas);
+                contexto.Rentas.Add(Rentas);
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
@@ -41,14 +41,14 @@ namespace EIMRentaaCar.BLL
             return paso;
         }
 
-        public static bool Modificar(Rentas rentas)
+        public static bool Modificar(Rentas Rentas)
         {
             bool paso = false;
             Contexto contexto = new Contexto();
 
             try
             {
-                contexto.Entry(rentas).State = EntityState.Modified;
+                contexto.Entry(Rentas).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
@@ -92,11 +92,11 @@ namespace EIMRentaaCar.BLL
         public static Rentas Buscar(int id)
         {
             Contexto contexto = new Contexto();
-            Rentas rentas;
+            Rentas Rentas;
 
             try
             {
-                rentas = contexto.Rentas.Find(id);
+                Rentas = contexto.Rentas.Find(id);
             }
             catch (Exception)
             {
@@ -106,7 +106,7 @@ namespace EIMRentaaCar.BLL
             {
                 contexto.Dispose();
             }
-            return rentas;
+            return Rentas;
         }
 
         public static List<Rentas> GetList(Expression<Func<Rentas, bool>> expression)
@@ -137,7 +137,7 @@ namespace EIMRentaaCar.BLL
             bool encontrado = false;
             try
             {
-                encontrado = contexto.Rentas.Any(c => c.RentaId == id);
+                encontrado = contexto.Rentas.Any(c => c.ClienteId == id);
             }
             catch (Exception)
             {
@@ -149,6 +149,5 @@ namespace EIMRentaaCar.BLL
             }
             return encontrado;
         }
-
     }
 }

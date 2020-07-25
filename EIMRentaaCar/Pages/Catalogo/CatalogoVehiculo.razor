@@ -1,4 +1,4 @@
-﻿@page "/ConsultaVhiculos"
+﻿@page "/Catalogo"
 
 @using EIMRentaaCar.BLL
 @using EIMRentaaCar.Models
@@ -20,59 +20,45 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="ID">Vehiculo ID</option>
-                        <option value="VIN">Vin</option>
+                        <option value="Año">Año</option>
                         <option value="Marca">Marca</option>
                         <option value="Modelo">Modelo</option>
+                        <option value="Tipo">Tipo</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
                     <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
-
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
                 </div>
             </div>
 
-            <table class=" table mb-3 mt-3">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Vehiculo ID</th>
-                        <th>Vin</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Kilometraje</th>
-                        <th>Año</th>
-                        <th>Tipo</th>
-                        <th>Precio por dia</th>
-                        <th>Precio de venta</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @if (listapaginada.Count == 0)
-                    {
-                        toast.ShowWarning("No hay datos");
-                    }
-                    else
-                    {
-                        @foreach (var item in listapaginada)
-                        {
-                            <tr class="table-striped">
-                                <td>@item.VehiculoId</td>
-                                <td>@item.Vin</td>
-                                <td>@item.Marca</td>
-                                <td>@item.Modelo</td>
-                                <td>@item.Kilometraje</td>
-                                <td>@item.Año</td>
-                                <td>@item.Tipo</td>
-                                <td>@item.PrecioPorDia</td>
-                                <td>@item.PrecioVenta</td>
-
-                            </tr>
-                        }
-                    }
-                    </tbody>
-            </table>
+            <div class="row">
+                @foreach (var item in listapaginada)
+                {
+                    
+                        <div class="col-4">
+                            <div class="card">
+                                <img class="card-img-top" src="/Imagen/vehiculos.jpg" />
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        <strong>@item.Marca</strong>   <strong>@item.Modelo</strong>
+                                    </div>
+                                    <div class="card-text">
+                                        <span>Estado: @item.Estado</span>
+                                        <br />
+                                        <span>Precio: @item.PrecioVenta</span>
+                                        <br />
+                                        <span>Año: @item.Año</span>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <a class="btn btn-primary" href="Vehiculos/@item.VehiculoId">Ver</a>
+                                </div>
+                            </div>
+                        </div>
+                    
+                }
+            </div>
         </div>
         <div class="form-row col-12 justify-content-center">
             <nav>
@@ -100,7 +86,7 @@
     </div>
 </EditForm>
 
-@code { 
+@code {
     private List<Vehiculos> lista { get; set; }
     private List<Vehiculos> listapaginada { get; set; }
 
@@ -183,32 +169,31 @@
             }
             else
             {
-                lista = VehiculosBLL.GetList(a => true);
 
                 if (lista.Count == 0)
                 {
-                    toast.ShowWarning("No hay vehiculo registrados", "Aviso");
+                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
                 }
                 else
                 {
-                    
+
                     switch (Filtro)
                     {
                         case "Todo":
                             listapaginada = VehiculosBLL.GetList(e => true);
                             IniciarPaginacion();
                             break;
-                        case "ID":
-                            listapaginada = VehiculosBLL.GetList(e => e.VehiculoId== Convert.ToInt32(Criterio));
-                            break;
-                        case "VIN":
-                            listapaginada = VehiculosBLL.GetList(e => e.Vin == Criterio);
+                        case "Año":
+                            listapaginada = VehiculosBLL.GetList(e => e.Año == Convert.ToInt32(Criterio));
                             break;
                         case "Marca":
                             listapaginada = VehiculosBLL.GetList(e => e.Marca == Criterio);
                             break;
                         case "Modelo":
                             listapaginada = VehiculosBLL.GetList(e => e.Modelo == Criterio);
+                            break;
+                        case "Tipo":
+                            listapaginada = VehiculosBLL.GetList(e => e.Tipo == Criterio);
                             break;
                     }
                 }
@@ -219,4 +204,8 @@
             throw;
         }
     }
+}
+
+@code {
+
 }

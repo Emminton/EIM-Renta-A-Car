@@ -12,7 +12,7 @@ namespace EIMRentaaCar.Models
         public Paginacion()
         {
             Pagina = 1;
-            Mostrar = 5;
+            Mostrar = 9;
         }
     }
 }

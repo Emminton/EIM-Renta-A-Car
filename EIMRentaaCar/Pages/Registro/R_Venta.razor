@@ -404,8 +404,8 @@
                     CuotaId = 0,
                     VentaId = ventas.VentaId,
                     UsuarioId = 0,
-                    Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
-                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                    Monto = Math.Round((VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas),2),
+                    Balance = Math.Round((VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas),2),
                     Pagada = false,
                     Numero = (1 + i)
                 });
@@ -440,7 +440,7 @@
         {
             if (!cuota.Pagada)
             {
-                ventas.Balance += cuota.Balance;
+                ventas.Balance += Math.Round(cuota.Balance, 2);
             }
         }
 

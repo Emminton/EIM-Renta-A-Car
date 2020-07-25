@@ -4,7 +4,6 @@
 @using EIMRentaaCar.BLL
 
 @inject IToastService toast
-@inject IJSRuntime js
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)

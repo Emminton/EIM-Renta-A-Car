@@ -1,38 +1,53 @@
-﻿@inherits LayoutComponentBase
-
+﻿
 @using Blazored.Toast.Configuration
-@using BLL
-@using Models
-@using System.Web;
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inherits LayoutComponentBase
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
 
-    <AuthorizeView>
-        <Authorized>
-            <div class="sidebar">
-                <NavMenu />
-            </div>
-            <div class="main">
-                <div class="content px-4">
-                    @Body
-                </div>
-            </div>
 
-        </Authorized>
+<AuthorizeView>
+    <Authorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <div class="main">
+            <div class="top-row px-4" style="background: #232121">
+                <b class="text-white">Bienvenido, @context.User.Identity.Name!</b>
 
-        <NotAuthorized>
-            <div class="sidebar">
-                <NavMenu />
-            </div>
-            <div class="main">
-                <div class="top-row px-4" style="background-color: #d2d5d7">
-                </div>
-                <div class="content px-4">
-                    @Body
-                </div>
-            </div>
-        </NotAuthorized>
 
-    </AuthorizeView>
+                @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+                {
+                    @if (Contador() > 0)
+                    {
+                        <a class="ml-md-0 btn text-white fa fa-bell-o" href="Notify"></a>
+                        <span class="badge">@Contador()</span>//muestra la cantidad de notificacion respectivamente a cada usuario
+                    }
+                }
+
+                <a class="ml-auto btn btn-danger oi oi-account-logout"
+                   href="/logout?returnUrl=/"
+                   target="_top"> Logout</a>
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <div class="main">
+            <div class="top-row px-4" style="background: #232121" />
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </NotAuthorized>
+
+</AuthorizeView>
 
 <BlazoredToasts Position="ToastPosition.TopRight"
                 Timeout="4"
@@ -40,5 +55,41 @@
                 SuccessIcon="fa fa-check"
                 ErrorIcon="fa fa-times"
                 InfoIcon="fa fa-info"
-                WarningIcon="fa fa-warning"
-               />
+                WarningIcon="fa fa-warning" />
+
+
+@code{
+
+    Notificaciones notificaciones = new Notificaciones();
+
+    public List<Notificaciones> lista { get; set; }
+    private int Contador() // aqui devuelvo la cantidad de notificaciones de los usuarios
+    {
+        lista = NotificacionBLL.GetList(n => true);
+
+        try
+        {
+
+            lista = lista.Where(e => e.UsuarioId == getUser() && e.visto == false).ToList();
+
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return lista.Count();
+    }
+
+    private int getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+        if (usuario != null)
+        {
+            return usuario.UsuarioId;
+        }
+        return 0;
+    }
+
+}

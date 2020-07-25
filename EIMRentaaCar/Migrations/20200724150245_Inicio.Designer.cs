@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200722183557_Firts")]
-    partial class Firts
+    [Migration("20200724150245_Inicio")]
+    partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -333,7 +333,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 22, 14, 35, 57, 402, DateTimeKind.Local).AddTicks(4121),
+                            FechaIngreso = new DateTime(2020, 7, 24, 11, 2, 44, 710, DateTimeKind.Local).AddTicks(3827),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",

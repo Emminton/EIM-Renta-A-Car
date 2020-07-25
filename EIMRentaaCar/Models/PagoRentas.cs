@@ -29,8 +29,7 @@ namespace EIMRentaaCar.Models
         [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
         public decimal Monto { get; set; }
 
-        [ForeignKey("PagoRentaId")]
-        public virtual List<PagoDetalles> RentaDetalles { get; set; }
+
        
         public PagoRentas()
         {
@@ -38,7 +37,6 @@ namespace EIMRentaaCar.Models
             RentaId = 0;
             Fecha = DateTime.Now;
             Monto = 0;
-            RentaDetalles = new List<PagoDetalles>();
         }
     }
 }

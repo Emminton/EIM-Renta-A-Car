@@ -50,10 +50,7 @@ namespace EIMRentaaCar.BLL
 
                 contexto.Database.ExecuteSqlRaw($"Delete From RentaDetalles Where PagoRentaId = { pagoRentas.PagoRentaId}");
 
-                foreach (PagoDetalles item in pagoRentas.RentaDetalles)
-                {
-                    contexto.Entry(item).State = EntityState.Added;
-                }
+              
 
                 contexto.Entry(pagoRentas).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
@@ -103,10 +100,7 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                pagoRentas = contexto.PagoRentas
-                    .Where(p => p.PagoRentaId == id)
-                    .Include(p => p.RentaDetalles)
-                    .FirstOrDefault();
+                pagoRentas = contexto.PagoRentas.Find(id);
             }
             catch (Exception)
             {

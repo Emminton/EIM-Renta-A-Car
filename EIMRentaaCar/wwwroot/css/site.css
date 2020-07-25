@@ -212,3 +212,8 @@ app {
     .carousel-control-next i {
         margin-right: -3px;
     }
+
+.badge {
+    border-radius: 50%;
+    background-color: red;
+}
