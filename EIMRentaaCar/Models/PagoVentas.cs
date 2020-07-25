@@ -14,10 +14,8 @@ namespace EIMRentaaCar.Models
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int PagoVentaId { get; set; }
 
-        [ForeignKey("VentaId")]
         public int VentaId { get; set; }
 
-        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -28,9 +26,6 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "El campo monto no debe estar vació")]
         public decimal Monto { get; set; }
 
-        [ForeignKey("PagoVentaId")]
-        public virtual List<PagoDetalles> PagoDetalles { get; set; }
-
         public PagoVentas()
         {
             PagoVentaId = 0;
@@ -38,7 +33,7 @@ namespace EIMRentaaCar.Models
             UsuarioId = 0;
             Fecha = DateTime.Now;
             Monto = 0.0m;
-            PagoDetalles = new List<PagoDetalles>();
+           
         }
     }
 }

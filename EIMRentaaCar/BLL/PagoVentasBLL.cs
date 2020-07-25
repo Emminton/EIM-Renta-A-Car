@@ -125,9 +125,7 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                pagoVentas = contexto.PagoVentas.Where(v => v.PagoVentaId == id)
-                    .Include(v => v.PagoDetalles)
-                    .SingleOrDefault();
+                pagoVentas = contexto.PagoVentas.Find(id);
             }
             catch (Exception)
             {
