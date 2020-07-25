@@ -15,35 +15,31 @@ namespace EIMRentaaCar.Models
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int PagoId { get; set; }
 
-        [ForeignKey("PagoRentaId")]
-        public int PagoRentaId { get; set; }
+        public int RentaId { get; set; }
 
-        [ForeignKey("PagoVentaId")]
-        public int PagoVentaId { get; set; }
+        public int UsuarioId { get; set; }
 
-        [ForeignKey("ClienteId")]
-        public int ClienteId { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
-        [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
-        public DateTime Fecha { get; set; }
-
-        [Required(ErrorMessage ="El campo monto no debe estar vació")]
+        [Required(ErrorMessage = "El campo Moton no debe estar vació")]
         public decimal Monto { get; set; }
 
-        [Required(ErrorMessage = "El campo cuota no debe estar vació")]
-        public decimal Cuotas { get; set; }
+        [Required(ErrorMessage = "El campo Balance no debe estar vació")]
+        public decimal Balance { get; set; }
 
+        [Required(ErrorMessage = "No puede estar vació")]
+        public bool Pagada { get; set; }
+
+        [Required(ErrorMessage = "El campo numero no debe estar vació")]
+        public int Dias { get; set; }
+
+     
         public PagoDetalles()
         {
-            PagoId = 0;
-            PagoRentaId = 0;
-            PagoVentaId = 0;
-            ClienteId = 0;
-            Fecha = DateTime.Now;
+            PagoId = 0;         
+            RentaId = 0;
             Monto = 0.0m;
-            Cuotas = 0.0m;
+            Dias = 0;
+            Pagada = false;
         }
+
     }
 }

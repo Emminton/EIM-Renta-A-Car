@@ -28,6 +28,34 @@ namespace EIMRentaaCar.BLL
             {
                 contexto.PagoRentas.Add(pagoRentas);
                 paso = contexto.SaveChanges() > 0;
+
+                Rentas rentas = RentasBLL.Buscar(pagoRentas.RentaId);
+
+                for (int i = 0; i < rentas.PagoDetalle.Count; i++)
+                {
+
+                    if (pagoRentas.Monto >= rentas.PagoDetalle[i].Monto && rentas.PagoDetalle[i].Pagada == false)
+                    {
+
+                        pagoRentas.Monto -= rentas.PagoDetalle[i].Balance;
+                        rentas.PagoDetalle[i].Balance = 0;
+                        rentas.PagoDetalle[i].Pagada = true;
+
+
+                    }
+                    else if (pagoRentas.Monto <= rentas.PagoDetalle[i].Monto && rentas.PagoDetalle[i].Pagada == false)
+                    {
+                        rentas.PagoDetalle[i].Balance -= pagoRentas.Monto;
+                        pagoRentas.Monto = 0;
+                        break;
+                    }
+                }
+                rentas.Balance = 0;
+                foreach (var item in rentas.PagoDetalle)
+                {
+                    rentas.Balance += item.Balance;
+                }
+                RentasBLL.Modificar(rentas);
             }
             catch (Exception)
             {
@@ -47,13 +75,6 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-
-                contexto.Database.ExecuteSqlRaw($"Delete From RentaDetalles Where PagoRentaId = { pagoRentas.PagoRentaId}");
-
-                foreach (PagoDetalles item in pagoRentas.RentaDetalles)
-                {
-                    contexto.Entry(item).State = EntityState.Added;
-                }
 
                 contexto.Entry(pagoRentas).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
@@ -103,10 +124,7 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                pagoRentas = contexto.PagoRentas
-                    .Where(p => p.PagoRentaId == id)
-                    .Include(p => p.RentaDetalles)
-                    .FirstOrDefault();
+                pagoRentas = contexto.PagoRentas.Find(id);
             }
             catch (Exception)
             {

@@ -11,7 +11,6 @@ namespace EIMRentaaCar.BLL
 {
     public class RentasBLL
     {
-
         public static bool Guardar(Rentas rentas)
         {
             if (!Existe(rentas.RentaId))// si no existe se inserta
@@ -27,8 +26,16 @@ namespace EIMRentaaCar.BLL
 
             try
             {
+                var vehiculo = VehiculosBLL.Buscar(rentas.VehiculoId);
+
+                if (vehiculo != null)
+                {
+                    vehiculo.Estado = "Rentado";    //Cambiando el estado del vehículo a Rentado
+                    VehiculosBLL.Modificar(vehiculo);
+                }
                 contexto.Rentas.Add(rentas);
                 paso = contexto.SaveChanges() > 0;
+
             }
             catch (Exception)
             {
@@ -48,6 +55,10 @@ namespace EIMRentaaCar.BLL
 
             try
             {
+                foreach (PagoDetalles item in rentas.PagoDetalle)
+                {
+                    contexto.Entry(item).State = EntityState.Modified;
+                }
                 contexto.Entry(rentas).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
@@ -71,8 +82,15 @@ namespace EIMRentaaCar.BLL
             try
             {
                 var aux = contexto.Rentas.Find(id);
+
                 if (aux != null)
                 {
+                    var auxVehiculo = contexto.Vehiculos.Find(aux.VehiculoId);
+                    if (auxVehiculo != null)
+                    {
+                        auxVehiculo.Estado = "Disponible";
+                        VehiculosBLL.Modificar(auxVehiculo);
+                    }
                     contexto.Rentas.Remove(aux);//remueve la informacion de la entidad relacionada
                     paso = contexto.SaveChanges() > 0;
                 }
@@ -96,7 +114,9 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                rentas = contexto.Rentas.Find(id);
+                rentas = contexto.Rentas.Where(v => v.RentaId == id)
+                                 .Include(v => v.PagoDetalle)
+                                 .SingleOrDefault();
             }
             catch (Exception)
             {

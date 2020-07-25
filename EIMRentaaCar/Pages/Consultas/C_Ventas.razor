@@ -16,7 +16,7 @@
             <div class="input-group mb-4">
                 <div class="input-group">
 
-                    <label for="filtro">Filtro: </label>
+                    <label for="filtro"><strong>Filtro:</strong> </label>
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
@@ -24,7 +24,7 @@
                         <option value="Nombre">ClienteId</option>
                     </select>
 
-                    <label for="criterio ml-3 mr-3"> Criterio: </label>
+                    <label for="criterio ml-3 mr-3"><strong> Criterio:</strong> </label>
                     <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
 
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
@@ -43,6 +43,10 @@
                 </thead>
 
                 <tbody>
+                    @if (lista.Count == 0)
+                    {
+
+                    }
                     @if (listapaginada.Count == 0)
                     {
                         toast.ShowWarning("No hay datos");
@@ -60,33 +64,48 @@
                             </tr>
                         }
                     }
-                 </tbody>
+                </tbody>
             </table>
         </div>
-        <div class="form-row col-12 justify-content-center">
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item bt">
-                        <a class="page-link" @onclick="PaginaAnterior">
-                            <span class="oi oi-media-skip-backward "></span>
-                        </a>
-                    </li>
+        
+            <div class="form-group">
+                <div class="row">
 
-                    @for (int i = 1; i <= Paginas; i++)
-                    {
-                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+                    <div class="col-2">
+                        <label><strong>Total de ventas </strong></label>
+                        <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
+                    </div>
+                    <div class="form-group col-2 col-md-2 ml-md-auto">
+                        <label><strong>Vehiculos Vendido</strong></label>
+                        <InputNumber class="form-control" readonly="true" @bind-Value="ContarVenta" />
+                    </div>
+                </div>
+            </div>
+ 
+            <div class="form-row col-12 justify-content-center">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item bt">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip-backward "></span>
+                            </a>
+                        </li>
 
-                    }
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
 
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaSiguiente">
-                            <span class="oi oi-media-skip-forward "></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip-forward "></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-    </div>
 </EditForm>
 
 @code { 
@@ -97,11 +116,15 @@
     double Elementos = 0;
     int PaginaActual = 0;
 
+    public decimal AcomularPrecio { get; set; }
+    public int ContarVenta { get; set; }
+    public int Disponibilidad { get; set; }
+
+
     Paginacion paginacion = new Paginacion();
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
-
 
     protected override void OnInitialized()
     {
@@ -110,6 +133,42 @@
         IniciarPaginacion();
     }
 
+    private void TotalPrecio()
+
+    {
+        foreach (var item in Datos())
+        {
+            AcomularPrecio += item.MontoTotal;
+            ContarVenta += item.VehiculoId;
+        }
+    }
+
+    private List<Ventas> Datos()
+    {
+        try
+        {
+            List<Ventas> lista = VentasBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        return lista;
+    }
+
+
+    private void ContarVehiculo()
+    {
+        try
+        {
+            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        Disponibilidad = lista.Count();
+    }
 
     public void IniciarPaginacion()
     {
@@ -117,6 +176,8 @@
         Elementos = lista.Count();
         Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
         listapaginada = lista.Take(paginacion.Mostrar).ToList();
+        ContarVehiculo();
+        TotalPrecio();
     }
 
     private void PaginaSiguiente()
@@ -182,7 +243,7 @@
                 }
                 else
                 {
-                   
+
                     switch (Filtro)
                     {
                         case "Todo":

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EIMRentaaCar.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200722183557_Firts")]
-    partial class Firts
+    [Migration("20200725160728_Prueba")]
+    partial class Prueba
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -183,29 +183,27 @@ namespace EIMRentaaCar.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClienteId")
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Dias")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Cuotas")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Monto")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PagoRentaId")
+                    b.Property<bool>("Pagada")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("PagoVentaId")
+                    b.Property<int>("RentaId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("PagoId");
 
-                    b.HasIndex("PagoRentaId");
-
-                    b.HasIndex("PagoVentaId");
+                    b.HasIndex("RentaId");
 
                     b.ToTable("PagoDetalles");
                 });
@@ -272,8 +270,7 @@ namespace EIMRentaaCar.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("TiempoRenta")
-                        .HasColumnType("INTEGER")
-                        .HasMaxLength(30);
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("UsuarioId")
                         .HasColumnType("INTEGER");
@@ -333,7 +330,7 @@ namespace EIMRentaaCar.Migrations
                             UsuarioId = 1,
                             ConfirmarPassword = "MQAyADMANAA=",
                             Email = "Admin@gamil.com",
-                            FechaIngreso = new DateTime(2020, 7, 22, 14, 35, 57, 402, DateTimeKind.Local).AddTicks(4121),
+                            FechaIngreso = new DateTime(2020, 7, 25, 12, 7, 28, 408, DateTimeKind.Local).AddTicks(9337),
                             Nombre = "Admistrador",
                             Password = "MQAyADMANAA=",
                             Roles = "Administrador",
@@ -439,15 +436,9 @@ namespace EIMRentaaCar.Migrations
 
             modelBuilder.Entity("EIMRentaaCar.Models.PagoDetalles", b =>
                 {
-                    b.HasOne("EIMRentaaCar.Models.PagoRentas", null)
-                        .WithMany("RentaDetalles")
-                        .HasForeignKey("PagoRentaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EIMRentaaCar.Models.PagoVentas", null)
-                        .WithMany("PagoDetalles")
-                        .HasForeignKey("PagoVentaId")
+                    b.HasOne("EIMRentaaCar.Models.Rentas", null)
+                        .WithMany("PagoDetalle")
+                        .HasForeignKey("RentaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

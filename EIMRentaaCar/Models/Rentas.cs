@@ -9,29 +9,27 @@ namespace EIMRentaaCar.Models
 {
     public class Rentas
     {
-        [Key]
-        [Required(ErrorMessage = "El campo Id debe ser un numero")]
+        [Key]       
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int RentaId { get; set; }
-
-        [ForeignKey("VehiculoId")]
+   
         public int VehiculoId { get; set; }
 
-        [ForeignKey("ClienteId")]
         public int ClienteId { get; set; }
+
         public int UsuarioId { get; set; }
- 
-        [DataType(DataType.DateTime)]
-        [Required(ErrorMessage = "El campo fecha no puede estar vacío.")]
+
         [DisplayFormat(DataFormatString = "{0:dd,mm,yyyy}")]
         public DateTime FechaRenta { get; set; }
 
         [Required(ErrorMessage = "El campo Tiempo de renta no debe estar vació")]
-        [MinLength(1, ErrorMessage = "El campo lo minimo debe terner 3 caracteres.")]
-        [MaxLength(30, ErrorMessage = "El nombre es muy largo.")]
+        [Range(1, 30, ErrorMessage = "La Renta debe de ser 1 a 30 Dias!!!!  Despues de la fecha, debe de hacer una nueva Renta")]     
         public int TiempoRenta { get; set; }
+
         public decimal  Balance { get; set; }
 
+        [ForeignKey("RentaId")]
+        public virtual List<PagoDetalles> PagoDetalle { get; set; }
 
         public Rentas()
         {
@@ -40,6 +38,7 @@ namespace EIMRentaaCar.Models
             FechaRenta = DateTime.Now;
             ClienteId = 0;
             TiempoRenta = 0;
+            PagoDetalle = new List<PagoDetalles>();
         }
     }
 }

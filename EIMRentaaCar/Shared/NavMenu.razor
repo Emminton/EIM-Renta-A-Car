@@ -52,7 +52,7 @@
 
                 </ul>
 
-             }
+            }
 
         </li>
 
@@ -61,12 +61,12 @@
                 <div class="text-center align-items-center">
                     <span class="fa fa-bell" aria-hidden="true"></span>
                     @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-                     {
+                    {
                         @if (Contador() > 0)
-                         {
-                            <span class="badge">@Contador()</span> //muestra la cantidad de notificacion respectivamente a cada usuario
-                         }
-                     }
+                        {
+                            <span class="badge">@Contador()</span>//muestra la cantidad de notificacion respectivamente a cada usuario
+                        }
+                    }
                 </div>
             </NavLink>
         </li>
@@ -77,49 +77,54 @@
             </NavLink>
             @if (stateRegister)
             {
-                <ul class="children">
+        <ul class="children">
 
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Cliente">
-                            <span class="oi oi-people" aria-hidden="true"></span> Clientes
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Usuarios">
-                            <span class="oi oi-people" aria-hidden="true"></span> Usuarios
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Importadores">
-                            <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Importadores
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Bancos">
-                            <span class="fa fa-bank" aria-hidden="true"></span>&nbsp; Bancos
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Vehiculos">
-                            <span class="fa fa-car" aria-hidden="true"></span> &nbsp; Vehiculos
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Ventas">
-                            <span class="oi oi-dollar" aria-hidden="true"></span> Ventas
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="Renta">
-                            <span class="oi oi-dollar" aria-hidden="true"></span> Rentas
-                        </NavLink>
-                    </li>
-                    <li class="list-unstyled">
-                        <NavLink class="nav-link" href="PagoVenta">
-                            <span class="oi oi-dollar" aria-hidden="true"></span> Pago Venta
-                        </NavLink>
-                    </li>
-                </ul>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Cliente">
+                    <span class="oi oi-people" aria-hidden="true"></span> Clientes
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Usuarios">
+                    <span class="oi oi-people" aria-hidden="true"></span> Usuarios
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Importadores">
+                    <span class="oi oi-data-transfer-upload" aria-hidden="true"></span> Importadores
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Bancos">
+                    <span class="fa fa-bank" aria-hidden="true"></span>&nbsp; Bancos
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Vehiculos">
+                    <span class="fa fa-car" aria-hidden="true"></span> &nbsp; Vehiculos
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Ventas">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Ventas
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="Renta">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Rentas
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="PagoVenta">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Pago Venta
+                </NavLink>
+            </li>
+            <li class="list-unstyled">
+                <NavLink class="nav-link" href="PagoRenta">
+                    <span class="oi oi-dollar" aria-hidden="true"></span> Pago Renta
+                </NavLink>
+            </li>
+        </ul>
             }
 
         </li>
