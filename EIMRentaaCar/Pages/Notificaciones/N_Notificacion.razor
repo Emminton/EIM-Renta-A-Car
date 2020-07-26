@@ -1,5 +1,4 @@
-﻿@page "/Notify"
-
+﻿
 @using EIMRentaaCar.Models
 @using EIMRentaaCar.BLL
 
@@ -8,7 +7,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <div class="container">
+    <div class="container" id="NTF">
         @foreach (var item in lista)
         {
             @if (item.UsuarioId == getUser() && item.visto == false) // aqui valido si la notificacion no fueron leidas por el usuario
@@ -29,7 +28,7 @@
                             {
                                 <h4>@item.Titulo</h4>
                             }
-                            <small>@item.Fecha</small>
+                            <small>@item.Fecha.ToString("MM/dd/yyyy H:mm tt")</small>
                         </div>
                         <p>@item.Asunto</p>
                         <br />

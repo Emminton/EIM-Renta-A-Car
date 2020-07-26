@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #cecece
 }
 
 a, .btn-link {
@@ -222,4 +223,8 @@ app {
     .modal-dialog {
         max-width: 80%;
     }
+}
+
+.card-header{
+    background-color: rgba(238, 55, 55, 0.99)
 }

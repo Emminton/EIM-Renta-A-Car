@@ -123,7 +123,7 @@
                     @*Detalle*@
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
-                            <thead class="thead-light">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>#</th>
                                     <th>Monto</th>
@@ -140,7 +140,7 @@
                                         <td>@item.Monto</td>
                                         <td>@item.Balance</td>
                                         <td><input type="checkbox" @bind="item.Pagada" /></td>
-                                        <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i> Remover</button> </td>
                                     </tr>
                                 }
 
