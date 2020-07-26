@@ -19,42 +19,42 @@
 
             @*Importador Id y boton al lado*@
             <div class="card-body">
-                <form />
-                <div class="form-row align-items-center">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>ID</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="importadores.ImportadorId" class="form-control col-4" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                <form>
+                    <div class="form-row align-items-center">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>ID</label>
+                                <div class="input-group">
+                                    <InputNumber @bind-Value="importadores.ImportadorId" class="form-control col-4" />
+                                    <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary" @onclick="Buscar"><i class="fa fa-search"></i> Buscar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                @*Nombres*@
-                <div class="form-group">
-                    <label>Nombre</label>
-                    <InputText @bind-Value="importadores.Nombre" class="form-control" />
-                    <ValidationMessage For="@(() => importadores.Nombre)" />
-                </div>
+                    @*Nombres*@
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <InputText @bind-Value="importadores.Nombre" class="form-control" />
+                        <ValidationMessage For="@(() => importadores.Nombre)" />
+                    </div>
 
-                @*Telefono*@
-                <div class="form-group">
-                    <label>Teléfono </label>
-                    <InputText @bind-Value="importadores.Telefono" class="form-control" />
-                    <ValidationMessage For="@(() => importadores.Telefono)" />
-                </div>
+                    @*Telefono*@
+                    <div class="form-group">
+                        <label>Teléfono </label>
+                        <InputText @bind-Value="importadores.Telefono" class="form-control" />
+                        <ValidationMessage For="@(() => importadores.Telefono)" />
+                    </div>
 
-                @*Gmail*@
-                <div class="form-group">
-                    <label>Email</label>
-                    <InputText @bind-Value="importadores.Email" class="form-control" />
-                    <ValidationMessage For="@(() => importadores.Email)" />
-                </div>
-
+                    @*Gmail*@
+                    <div class="form-group">
+                        <label>Email</label>
+                        <InputText @bind-Value="importadores.Email" class="form-control" />
+                        <ValidationMessage For="@(() => importadores.Email)" />
+                    </div>
+                </form>
             </div>
 
             @*Botones*@
