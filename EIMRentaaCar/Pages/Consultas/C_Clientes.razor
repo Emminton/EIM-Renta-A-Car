@@ -66,7 +66,6 @@
         <div class="card-footer text-center">
             <button class="btn btn-danger" data-toggle="modal" @onclick="PDF" data-target="#myModal"><i class="oi oi-print"></i> Generar Reporte</button>
         </div>
-
         <div class="form-row col-12 justify-content-center">
             <nav>
                 <ul class="pagination">
@@ -143,9 +142,9 @@
 
     private void PDF()
     {
-        EIMRentaaCar.Pages.Reportes.ReportCliente reportes = new Reportes.ReportCliente();
+        EIMRentaaCar.Pages.Reportes.ReportCliente cobros = new Reportes.ReportCliente();
 
-        Data = reportes.Reporte();
+        Data = cobros.Reporte();
 
         pdfContent = "data:application/pdf;base64,";
         pdfContent += System.Convert.ToBase64String(Data);
