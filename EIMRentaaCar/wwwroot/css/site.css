@@ -217,3 +217,9 @@ app {
     border-radius: 50%;
     background-color: red;
 }
+
+@media (min-width: 850px) {
+    .modal-dialog {
+        max-width: 80%;
+    }
+}

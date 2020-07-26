@@ -67,46 +67,69 @@
                 </tbody>
             </table>
         </div>
-        
-            <div class="form-group">
-                <div class="row">
+        <div class="card-footer text-center">
+            <button class="btn btn-danger" data-toggle="modal" @onclick="PDF" data-target="#myModal"><i class="oi oi-print"></i> Generar Reporte</button>
+        </div>
+        <div class="form-group">
+            <div class="row">
 
-                    <div class="col-2">
-                        <label><strong>Total de ventas </strong></label>
-                        <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
-                    </div>
-                    <div class="form-group col-2 col-md-2 ml-md-auto">
-                        <label><strong>Vehiculos Vendido</strong></label>
-                        <InputNumber class="form-control" readonly="true" @bind-Value="ContarVenta" />
-                    </div>
+                <div class="col-2">
+                    <label><strong>Total de ventas </strong></label>
+                    <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
+                </div>
+                <div class="form-group col-2 col-md-2 ml-md-auto">
+                    <label><strong>Vehiculos Vendido</strong></label>
+                    <InputNumber class="form-control" readonly="true" @bind-Value="ContarVenta" />
                 </div>
             </div>
- 
-            <div class="form-row col-12 justify-content-center">
-                <nav>
-                    <ul class="pagination">
-                        <li class="page-item bt">
-                            <a class="page-link" @onclick="PaginaAnterior">
-                                <span class="oi oi-media-skip-backward "></span>
-                            </a>
-                        </li>
+        </div>
 
-                        @for (int i = 1; i <= Paginas; i++)
-                        {
-                            <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+        <div class="form-row col-12 justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item bt">
+                        <a class="page-link" @onclick="PaginaAnterior">
+                            <span class="oi oi-media-skip-backward "></span>
+                        </a>
+                    </li>
 
-                        }
+                    @for (int i = 1; i <= Paginas; i++)
+                    {
+                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
 
-                        <li class="page-item">
-                            <a class="page-link" @onclick="PaginaSiguiente">
-                                <span class="oi oi-media-skip-forward "></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link" @onclick="PaginaSiguiente">
+                            <span class="oi oi-media-skip-forward "></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</EditForm>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content m-md-auto">
+            <div class="modal-header">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe src="@pdfContent" style="width:700px; height:700px;" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
             </div>
         </div>
-</EditForm>
+    </div>
+</div>
 
 @code { 
     private List<Ventas> lista { get; set; }
@@ -120,6 +143,8 @@
     public int ContarVenta { get; set; }
     public int Disponibilidad { get; set; }
 
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
 
     Paginacion paginacion = new Paginacion();
 
@@ -131,6 +156,16 @@
         lista = VentasBLL.GetList(C => true);
         Filtro = "Todo";
         IniciarPaginacion();
+    }
+
+    private void PDF()
+    {
+        EIMRentaaCar.Pages.Reportes.ReportVentas reportes = new Reportes.ReportVentas();
+
+        Data = reportes.Reporte();
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
     }
 
     private void TotalPrecio()

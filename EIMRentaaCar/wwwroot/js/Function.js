@@ -1,7 +1,4 @@
 ﻿
-$(function () {
-    $('[data-toggle="popover"]').popover()
-})
 
 function saveAsFile(filename, bytesBase64) {
     if (navigator.msSaveBlob) {

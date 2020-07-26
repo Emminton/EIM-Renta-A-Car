@@ -1,6 +1,5 @@
 ﻿using EIMRentaaCar.DAL;
 using EIMRentaaCar.Models;
-using EIMRentaaCar.Pages.Notify;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
