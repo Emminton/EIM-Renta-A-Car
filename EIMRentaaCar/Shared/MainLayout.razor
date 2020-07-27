@@ -14,20 +14,39 @@
         <div class="main">
             <div class="top-row px-4" style="background: #232121">
                 <b class="text-white">Bienvenido, @context.User.Identity.Name!</b>
-                    <a class="ml-md-0 btn text-white fa fa-bell-o" data-toggle="modal" data-target="#myModal">
-                        @if (Contador() > 0)
-                        {
-                            <span class="badge">@Contador()</span>
-                            //muestra la cantidad de notificacion respectivamente a cada usuario
-                        }
+                <a class="ml-md-0 btn text-white fa fa-bell-o" data-toggle="modal" data-target="#myModal">
+                    @if (Contador() > 0)
+                    {
+                        <span class="badge">@Contador()</span>
+                        //muestra la cantidad de notificacion respectivamente a cada usuario
+                    }
 
-                    </a>     
-                 <a class="ml-auto btn btn-danger oi oi-account-logout" href="/logout?returnUrl=/"target="_top"> Logout</a>
-                </div>
+                </a>
+                <a class="ml-auto btn btn-danger oi oi-account-logout" href="/logout?returnUrl=/" target="_top"> Logout</a>
+            </div>
             <div class="content px-4">
                 @Body
             </div>
         </div>
+
+        @*//Modal para las notificaciones*@
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content m-md-auto">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Notificaciones</h4>
+                    </div>
+                    <div class="modal-body">
+                        <EIMRentaaCar.Pages.Notificaciones.N_Notificacion />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="oi oi-circle-x"></i>Close</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </Authorized>
 
     <NotAuthorized>
@@ -52,23 +71,7 @@
                 InfoIcon="fa fa-info"
                 WarningIcon="fa fa-warning" />
 
-@*//Modal para las notificaciones*@
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content m-md-auto">
-            <div class="modal-header">            
-                <h4 class="modal-title">Notificaciones</h4>
-            </div>
-            <div class="modal-body">
-                <EIMRentaaCar.Pages.Notificaciones.N_Notificacion/>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="oi oi-circle-x"></i>Close</button>
 
-            </div>
-        </div>
-    </div>
-</div>
 
 @code{
 

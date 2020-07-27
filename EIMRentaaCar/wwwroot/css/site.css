@@ -219,7 +219,7 @@ app {
     background-color: red;
 }
 
-@media (min-width: 850px) {
+@media (min-width: 600px) {
     .modal-dialog {
         max-width: 80%;
     }
