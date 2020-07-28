@@ -21,14 +21,17 @@ namespace EIMRentaaCar.Models
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo Moton no debe estar vació")]
+        [Range(0, 100000000, ErrorMessage = "El campo motnto no puede ser menor que cero")]
         public decimal Monto { get; set; }
 
         [Required(ErrorMessage = "El campo Balance no debe estar vació")]
+        [Range(0, 100000000, ErrorMessage = "El campo balance no puede ser menor que cero")]
         public decimal Balance { get; set; }
 
         [Required(ErrorMessage ="No puede estar vació")]
         public bool Pagada { get; set; }
 
+        [Range(0, 100000000, ErrorMessage = "El campo numero no puede ser menor que cero")]
         [Required(ErrorMessage = "El campo numero no debe estar vació")]
         public int Numero { get; set; }
 

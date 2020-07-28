@@ -13,15 +13,13 @@ namespace EIMRentaaCar.Models
         [Key]
         public int RentaId { get; set; }
 
-
         public int VehiculoId { get; set; }
-
         public int ClienteId { get; set; }
         public int UsuarioId { get; set; }
- 
 
         public DateTime FechaRenta { get; set; }
         public int TiempoRenta { get; set; }
+        [Range(0, 100000000, ErrorMessage = "El campo balance no puede ser menor que cero")]
         public decimal  Balance { get; set; }
 
         [ForeignKey("RentaId")]

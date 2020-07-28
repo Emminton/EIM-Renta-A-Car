@@ -26,7 +26,7 @@ namespace EIMRentaaCar.Models
         public DateTime Fecha { get; set; }
 
         [Required(ErrorMessage = "El campo monto no debe estar vació")]
-        [RegularExpression("^[0-9]", ErrorMessage = "Debe ser numeros")]
+        [Range(0, 100000000, ErrorMessage = "El campo monto no puede ser menor que cero")]
         public decimal Monto { get; set; }
 
 

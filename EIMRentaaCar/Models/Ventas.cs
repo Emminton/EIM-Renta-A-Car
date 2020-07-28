@@ -20,15 +20,19 @@ namespace EIMRentaaCar.Models
 		[ForeignKey("VehiculoId")]
 		public int VehiculoId { get; set; }
         public int UsuarioId { get; set; }
-        public int Cuotas { get; set; }
+		[Range(0, 100000000, ErrorMessage = "El campo cuotas no puede ser menor que cero")]
+		public int Cuotas { get; set; }
 
+		[Range(0, 100000000, ErrorMessage = "El campo monto total no puede ser menor que cero")]
 		[Required(ErrorMessage = "El campo Monto total no debe estar vació")]
 		public decimal MontoTotal { get; set; }
 
 		[Required(ErrorMessage = "El campo Balance no debe estar vació")]
+		[Range(0, 100000000, ErrorMessage = "El campo balance no puede ser menor que cero")]
 		public decimal Balance { get; set; }
 
 		[Required(ErrorMessage = "El campo Moton cuotas no debe estar vació")]
+		[Range(0, 100000000, ErrorMessage = "El campo Monto no puede ser menor que cero")]
 		public decimal MontoCuotas { get; set; }
 
 		[DataType(DataType.DateTime)]
