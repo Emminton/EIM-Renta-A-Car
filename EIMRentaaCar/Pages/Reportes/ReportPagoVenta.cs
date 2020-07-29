@@ -40,7 +40,7 @@ namespace EIMRentaaCar.Pages.Reportes
             float[] anchoColumnas = new float[columnas];
 
             anchoColumnas[0] = 50; //id
-            anchoColumnas[1] = 60; //fecha de nacimiento
+            anchoColumnas[1] = 60; //fecha 
             anchoColumnas[2] = 100; //Usuario
             anchoColumnas[3] = 70;//Monto
 

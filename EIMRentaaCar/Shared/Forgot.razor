@@ -126,12 +126,12 @@
     private string CorreoUsuario { get; set; }
 
 
-    public void Enviar()
+    private void Enviar()
     {
         VerificarUsuario();
     }
 
-    public void Mensaje()
+    private void Mensaje()
     {
         string usuario = UsuarioBLL.Buscar(Id).UserName;
         string contraseña = UsuarioBLL.DesEncriptar(UsuarioBLL.Buscar(Id).Password);
@@ -168,7 +168,7 @@
 
     }
 
-    public void VerificarUsuario()
+    private void VerificarUsuario()
     {
         List<Usuarios> lista = UsuarioBLL.GetList(u => true);
         foreach (var item in lista)

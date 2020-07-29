@@ -96,7 +96,9 @@ namespace EIMRentaaCar.BLL
 
             try
             {
-                Rentas = contexto.Rentas.Find(id);
+                Rentas = contexto.Rentas.Where(r => r.RentaId == id)
+                                 .Include(r => r.PagoDetalle)
+                                 .SingleOrDefault();
             }
             catch (Exception)
             {
