@@ -1,4 +1,4 @@
-﻿@page "/ConsultaRentas"
+﻿@page "/ConsultaPagoRenta"
 
 @using EIMRentaaCar.BLL
 @using EIMRentaaCar.Models
@@ -9,7 +9,7 @@
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
-            <h3>Consultas De Rentas</h3>
+            <h3>Consultas De Pago Rentas</h3>
         </div>
 
         <div class="card-body">
@@ -20,8 +20,7 @@
                     <select class="form-control ml-3 mr-3" @bind="Filtro">
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
-                        <option value="ID">Vehiculo ID</option>
-                        <option value="Nombre">ClienteId</option>
+                        <option value="ID">ID</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -31,14 +30,13 @@
                 </div>
             </div>
 
-            <table class=" table mb-3 mt-3">
+            <table class=" table mb-3 mt-3" id="example">
                 <thead class="thead-light">
                     <tr>
-                        <th>Vehiculo ID</th>
-                        <th>Cliente ID</th>
-                        <th>Dias Renta</th>
+                        <th>ID</th>
                         <th>Fecha</th>
-                        <th>Balance</th>
+                        <th>Monto</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -51,30 +49,18 @@
                         @foreach (var item in listapaginada)
                         {
                             <tr class="table-striped">
-                                <td>@item.VehiculoId</td>
-                                <td>@item.ClienteId</td>
-                                <td>@item.TiempoRenta</td>
-                                <td>@item.FechaRenta</td>
-                                <td>@item.Balance</td>
+                                <td>@item.PagoRentaId</td>
+                                <td>@item.Fecha</td>
+                                <td>@item.Monto</td>
+
                             </tr>
                         }
                     }
+
                 </tbody>
             </table>
         </div>
-        <div class="form-group">
-            <div class="row">
 
-                <div class="col-2">
-                    <label><strong>Total de Rentas </strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
-                </div>
-                <div class="form-group col-2 col-md-2 ml-md-auto">
-                    <label><strong>Vehiculos Rentados</strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="ContarRenta" />
-                </div>
-            </div>
-        </div>
         <div class="card-footer text-center">
             <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
         </div>
@@ -126,78 +112,42 @@
 
 
 @code {
-    private List<Rentas> lista { get; set; }
-    private List<Rentas> listapaginada { get; set; }
+
+    private List<PagoRentas> lista { get; set; }
+    private List<PagoRentas> listapaginada { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+
 
     double Paginas = 0;
     double Elementos = 0;
     int PaginaActual = 0;
 
+    Paginacion paginacion = new Paginacion();
+
     public byte[] Data { get; set; }
     public string pdfContent { get; set; }
 
-    public decimal AcomularPrecio { get; set; }
-    public int ContarRenta { get; set; }
-    public int Disponibilidad { get; set; }
 
-    Paginacion paginacion = new Paginacion();
-
-    private string Filtro { get; set; }
-    private string Criterio { get; set; }
 
     protected override void OnInitialized()
     {
-        lista = RentasBLL.GetList(C => true);
+        lista = PagoRentasBLL.GetList(C => true);
         Filtro = "Todo";
         IniciarPaginacion();
     }
 
     private void PDF()
     {
-        EIMRentaaCar.Pages.Reportes.ReportRentas reportes = new Reportes.ReportRentas();
+        EIMRentaaCar.Pages.Reportes.ReportPagoRenta cobros = new Reportes.ReportPagoRenta();
 
-        Data = reportes.Reporte();
+        Data = cobros.Reporte();
 
         pdfContent = "data:application/pdf;base64,";
         pdfContent += System.Convert.ToBase64String(Data);
     }
 
-    private void TotalPrecio()
-
-    {
-        foreach (var item in Datos())
-        {
-            AcomularPrecio += item.Balance;
-            ContarRenta += item.VehiculoId;
-        }
-    }
-
-    private List<Rentas> Datos()
-    {
-        try
-        {
-            List<Rentas> lista = RentasBLL.GetList(v => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-        return lista;
-    }
-
-
-    private void ContarVehiculo()
-    {
-        try
-        {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-        Disponibilidad = lista.Count();
-    }
 
     public void IniciarPaginacion()
     {
@@ -205,8 +155,6 @@
         Elementos = lista.Count();
         Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
         listapaginada = lista.Take(paginacion.Mostrar).ToList();
-        ContarVehiculo();
-        TotalPrecio();
     }
 
     private void PaginaSiguiente()
@@ -260,31 +208,29 @@
         {
             if (Filtro == null)
             {
-                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+                toast.ShowWarning("Selecciones un filtro");
             }
             else
             {
-                lista = RentasBLL.GetList(a => true);
-
-                if (lista.Count == 0)
-                {
-                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
-                }
-                else
+                if (Filtro != null)
                 {
 
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = RentasBLL.GetList(e => true);
+                            listapaginada = PagoRentasBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = RentasBLL.GetList(e => e.RentaId == Convert.ToInt32(Criterio));
+                            listapaginada = PagoRentasBLL.GetList(e => e.PagoRentaId == Convert.ToInt32(Criterio));
                             break;
-                        case "ClienteId":
-                            lista = RentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
-                            break;
+
+
                     }
+                }
+                else
+                {
+                    toast.ShowWarning("debes de insertar un dato al criterio");
                 }
             }
         }

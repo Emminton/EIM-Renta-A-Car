@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EIMRentaaCar.Migrations
 {
-    public partial class Firts : Migration
+    public partial class EIM : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -118,7 +118,7 @@ namespace EIMRentaaCar.Migrations
                     ClienteId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
                     FechaRenta = table.Column<DateTime>(nullable: false),
-                    TiempoRenta = table.Column<int>(maxLength: 30, nullable: false),
+                    TiempoRenta = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
@@ -195,27 +195,21 @@ namespace EIMRentaaCar.Migrations
                 {
                     PagoId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    PagoRentaId = table.Column<int>(nullable: false),
-                    PagoVentaId = table.Column<int>(nullable: false),
-                    ClienteId = table.Column<int>(nullable: false),
-                    Fecha = table.Column<DateTime>(nullable: false),
+                    RentaId = table.Column<int>(nullable: false),
+                    UsuarioId = table.Column<int>(nullable: false),
                     Monto = table.Column<decimal>(nullable: false),
-                    Cuotas = table.Column<decimal>(nullable: false)
+                    Balance = table.Column<decimal>(nullable: false),
+                    Pagada = table.Column<bool>(nullable: false),
+                    Dias = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PagoDetalles", x => x.PagoId);
                     table.ForeignKey(
-                        name: "FK_PagoDetalles_PagoRentas_PagoRentaId",
-                        column: x => x.PagoRentaId,
-                        principalTable: "PagoRentas",
-                        principalColumn: "PagoRentaId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PagoDetalles_PagoVentas_PagoVentaId",
-                        column: x => x.PagoVentaId,
-                        principalTable: "PagoVentas",
-                        principalColumn: "PagoVentaId",
+                        name: "FK_PagoDetalles_Rentas_RentaId",
+                        column: x => x.RentaId,
+                        principalTable: "Rentas",
+                        principalColumn: "RentaId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -246,7 +240,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 22, 14, 35, 57, 402, DateTimeKind.Local).AddTicks(4121), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 29, 12, 45, 3, 510, DateTimeKind.Local).AddTicks(8939), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",
@@ -254,14 +248,9 @@ namespace EIMRentaaCar.Migrations
                 column: "VentaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PagoDetalles_PagoRentaId",
+                name: "IX_PagoDetalles_RentaId",
                 table: "PagoDetalles",
-                column: "PagoRentaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PagoDetalles_PagoVentaId",
-                table: "PagoDetalles",
-                column: "PagoVentaId");
+                column: "RentaId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -285,7 +274,10 @@ namespace EIMRentaaCar.Migrations
                 name: "PagoDetalles");
 
             migrationBuilder.DropTable(
-                name: "Rentas");
+                name: "PagoRentas");
+
+            migrationBuilder.DropTable(
+                name: "PagoVentas");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
@@ -297,10 +289,7 @@ namespace EIMRentaaCar.Migrations
                 name: "Ventas");
 
             migrationBuilder.DropTable(
-                name: "PagoRentas");
-
-            migrationBuilder.DropTable(
-                name: "PagoVentas");
+                name: "Rentas");
         }
     }
 }
