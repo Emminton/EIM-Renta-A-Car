@@ -1,5 +1,245 @@
-﻿<h3>C_Usuario</h3>
+﻿@page "/ConsultaUsuario"
+
+@using EIMRentaaCar.BLL
+@using EIMRentaaCar.Models
+
+@inject IToastService toast
+
+<EditForm Model="listapaginada">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Consultas De Usuarios</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="input-group mb-4">
+                <div class="input-group">
+
+                    <label for="filtro">Filtro: </label>
+                    <select class="form-control ml-3 mr-3" @bind="Filtro">
+                        <option value="" disabled selected>Seleccione un filtro</option>
+                        <option value="Todo">Todo</option>
+                        <option value="ID">ID</option>
+                        <option value="UserName">UserName</option>                   
+                    </select>
+
+                    <label for="criterio ml-3 mr-3"> Criterio: </label>
+                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                </div>
+            </div>
+
+            <table class=" table mb-3 mt-3" id="example">
+                <thead class="thead-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>UserName</th>
+                        <th>Password</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (listapaginada.Count == 0)
+                    {
+                        toast.ShowWarning("No hay datos");
+                    }
+                    else
+                    {
+                        @foreach (var item in listapaginada)
+                        {
+                            <tr class="table-striped">
+                                <td>@item.UsuarioId</td>
+                                <td>@item.UserName</td>
+                                <td>@item.Password</td>
+                                <td>@item.Email</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer text-center">
+            <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
+        </div>
+        <div class="form-row col-12 justify-content-center">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item bt">
+                        <a class="page-link" @onclick="PaginaAnterior">
+                            <span class="oi oi-media-skip-backward "></span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= Paginas; i++)
+                    {
+                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link" @onclick="PaginaSiguiente">
+                            <span class="oi oi-media-skip-forward "></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</EditForm>
+
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content m-md-auto">
+            <div class="modal-header">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
 
+    private List<Usuarios> lista { get; set; }
+    private List<Usuarios> listapaginada { get; set; }
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+
+
+    double Paginas = 0;
+    double Elementos = 0;
+    int PaginaActual = 0;
+
+    Paginacion paginacion = new Paginacion();
+
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+        lista = UsuarioBLL.GetList(C => true);
+        Filtro = "Todo";
+        IniciarPaginacion();
+    }
+
+    private void PDF()
+    {
+        EIMRentaaCar.Pages.Reportes.ReportUsuario cobros = new Reportes.ReportUsuario();
+
+        Data = cobros.Reporte();
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
+    }
+
+
+    public void IniciarPaginacion()
+    {
+        PaginaActual = 1;
+        Elementos = lista.Count();
+        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+        listapaginada = lista.Take(paginacion.Mostrar).ToList();
+    }
+
+    private void PaginaSiguiente()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void Mover()
+    {
+        if (PaginaActual < Paginas)
+        {
+            PaginaActual++;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+        else if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+
+    private void PaginaAnterior()
+    {
+        if (PaginaActual > 1)
+        {
+            PaginaActual--;
+            listapaginada = lista
+                .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                .Take(paginacion.Mostrar)
+                .ToList();
+        }
+    }
+
+    private void Buscar()
+    {
+        try
+        {
+            if (Filtro == null)
+            {
+                toast.ShowWarning("Selecciones un filtro");
+            }
+            else
+            {
+                if (Filtro != null)
+                {
+
+                    switch (Filtro)
+                    {
+                        case "Todo":
+                            listapaginada = UsuarioBLL.GetList(e => true);
+                            IniciarPaginacion();
+                            break;
+                        case "ID":
+                            listapaginada = UsuarioBLL.GetList(e => e.UsuarioId == Convert.ToInt32(Criterio));
+                            break;
+                        case "UserName":
+                            listapaginada = UsuarioBLL.GetList(e => e.UserName == Criterio);
+                            break;
+                        
+                    }
+                }
+                else
+                {
+                    toast.ShowWarning("debes de insertar un dato al criterio");
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }

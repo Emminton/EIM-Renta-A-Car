@@ -21,8 +21,7 @@
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
                         <option value="ID">ID</option>
-                        <option value="Nombre">Nombre</option>
-
+                        <option value="Banco">Nombre</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -58,8 +57,11 @@
                             </tr>
                         }
                     }
-                    </tbody>
+                </tbody>
             </table>
+        </div>
+        <div class="card-footer text-center">
+            <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
         </div>
         <div class="form-row col-12 justify-content-center">
             <nav>
@@ -87,6 +89,26 @@
     </div>
 </EditForm>
 
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content m-md-auto">
+            <div class="modal-header">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @code { 
     private List<BancosAsociados> lista { get; set; }
     private List<BancosAsociados> listapaginada { get; set; }
@@ -100,6 +122,9 @@
     private string Filtro { get; set; }
     private string Criterio { get; set; }
 
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
+
     protected override void OnInitialized()
     {
         lista = BancoAsociadoBLL.GetList(C => true);
@@ -107,6 +132,15 @@
         IniciarPaginacion();
     }
 
+    private void PDF()
+    {
+        EIMRentaaCar.Pages.Reportes.ReportBancoAsociado cobros = new Reportes.ReportBancoAsociado();
+
+        Data = cobros.Reporte();
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
+    }
 
     public void IniciarPaginacion()
     {
@@ -179,7 +213,7 @@
                 }
                 else
                 {
-                   
+
                     switch (Filtro)
                     {
                         case "Todo":
@@ -188,7 +222,7 @@
                         case "ID":
                             lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
                             break;
-                        case "Nombre":
+                        case "Banco":
                             lista = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
                             break;
                     }

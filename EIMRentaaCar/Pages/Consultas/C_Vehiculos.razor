@@ -13,23 +13,40 @@
         </div>
 
         <div class="card-body">
-            <div class="input-group mb-4">
+            <div class="input-group ">
                 <div class="input-group">
 
-                    <label for="filtro">Filtro: </label>
-                    <select class="form-control ml-3 mr-3" @bind="Filtro">
-                        <option value="" disabled selected>Seleccione un filtro</option>
-                        <option value="Todo">Todo</option>
-                        <option value="ID">Vehiculo ID</option>
-                        <option value="VIN">Vin</option>
-                        <option value="Marca">Marca</option>
-                        <option value="Modelo">Modelo</option>
-                    </select>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong>Desde: </strong> </label>
+                        <input type="date" class="form-control " @bind-value="Desde " />
+                    </div>
 
-                    <label for="criterio ml-3 mr-3"> Criterio: </label>
-                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong> Hasta: </strong> </label>
+                        <input type="date" class="form-control " @bind-value=" Hasta " />
+                    </div>
 
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                    <div class="form-group col-3">
+                        <label for="filtro"><strong>Filtro:</strong> </label>
+                        <select class="form-control" @bind="Filtro">
+                            <option value="" disabled selected>Seleccione un filtro</option>
+                            <option value="Todo">Todo</option>
+                            <option value="Id">Vehiculo ID</option>
+                            <option value="Vin">Vin</option>
+                            <option value="Marca">Marca</option>
+                            <option value="Modelo">Modelo</option>
+                            <option value="Fecha">Fecha</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-3">
+                        <label><strong>Criterio: </strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -74,6 +91,23 @@
                 </tbody>
             </table>
         </div>
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-2">
+                    <label><strong>Total de Precios </strong></label>
+                    <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
+                </div>
+                <div class="align-content-lg-center">
+                    <label><strong>Total por Dias </strong></label>
+                    <InputNumber class="form-control" readonly="true" @bind-Value="PrecioporDia" />
+                </div>
+                <div class="form-group col-2 col-md-2 ml-md-auto">
+                    <label><strong>Vehiculos Disponible</strong></label>
+                    <InputNumber class="form-control" readonly="true" @bind-Value="Disponibilidad" />
+                </div>
+            </div>
+        </div>
         <div class="card-footer text-center">
             <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
         </div>
@@ -103,7 +137,6 @@
     </div>
 </EditForm>
 
-
 <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content m-md-auto">
@@ -125,20 +158,26 @@
 </div>
 
 
-@code { 
+@code {
     private List<Vehiculos> lista { get; set; }
     private List<Vehiculos> listapaginada { get; set; }
 
     double Paginas = 0;
     double Elementos = 0;
     int PaginaActual = 0;
-
-    Paginacion paginacion = new Paginacion();
-    private string Filtro { get; set; }
-    private string Criterio { get; set; }
+    public decimal AcomularPrecio { get; set; }
+    public decimal PrecioporDia { get; set; }
+    public int Disponibilidad { get; set; }
 
     public byte[] Data { get; set; }
     public string pdfContent { get; set; }
+
+    Paginacion paginacion = new Paginacion();
+
+    private string Filtro { get; set; }
+    private string Criterio { get; set; }
+    private DateTime Desde { get; set; }
+    private DateTime Hasta { get; set; }
 
     protected override void OnInitialized()
     {
@@ -147,7 +186,48 @@
         IniciarPaginacion();
     }
 
+    private void TotalPrecio()
 
+    {
+
+        foreach (var item in Datos())
+        {
+            AcomularPrecio += item.PrecioVenta;
+            PrecioporDia += item.PrecioPorDia;
+        }
+
+    }
+
+    private List<Vehiculos> Datos()
+    {
+        try
+        {
+            List<Vehiculos> lista = VehiculosBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        return lista;
+
+
+    }
+
+
+    private void ContarVehiculo()
+    {
+        try
+        {
+            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        Disponibilidad = lista.Count();
+
+
+    }
     private void PDF()
     {
         EIMRentaaCar.Pages.Reportes.ReportVehiculo reportes = new Reportes.ReportVehiculo();
@@ -157,13 +237,15 @@
         pdfContent = "data:application/pdf;base64,";
         pdfContent += System.Convert.ToBase64String(Data);
     }
-
     public void IniciarPaginacion()
     {
         PaginaActual = 1;
         Elementos = lista.Count();
         Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
         listapaginada = lista.Take(paginacion.Mostrar).ToList();
+
+        TotalPrecio();
+        ContarVehiculo();
     }
 
     private void PaginaSiguiente()
@@ -225,7 +307,7 @@
 
                 if (lista.Count == 0)
                 {
-                    toast.ShowWarning("No hay vehiculo registrados", "Aviso");
+                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
                 }
                 else
                 {
@@ -236,10 +318,10 @@
                             listapaginada = VehiculosBLL.GetList(e => true);
                             IniciarPaginacion();
                             break;
-                        case "ID":
-                            listapaginada = VehiculosBLL.GetList(e => e.VehiculoId== Convert.ToInt32(Criterio));
+                        case "VehiculoId":
+                            listapaginada = VehiculosBLL.GetList(e => e.VehiculoId == Convert.ToInt32(Criterio));
                             break;
-                        case "VIN":
+                        case "Vin":
                             listapaginada = VehiculosBLL.GetList(e => e.Vin == Criterio);
                             break;
                         case "Marca":
@@ -248,9 +330,15 @@
                         case "Modelo":
                             listapaginada = VehiculosBLL.GetList(e => e.Modelo == Criterio);
                             break;
+                        case "Fecha":
+                            listapaginada = lista.Where(c => c.Fecha >= Desde.Date && c.Fecha.Date <= Hasta.Date).ToList();
+                            break;
+
                     }
+
                 }
             }
+
         }
         catch (Exception)
         {
