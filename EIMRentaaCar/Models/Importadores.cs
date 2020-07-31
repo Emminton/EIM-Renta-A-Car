@@ -40,5 +40,14 @@ namespace EIMRentaaCar.Models
             Telefono = string.Empty;
             Email = string.Empty;
         }
+
+        public Importadores(int importadorId, int usuarioId, string nombre, string telefono, string email)
+        {
+            ImportadorId = importadorId;
+            UsuarioId = usuarioId;
+            Nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+        }
     }
 }

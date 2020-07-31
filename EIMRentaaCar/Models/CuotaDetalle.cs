@@ -14,10 +14,8 @@ namespace EIMRentaaCar.Models
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int CuotaId { get; set; }
 
-        [ForeignKey("VentaId")]
         public int VentaId { get; set; }
 
-        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo Moton no debe estar vació")]
@@ -46,5 +44,15 @@ namespace EIMRentaaCar.Models
             Numero = 0;
         }
 
+        public CuotaDetalles(int cuotaId, int ventaId, int usuarioId, decimal monto, decimal balance, bool pagada, int numero)
+        {
+            CuotaId = cuotaId;
+            VentaId = ventaId;
+            UsuarioId = usuarioId;
+            Monto = monto;
+            Balance = balance;
+            Pagada = pagada;
+            Numero = numero;
+        }
     }
 }

@@ -36,5 +36,14 @@ namespace EIMRentaaCar.Models
             Monto = 0.0m;
            
         }
+
+        public PagoVentas(int pagoVentaId, int ventaId, int usuarioId, DateTime fecha, decimal monto)
+        {
+            PagoVentaId = pagoVentaId;
+            VentaId = ventaId;
+            UsuarioId = usuarioId;
+            Fecha = fecha;
+            Monto = monto;
+        }
     }
 }

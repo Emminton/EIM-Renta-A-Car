@@ -1,11 +1,7 @@
 ﻿using EIMRentaaCar.BLL;
 using EIMRentaaCar.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EIMRentaaCar.DAL
 {
@@ -26,8 +22,10 @@ namespace EIMRentaaCar.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database = EIM.db; Trusted_Connection = True; ");
-            optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
+            base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer(@"Server=tcp:proyectoap2.database.windows.net,1433;Initial Catalog=EIM;Persist Security Info=False;User ID=martin;Password=admin!123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database = EIM.db; Trusted_Connection = True; ");
+            //optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
         }
 
         protected override void OnModelCreating(ModelBuilder model)

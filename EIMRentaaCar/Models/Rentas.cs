@@ -16,7 +16,6 @@ namespace EIMRentaaCar.Models
         public int VehiculoId { get; set; }
         public int ClienteId { get; set; }
         public int UsuarioId { get; set; }
-
         public DateTime FechaRenta { get; set; }
         public int TiempoRenta { get; set; }
         [Range(0, 100000000, ErrorMessage = "El campo balance no puede ser menor que cero")]
@@ -34,6 +33,18 @@ namespace EIMRentaaCar.Models
             TiempoRenta = 0;
             Balance = 0;
             PagoDetalle = new List<PagoDetalles>();
+        }
+
+        public Rentas(int rentaId, int vehiculoId, int clienteId, int usuarioId, DateTime fechaRenta, int tiempoRenta, decimal balance, List<PagoDetalles> pagoDetalle)
+        {
+            RentaId = rentaId;
+            VehiculoId = vehiculoId;
+            ClienteId = clienteId;
+            UsuarioId = usuarioId;
+            FechaRenta = fechaRenta;
+            TiempoRenta = tiempoRenta;
+            Balance = balance;
+            PagoDetalle = pagoDetalle ?? throw new ArgumentNullException(nameof(pagoDetalle));
         }
     }
 }

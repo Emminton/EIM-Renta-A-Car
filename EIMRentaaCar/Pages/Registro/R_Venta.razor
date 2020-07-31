@@ -62,8 +62,8 @@
                                     {
                                         @if (item.Estado == "Disponible")
                                         {
-                                           <option value="@item.VehiculoId">@item.VehiculoId</option>
-                                        }          
+                                            <option value="@item.VehiculoId">@item.VehiculoId</option>
+                                        }
                                     }
                                 </select>
                             </div>
@@ -123,7 +123,7 @@
                     @*Detalle*@
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
-                            <thead class="thead-dark">
+                            <thead class="thead-light">
                                 <tr>
                                     <th>#</th>
                                     <th>Monto</th>
@@ -137,10 +137,10 @@
                                 {
                                     <tr>
                                         <td>@item.Numero</td>
-                                        <td>@item.Monto</td>
-                                        <td>@item.Balance</td>
+                                        <td>@item.Monto.ToString("N2")</td>
+                                        <td>@item.Balance.ToString("N2")</td>
                                         <td><input type="checkbox" @bind="item.Pagada" /></td>
-                                        <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i> Remover</button> </td>
+                                        <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
                                     </tr>
                                 }
 
@@ -404,8 +404,8 @@
                     CuotaId = 0,
                     VentaId = ventas.VentaId,
                     UsuarioId = 0,
-                    Monto = Math.Round((VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas),2),
-                    Balance = Math.Round((VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas),2),
+                    Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
                     Pagada = false,
                     Numero = (1 + i)
                 });
@@ -440,7 +440,7 @@
         {
             if (!cuota.Pagada)
             {
-                ventas.Balance += Math.Round(cuota.Balance, 2);
+                ventas.Balance += cuota.Balance;
             }
         }
 
