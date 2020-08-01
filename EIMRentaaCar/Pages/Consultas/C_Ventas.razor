@@ -174,7 +174,7 @@
         foreach (var item in Datos())
         {
             AcomularPrecio += item.MontoTotal;
-            ContarVenta += item.VehiculoId;
+
         }
     }
 
@@ -196,13 +196,12 @@
     {
         try
         {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Vendido");
+            ContarVenta= VehiculosBLL.GetList(v => v.Estado == "Vendido").Count();
         }
         catch (Exception)
         {
             throw;
         }
-        Disponibilidad = lista.Count();
     }
 
     public void IniciarPaginacion()
@@ -282,13 +281,15 @@
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = VentasBLL.GetList(e => true);
+                            listapaginada = VentasBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = VentasBLL.GetList(e => e.VentaId == Convert.ToInt32(Criterio));
+                            listapaginada = VentasBLL.GetList(e => e.VentaId == Convert.ToInt32(Criterio));
                             break;
                         case "Cliente":
-                            lista = VentasBLL.GetList(e => ClientesBLL.Buscar(e.ClienteId).Nombre == Criterio);
+                            int id = ClientesBLL.Buscar(Criterio).ClienteId;
+                            listapaginada = VentasBLL.GetList(e=> e.ClienteId == id);
                             break;
                     }
                 }
@@ -296,7 +297,7 @@
         }
         catch (Exception)
         {
-            throw;
+            toast.ShowError("Error fatal");
         }
     }
 }

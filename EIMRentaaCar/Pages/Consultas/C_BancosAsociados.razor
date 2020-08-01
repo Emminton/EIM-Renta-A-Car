@@ -217,13 +217,14 @@
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = BancoAsociadoBLL.GetList(e => true);
+                            listapaginada = BancoAsociadoBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
+                            listapaginada = BancoAsociadoBLL.GetList(e => e.BancoAsociadoId == Convert.ToInt32(Criterio));
                             break;
                         case "Banco":
-                            lista = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
+                            listapaginada = BancoAsociadoBLL.GetList(e => e.Nombre == Criterio);
                             break;
                     }
                 }

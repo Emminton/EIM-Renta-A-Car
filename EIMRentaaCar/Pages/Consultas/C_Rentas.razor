@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group col-2 col-md-2 ml-md-auto">
                     <label><strong>Vehiculos Rentados</strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="ContarRenta" />
+                    <InputNumber class="form-control" readonly="true" @bind-Value="Disponibilidad" />
                 </div>
             </div>
         </div>
@@ -190,13 +190,12 @@
     {
         try
         {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Rentado");
+            Disponibilidad = VehiculosBLL.GetList(v => v.Estado == "Rentado").Count();
         }
         catch (Exception)
         {
             throw;
         }
-        Disponibilidad = lista.Count();
     }
 
     public void IniciarPaginacion()
@@ -276,13 +275,15 @@
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = RentasBLL.GetList(e => true);
+                            listapaginada = RentasBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = RentasBLL.GetList(e => e.RentaId == Convert.ToInt32(Criterio));
+                            listapaginada = RentasBLL.GetList(e => e.RentaId == Convert.ToInt32(Criterio));
                             break;
                         case "Cliente":
-                            lista = RentasBLL.GetList(e=> ClientesBLL.Buscar(e.ClienteId).Nombre == Criterio);
+                            int id = ClientesBLL.Buscar(Criterio).ClienteId;
+                            listapaginada = RentasBLL.GetList(e => e.ClienteId == id);
                             break;
                     }
                 }

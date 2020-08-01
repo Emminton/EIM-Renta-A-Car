@@ -220,15 +220,13 @@
     {
         try
         {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
+
+            Disponibilidad = VehiculosBLL.GetList(v => v.Estado == "Disponible").Count();
         }
         catch (Exception)
         {
             throw;
         }
-        Disponibilidad = lista.Count();
-
-
     }
     private void PDF()
     {

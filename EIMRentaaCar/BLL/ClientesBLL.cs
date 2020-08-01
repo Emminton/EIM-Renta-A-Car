@@ -148,5 +148,26 @@ namespace EIMRentaaCar.BLL
             }
             return encontrado;
         }
+
+        public static Clientes Buscar(string nombre)
+        {
+            Clientes cliente;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+                cliente = contexto.Clientes.Where(c => c.Nombre == nombre).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+
+            return cliente;
+        }
     }
 }

@@ -217,13 +217,14 @@
                     switch (Filtro)
                     {
                         case "Todo":
-                            lista = ImportadoresBLL.GetList(e => true);
+                            listapaginada = ImportadoresBLL.GetList(e => true);
+                            IniciarPaginacion();
                             break;
                         case "ID":
-                            lista = ImportadoresBLL.GetList(e => e.ImportadorId== Convert.ToInt32(Criterio));
+                            listapaginada = ImportadoresBLL.GetList(e => e.ImportadorId== Convert.ToInt32(Criterio));
                             break;
                         case "Nombre":
-                            lista = ImportadoresBLL.GetList(e => e.Nombre == Criterio);
+                            listapaginada = ImportadoresBLL.GetList(e => e.Nombre == Criterio);
                             break;
                     }
                 }
