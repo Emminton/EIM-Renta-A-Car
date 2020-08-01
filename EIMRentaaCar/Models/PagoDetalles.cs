@@ -44,5 +44,15 @@ namespace EIMRentaaCar.Models
             Pagada = false;
         }
 
+        public PagoDetalles(int pagoId, int rentaId, int usuarioId, decimal monto, decimal balance, bool pagada, int dias)
+        {
+            PagoId = pagoId;
+            RentaId = rentaId;
+            UsuarioId = usuarioId;
+            Monto = monto;
+            Balance = balance;
+            Pagada = pagada;
+            Dias = dias;
+        }
     }
 }

@@ -44,5 +44,15 @@ namespace EIMRentaaCar.Models
             Email = string.Empty;
             PaginaWeb = string.Empty;
         }
+
+        public BancosAsociados(int bancoAsociadoId, int usuarioId, string nombre, string telefono, string email, string paginaWeb)
+        {
+            BancoAsociadoId = bancoAsociadoId;
+            UsuarioId = usuarioId;
+            Nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+            PaginaWeb = paginaWeb ?? throw new ArgumentNullException(nameof(paginaWeb));
+        }
     }
 }

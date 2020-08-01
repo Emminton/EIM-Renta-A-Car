@@ -10,8 +10,6 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "El campo Id debe ser un numero")]
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int VehiculoId { get; set; }
-
-        [ForeignKey("UsuarioId")]
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El campo tipo no puede estar vacio")]
@@ -45,8 +43,6 @@ namespace EIMRentaaCar.Models
         [Range(0, 100000000, ErrorMessage = "El campo kilometraje no puede ser menor que cero")]
         [Required(ErrorMessage = "No puede estar vació el campo Kilometraje")]
         public int Kilometraje { get; set; }
-
-        [ForeignKey("ImportadorId")]
         public int ImportadorId { get; set; }
 
         [DataType(DataType.DateTime)]

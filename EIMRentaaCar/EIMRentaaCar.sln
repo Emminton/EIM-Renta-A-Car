@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EIMRentaaCar", "EIMRentaaCar.csproj", "{2D32697A-0CAA-4331-AE6E-D653CAB1F4ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EIMRentaaCarTests", "..\EIMRentaaCarTests\EIMRentaaCarTests.csproj", "{E6A2FB3A-B035-465B-8A6F-5D4C52AE0847}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2D32697A-0CAA-4331-AE6E-D653CAB1F4ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D32697A-0CAA-4331-AE6E-D653CAB1F4ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D32697A-0CAA-4331-AE6E-D653CAB1F4ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6A2FB3A-B035-465B-8A6F-5D4C52AE0847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6A2FB3A-B035-465B-8A6F-5D4C52AE0847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6A2FB3A-B035-465B-8A6F-5D4C52AE0847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6A2FB3A-B035-465B-8A6F-5D4C52AE0847}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

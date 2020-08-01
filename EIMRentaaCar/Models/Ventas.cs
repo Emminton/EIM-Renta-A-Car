@@ -13,11 +13,7 @@ namespace EIMRentaaCar.Models
 		[Required(ErrorMessage = "El campo Id debe ser un numero")]
 		[Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
 		public int VentaId { get; set; }
-
-		[ForeignKey("ClienteId")]
 		public int ClienteId { get; set; }
-
-		[ForeignKey("VehiculoId")]
 		public int VehiculoId { get; set; }
         public int UsuarioId { get; set; }
 		[Range(0, 100000000, ErrorMessage = "El campo cuotas no puede ser menor que cero")]
@@ -55,5 +51,19 @@ namespace EIMRentaaCar.Models
 			FechaVenta = DateTime.Now;
 			CuotaDetalles = new List<CuotaDetalles>();
 		}
-	}
+
+        public Ventas(int ventaId, int clienteId, int vehiculoId, int usuarioId, int cuotas, decimal montoTotal, decimal balance, decimal montoCuotas, DateTime fechaVenta, List<CuotaDetalles> cuotaDetalles)
+        {
+            VentaId = ventaId;
+            ClienteId = clienteId;
+            VehiculoId = vehiculoId;
+            UsuarioId = usuarioId;
+            Cuotas = cuotas;
+            MontoTotal = montoTotal;
+            Balance = balance;
+            MontoCuotas = montoCuotas;
+            FechaVenta = fechaVenta;
+            CuotaDetalles = cuotaDetalles ?? throw new ArgumentNullException(nameof(cuotaDetalles));
+        }
+    }
 }

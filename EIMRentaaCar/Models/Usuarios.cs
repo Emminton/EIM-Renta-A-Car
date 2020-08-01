@@ -59,5 +59,16 @@ namespace EIMRentaaCar.Models
             UserName = string.Empty;
         }
 
+        public Usuarios(int usuarioId, string nombre, string email, string userName, string password, string confirmarPassword, string roles, DateTime fechaIngreso)
+        {
+            UsuarioId = usuarioId;
+            Nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+            UserName = userName ?? throw new ArgumentNullException(nameof(userName));
+            Password = password ?? throw new ArgumentNullException(nameof(password));
+            ConfirmarPassword = confirmarPassword ?? throw new ArgumentNullException(nameof(confirmarPassword));
+            Roles = roles ?? throw new ArgumentNullException(nameof(roles));
+            FechaIngreso = fechaIngreso;
+        }
     }
 }

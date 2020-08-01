@@ -57,5 +57,17 @@ namespace EIMRentaaCar.Models
             FechaNacimiento = DateTime.Now.Date;
             Telefono = string.Empty;
         }
+
+        public Clientes(int clienteId, int usuarioId, string nombre, DateTime fechaNacimiento, string cedula, string telefono, string direccion, string email)
+        {
+            ClienteId = clienteId;
+            UsuarioId = usuarioId;
+            Nombre = nombre ?? throw new ArgumentNullException(nameof(nombre));
+            FechaNacimiento = fechaNacimiento;
+            Cedula = cedula ?? throw new ArgumentNullException(nameof(cedula));
+            Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
+            Direccion = direccion ?? throw new ArgumentNullException(nameof(direccion));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+        }
     }
 }
