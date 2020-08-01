@@ -240,7 +240,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 31, 7, 58, 53, 250, DateTimeKind.Local).AddTicks(9649), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 7, 31, 21, 38, 18, 207, DateTimeKind.Local).AddTicks(4982), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",

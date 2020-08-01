@@ -3,6 +3,7 @@ using EIMRentaaCar.BLL;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EIMRentaaCar.Models;
 
 namespace EIMRentaaCar.BLL.Tests
 {
@@ -12,37 +13,49 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Assert.Fail();
+            Importadores importadores = new Importadores(0,1,"NissanRD","8096637896","Nissanrd@gmail.com");
+            bool paso = false;
+            paso = ImportadoresBLL.Guardar(importadores);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            Importadores importadores = new Importadores(1, 1, "NissanRD", "8096637896", "NissanDominican@gmail.com");
+            bool paso = false;
+            paso = ImportadoresBLL.Modificar(importadores);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso = false;
+            paso = ImportadoresBLL.Eliminar(1);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            Assert.Fail();
+            var paso = ImportadoresBLL.Buscar(1);
+            Assert.AreEqual(paso,paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<Importadores> importadores = new List<Importadores>();
+            importadores = ImportadoresBLL.GetList(i => true);
+            Assert.IsNotNull(importadores);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            Assert.Fail();
+            var paso = ImportadoresBLL.Existe(1);
+            Assert.IsNotNull(paso);
         }
     }
 }

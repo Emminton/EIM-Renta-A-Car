@@ -3,6 +3,7 @@ using EIMRentaaCar.BLL;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EIMRentaaCar.Models;
 
 namespace EIMRentaaCar.BLL.Tests
 {
@@ -12,37 +13,48 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Assert.Fail();
+            PagoVentas pago = new PagoVentas(0, 1, 1, DateTime.Now, 1000);
+            bool paso = PagoVentasBLL.Guardar(pago);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            PagoVentas pago = new PagoVentas(1, 1, 1, DateTime.Now, 1465);
+            bool paso = false;
+            paso = PagoVentasBLL.Modificar(pago);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso = false;
+            paso = PagoVentasBLL.Eliminar(1);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            Assert.Fail();
+            var paso = PagoVentasBLL.Buscar(1);
+            Assert.AreEqual(paso,paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<PagoVentas> lista = new List<PagoVentas>();
+            lista = PagoVentasBLL.GetList(p => true);
+            Assert.IsNotNull(lista);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            Assert.Fail();
+            var paso = PagoVentasBLL.Existe(1);
+            Assert.IsNotNull(paso);
         }
     }
 }

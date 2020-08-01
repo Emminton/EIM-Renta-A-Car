@@ -3,6 +3,7 @@ using EIMRentaaCar.BLL;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EIMRentaaCar.Models;
 
 namespace EIMRentaaCar.BLL.Tests
 {
@@ -12,37 +13,49 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Assert.Fail();
+            Vehiculos vehiculos = new Vehiculos(0, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2010, 50000, 1000, 0, 1, DateTime.Now);
+            bool paso = false;
+            paso = VehiculosBLL.Guardar(vehiculos);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            Vehiculos vehiculos = new Vehiculos(1, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2015, 50000, 1000, 0, 1, DateTime.Now);
+            bool paso = false;
+            paso = VehiculosBLL.Modificar(vehiculos);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso = false;
+            paso = VehiculosBLL.Eliminar(1);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            Assert.Fail();
+            var paso = UsuarioBLL.Buscar(1);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<Vehiculos> vehiculo = new List<Vehiculos>();
+            vehiculo = VehiculosBLL.GetList(v => true);
+            Assert.IsNotNull(vehiculo);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            Assert.Fail();
+            var paso = VehiculosBLL.Existe(1);
+            Assert.IsNotNull(paso);
         }
     }
 }

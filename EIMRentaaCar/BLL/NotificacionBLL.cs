@@ -89,26 +89,6 @@ namespace EIMRentaaCar.BLL
             return paso;
         }
 
-        public static Notificaciones Buscar(int id)
-        {
-            Contexto contexto = new Contexto();
-            Notificaciones notificaciones;
-
-            try
-            {
-                notificaciones = contexto.Notificaciones.Find(id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                contexto.Dispose();
-            }
-            return notificaciones;
-        }
-
         public static List<Notificaciones> GetList(Expression<Func<Notificaciones, bool>> expression)
         {
             List<Notificaciones> lista = new List<Notificaciones>();

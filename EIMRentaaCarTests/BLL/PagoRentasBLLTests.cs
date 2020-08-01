@@ -1,4 +1,4 @@
-﻿  using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using EIMRentaaCar.BLL;
 using System;
 using System.Collections.Generic;
@@ -8,21 +8,23 @@ using EIMRentaaCar.Models;
 namespace EIMRentaaCar.BLL.Tests
 {
     [TestClass()]
-    public class ClientesBLLTests
+    public class PagoRentasBLLTests
     {
         [TestMethod()]
         public void GuardarTest()
         {
-            Clientes clientes = new Clientes(0, 1, "Elian", DateTime.Now, "40212912998", "8095567841", "Villa Aeeiba", "Elian@gmail.com");
-            bool paso = ClientesBLL.Guardar(clientes);
-            Assert.AreEqual(paso,true);
+            PagoRentas pago = new PagoRentas(0,1, 1, DateTime.Now, 1222);
+      
+            bool paso = PagoRentasBLL.Guardar(pago);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Clientes clientes = new Clientes(1, 1, "Elian Rodriguez", DateTime.Now, "40212912998", "8095567841", "Villa Aeeiba", "Elian@gmail.com");
-            bool paso = ClientesBLL.Modificar(clientes);
+            PagoRentas pago = new PagoRentas(1, 1, 1, DateTime.Now, 1465);
+            bool paso = false;
+            paso = PagoRentasBLL.Modificar(pago);
             Assert.AreEqual(paso, true);
         }
 
@@ -30,29 +32,29 @@ namespace EIMRentaaCar.BLL.Tests
         public void EliminarTest()
         {
             bool paso = false;
-            paso = ClientesBLL.Eliminar(1);
+            paso = PagoRentasBLL.Eliminar(1);
             Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            var paso = ClientesBLL.Buscar(1);
+            var paso = PagoRentasBLL.Buscar(1);
             Assert.AreEqual(paso,paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            List<Clientes> clientes = new List<Clientes>();
-            clientes = ClientesBLL.GetList(c => true);
-            Assert.IsNotNull(clientes);
+            List<PagoRentas> lista = new List<PagoRentas>();
+            lista = PagoRentasBLL.GetList(c => true);
+            Assert.IsNotNull(lista);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            var paso = ClientesBLL.Existe(1);
+            var paso = PagoRentasBLL.Existe(1);
             Assert.IsNotNull(paso);
         }
     }

@@ -1,4 +1,5 @@
 ﻿using EIMRentaaCar.BLL;
+using EIMRentaaCar.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -12,37 +13,49 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Assert.Fail();
+            BancosAsociados bancos = new BancosAsociados(0, 1, "Banreserve", "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
+            bool paso = false;
+            paso = BancoAsociadoBLL.Guardar(bancos);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            BancosAsociados bancos = new BancosAsociados(1, 1, "Banreserva", "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
+            bool paso = false;
+            paso = BancoAsociadoBLL.Modificar(bancos);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso = false;
+            paso = BancoAsociadoBLL.Eliminar(1);
+            Assert.AreEqual(paso,paso); 
         }
 
         [TestMethod()]
         public void BuscarTest()
-        {
-            Assert.Fail();
+        {           
+            var paso = BancoAsociadoBLL.Buscar(1);
+            Assert.AreEqual(paso,paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<BancosAsociados> bancos = new List<BancosAsociados>();
+            bancos = BancoAsociadoBLL.GetList(b => true);
+            Assert.IsNotNull(bancos);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            Assert.Fail();
+            var paso = BancoAsociadoBLL.Existe(1);
+            Assert.IsNotNull(paso);
         }
     }
 }

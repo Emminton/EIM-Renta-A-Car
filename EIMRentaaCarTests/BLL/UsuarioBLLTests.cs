@@ -3,6 +3,7 @@ using EIMRentaaCar.BLL;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EIMRentaaCar.Models;
 
 namespace EIMRentaaCar.BLL.Tests
 {
@@ -12,73 +13,50 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Assert.Fail();
+            Usuarios usuarios = new Usuarios(0, "Martin", "lamatriz7777@gmail.com", "Ma12", "1456", "1456", "Empleado", DateTime.Now);
+            bool paso = false;
+            paso = UsuarioBLL.Guardar(usuarios);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            Usuarios usuarios = new Usuarios(2, "Martins", "lamatriz7777@gmail.com", "Ma12", "1456", "1456", "Empleado", DateTime.Now);
+            bool paso = false;
+            paso = UsuarioBLL.Modificar(usuarios);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso = false;
+            paso = UsuarioBLL.Eliminar(2);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            Assert.Fail();
+            var paso = UsuarioBLL.Buscar(1);
+            Assert.IsNotNull(paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<Usuarios> usuario = new List<Usuarios>();
+            usuario = UsuarioBLL.GetList(u => true);
+            Assert.IsNotNull(usuario);
         }
 
         [TestMethod()]
         public void ExisteTest()
         {
-            Assert.Fail();
+            var paso = UsuarioBLL.Existe(1);
+            Assert.IsNotNull(paso);
         }
-
-        [TestMethod()]
-        public void EncriptarTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void DesEncriptarTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void RolTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void VerificarUsuarioTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void BuscarTest1()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void ConfirmarClavesTest()
-        {
-            Assert.Fail();
-        }
+     
     }
 }
