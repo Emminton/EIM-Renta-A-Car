@@ -21,7 +21,7 @@
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
                         <option value="ID">Vehiculo ID</option>
-                        <option value="Nombre">ClienteId</option>
+                        <option value="Cliente">Cliente</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"><strong> Criterio:</strong> </label>
@@ -57,10 +57,10 @@
                         {
                             <tr class="table-striped">
                                 <td>@item.VehiculoId</td>
-                                <td>@item.ClienteId</td>
-                                <td>@item.FechaVenta</td>
-                                <td>@item.Cuotas</td>
-                                <td>@item.Balance</td>
+                                <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
+                                <td>@item.FechaVenta.ToString("MM/dd/yyyy H:mm tt")</td>
+                                <td>@item.Cuotas.ToString("N2")</td>
+                                <td>@item.Balance.ToString("N2")</td>
                             </tr>
                         }
                     }
@@ -196,7 +196,7 @@
     {
         try
         {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
+            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Vendido");
         }
         catch (Exception)
         {
@@ -287,8 +287,8 @@
                         case "ID":
                             lista = VentasBLL.GetList(e => e.VentaId == Convert.ToInt32(Criterio));
                             break;
-                        case "ClienteId":
-                            lista = VentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                        case "Cliente":
+                            lista = VentasBLL.GetList(e => ClientesBLL.Buscar(e.ClienteId).Nombre == Criterio);
                             break;
                     }
                 }

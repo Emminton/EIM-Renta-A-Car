@@ -219,11 +219,11 @@ app {
     background-color: red;
 }
 
-@media (min-width: 600px) {
+
     .modal-dialog {
         max-width: 80%;
     }
-}
+
 
 .card-header{
     background-color: rgba(238, 55, 55, 0.99)

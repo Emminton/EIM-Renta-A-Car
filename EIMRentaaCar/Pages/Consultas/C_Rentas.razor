@@ -21,7 +21,7 @@
                         <option value="" disabled selected>Seleccione un filtro</option>
                         <option value="Todo">Todo</option>
                         <option value="ID">Vehiculo ID</option>
-                        <option value="Nombre">ClienteId</option>
+                        <option value="Cliente">Cliente</option>
                     </select>
 
                     <label for="criterio ml-3 mr-3"> Criterio: </label>
@@ -35,7 +35,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th>Vehiculo ID</th>
-                        <th>Cliente ID</th>
+                        <th>Cliente</th>
                         <th>Dias Renta</th>
                         <th>Fecha</th>
                         <th>Balance</th>
@@ -52,10 +52,10 @@
                         {
                             <tr class="table-striped">
                                 <td>@item.VehiculoId</td>
-                                <td>@item.ClienteId</td>
+                                <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
                                 <td>@item.TiempoRenta</td>
-                                <td>@item.FechaRenta</td>
-                                <td>@item.Balance</td>
+                                <td>@item.FechaRenta.ToString("MM/dd/yyyy")</td>
+                                <td>@item.Balance.ToString("N2")</td>
                             </tr>
                         }
                     }
@@ -190,7 +190,7 @@
     {
         try
         {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Disponible");
+            List<Vehiculos> lista = VehiculosBLL.GetList(v => true && v.Estado == "Rentado");
         }
         catch (Exception)
         {
@@ -281,8 +281,8 @@
                         case "ID":
                             lista = RentasBLL.GetList(e => e.RentaId == Convert.ToInt32(Criterio));
                             break;
-                        case "ClienteId":
-                            lista = RentasBLL.GetList(e => e.ClienteId == Convert.ToInt32(Criterio));
+                        case "Cliente":
+                            lista = RentasBLL.GetList(e=> ClientesBLL.Buscar(e.ClienteId).Nombre == Criterio);
                             break;
                     }
                 }

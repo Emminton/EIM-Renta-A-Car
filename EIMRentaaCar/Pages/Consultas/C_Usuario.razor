@@ -38,6 +38,7 @@
                         <th>UserName</th>
                         <th>Password</th>
                         <th>Email</th>
+                        <th>Fecha de ingreso</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,6 +55,7 @@
                                 <td>@item.UserName</td>
                                 <td>@item.Password</td>
                                 <td>@item.Email</td>
+                                <td>@item.FechaIngreso.ToString("MM/dd/yyyy H:mm tt")</td>
                             </tr>
                         }
                     }
