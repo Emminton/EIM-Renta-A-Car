@@ -16,22 +16,34 @@
             <div class="input-group mb-4">
                 <div class="input-group">
 
-                    <label for="filtro">Filtro: </label>
-                    <select class="form-control ml-3 mr-3" @bind="Filtro">
-                        <option value="" disabled selected>Seleccione un filtro</option>
-                        <option value="Todo">Todo</option>
-                        <option value="ID">ID</option>
-                        <option value="Nombre">Nombre</option>
-                        <option value="Cedula">Cedula</option>
-                    </select>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong>Desde: </strong> </label>
+                        <InputDate @bind-Value="Desde" class="form-control" />
+                    </div>
 
-                    <label for="criterio ml-3 mr-3"> Criterio: </label>
-                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
-
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong> Hasta: </strong> </label>
+                        <InputDate @bind-Value="Hasta" class="form-control" />
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="filtro">Filtro: </label>
+                        <select class="form-control " @bind="Filtro">
+                            <option value="" disabled selected>Seleccione un filtro</option>
+                            <option value="Todo">Todo</option>
+                            <option value="ID">ID</option>
+                            <option value="Nombre">Nombre</option>
+                            <option value="Cedula">Cedula</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label><strong>Criterio: </strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
             <table class=" table mb-3 mt-3" id="example">
                 <thead class="thead-light">
                     <tr>
@@ -122,6 +134,8 @@
 
     private string Filtro { get; set; }
     private string Criterio { get; set; }
+    private DateTime Desde { get; set; } = DateTime.Now;
+    private DateTime Hasta { get; set; } = DateTime.Now;
 
 
     double Paginas = 0;
@@ -233,6 +247,9 @@
                             break;
                         case "Cedula":
                             listapaginada = ClientesBLL.GetList(e => e.Cedula == Criterio);
+                            break;
+                        case "Fecha":
+                            listapaginada = lista.Where(c => c.FechaNacimiento >= Desde.Date && c.FechaNacimiento.Date <= Hasta.Date).ToList();
                             break;
                     }
                 }

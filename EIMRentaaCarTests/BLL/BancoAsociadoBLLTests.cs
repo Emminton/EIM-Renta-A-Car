@@ -13,7 +13,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            BancosAsociados bancos = new BancosAsociados(0, 1, "Banreserve", "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
+            BancosAsociados bancos = new BancosAsociados(0, 1, "Banreserve", DateTime.Now, "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
             bool paso = false;
             paso = BancoAsociadoBLL.Guardar(bancos);
             Assert.AreEqual(paso,true);
@@ -22,7 +22,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void ModificarTest()
         {
-            BancosAsociados bancos = new BancosAsociados(1, 1, "Banreserva", "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
+            BancosAsociados bancos = new BancosAsociados(1, 1, "Banreserva", DateTime.Now, "8099556378", "BancoReserva@gmail.com", "https://www.banreservas.com/");
             bool paso = false;
             paso = BancoAsociadoBLL.Modificar(bancos);
             Assert.AreEqual(paso, true);

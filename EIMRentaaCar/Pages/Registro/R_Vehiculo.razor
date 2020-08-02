@@ -115,13 +115,7 @@
                                 <label>kilometraje:</label>
                                 <InputNumber @bind-Value="vehiculos.Kilometraje" class="form-control"></InputNumber>
                                 <ValidationMessage For="@(()=>vehiculos.Kilometraje)"></ValidationMessage>
-                            </div>
-                            @*Precio de la venta*@
-                            <div class="col">
-                                <label>Precio de Venta:</label>
-                                <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control"></InputNumber>
-                                <ValidationMessage For="@(()=>vehiculos.PrecioVenta)"></ValidationMessage>
-                            </div>
+                            </div>                                                   
                             @*Precio por dia*@
                             <div class="col">
                                 <label>Precio por dia:</label>
@@ -129,6 +123,24 @@
                                 <ValidationMessage For="@(()=>vehiculos.PrecioPorDia)"></ValidationMessage>
                             </div>
 
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+                            @*Precio de la venta*@
+                            <div class="col">
+                                <label>Precio de Venta:</label>
+                                <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control" @onclick="Calcular"></InputNumber>
+                                <ValidationMessage For="@(()=>vehiculos.PrecioVenta)"></ValidationMessage>
+                            </div>
+
+                            @*Precio de ITEBIS *@
+                            <div class="col">
+                                <label>ITBIS:</label>
+                                <InputNumber @bind-Value="vehiculos.ITBIS" step="0,0" class="form-control"></InputNumber>
+                                <ValidationMessage For="@(()=>vehiculos.ITBIS)"></ValidationMessage>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -167,7 +179,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        vehiculos.UsuarioId = getUser();
+
     }
 
     private List<Importadores> SelectImportador()
@@ -192,6 +204,13 @@
 
     }
 
+    private void Calcular()
+    {
+        
+            vehiculos.ITBIS = Convert.ToDouble(vehiculos.PrecioVenta) * 0.18;
+
+    }
+
     private void Buscar()
     {
         if (vehiculos.VehiculoId > 0)
@@ -208,10 +227,12 @@
         }
     }
 
+
+
     private void Guardar()
     {
         bool guardo;
-
+        vehiculos.UsuarioId = getUser();
         guardo = VehiculosBLL.Guardar(vehiculos);
 
         if (guardo)

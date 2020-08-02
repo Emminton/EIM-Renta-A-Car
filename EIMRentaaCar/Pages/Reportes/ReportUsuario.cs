@@ -42,7 +42,7 @@ namespace EIMRentaaCar.Pages.Reportes
             anchoColumnas[0] = 50; //id
             anchoColumnas[1] = 100;//nombre
             anchoColumnas[2] = 60; //UserName
-            anchoColumnas[3] = 100; //Password
+            ////anchoColumnas[3] = 100; //Password
             anchoColumnas[4] = 85;//Email
 
 

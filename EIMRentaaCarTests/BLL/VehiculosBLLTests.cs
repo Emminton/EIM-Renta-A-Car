@@ -13,7 +13,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Vehiculos vehiculos = new Vehiculos(0, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2010, 50000, 1000, 0, 1, DateTime.Now);
+            Vehiculos vehiculos = new Vehiculos(0, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2010, 50000,0.18, 1000, 0, 1, DateTime.Now);
             bool paso = false;
             paso = VehiculosBLL.Guardar(vehiculos);
             Assert.AreEqual(paso,true);
@@ -22,7 +22,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void ModificarTest()
         {
-            Vehiculos vehiculos = new Vehiculos(1, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2015, 50000, 1000, 0, 1, DateTime.Now);
+            Vehiculos vehiculos = new Vehiculos(1, 1, "Disponible", "jeepeta", "Hilux", "Toyota", "ZA12", 2015, 50000,0.18, 1000, 0, 1, DateTime.Now);
             bool paso = false;
             paso = VehiculosBLL.Modificar(vehiculos);
             Assert.AreEqual(paso, true);

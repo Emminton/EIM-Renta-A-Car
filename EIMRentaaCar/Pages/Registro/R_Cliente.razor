@@ -120,7 +120,7 @@ else
                 toast.ShowWarning("No encontrado.");
         }
 
-        cliente.UsuarioId = getUser();
+
     }
 
     private void Nuevo()
@@ -150,6 +150,7 @@ else
 
     private void Guardar()
     {
+        cliente.UsuarioId = getUser();
         bool guardo = ClientesBLL.Guardar(cliente);
 
         if (guardo)

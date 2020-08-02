@@ -16,26 +16,44 @@
             <div class="input-group mb-4">
                 <div class="input-group">
 
-                    <label for="filtro">Filtro: </label>
-                    <select class="form-control ml-3 mr-3" @bind="Filtro">
-                        <option value="" disabled selected>Seleccione un filtro</option>
-                        <option value="Todo">Todo</option>
-                        <option value="ID">Vehiculo ID</option>
-                        <option value="Cliente">Cliente</option>
-                    </select>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong>Desde: </strong> </label>
+                        <InputDate @bind-Value="Desde" class="form-control" />
+                    </div>
 
-                    <label for="criterio ml-3 mr-3"> Criterio: </label>
-                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong> Hasta: </strong> </label>
+                        <InputDate @bind-Value="Hasta" class="form-control" />
+                    </div>
 
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                    <div class="form-group col-2">
+                        <label for="filtro">Filtro: </label>
+                        <select class="form-control " @bind="Filtro">
+                            <option value="" disabled selected>Seleccione un filtro</option>
+                            <option value="Todo">Todo</option>
+                            <option value="ID">Vehiculo ID</option>
+                            <option value="Cliente">Cliente</option>
+                        </select>
+                    </div>
+
+                        <div class="form-group col-4">
+                            <label><strong>Criterio: </strong></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
+                                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
             <table class=" table mb-3 mt-3">
                 <thead class="thead-light">
                     <tr>
                         <th>Vehiculo ID</th>
                         <th>Cliente</th>
+                        <th>Vin</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
                         <th>Dias Renta</th>
                         <th>Fecha</th>
                         <th>Balance</th>
@@ -50,13 +68,16 @@
                     {
                         @foreach (var item in listapaginada)
                         {
-                            <tr class="table-striped">
-                                <td>@item.VehiculoId</td>
-                                <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
-                                <td>@item.TiempoRenta</td>
-                                <td>@item.FechaRenta.ToString("MM/dd/yyyy")</td>
-                                <td>@item.Balance.ToString("N2")</td>
-                            </tr>
+                    <tr class="table-striped">
+                        <td>@item.VehiculoId</td>
+                        <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
+                        <td>@VehiculosBLL.Buscar(item.VehiculoId).Vin</td>
+                        <td>@VehiculosBLL.Buscar(item.VehiculoId).Marca</td>
+                        <td>@VehiculosBLL.Buscar(item.VehiculoId).Modelo</td>
+                        <td>@item.TiempoRenta</td>
+                        <td>@item.FechaRenta.ToString("MM/dd/yyyy")</td>
+                        <td>@item.Balance.ToString("N2")</td>
+                    </tr>
                         }
                     }
                 </tbody>
@@ -139,6 +160,8 @@
     public decimal AcomularPrecio { get; set; }
     public int ContarRenta { get; set; }
     public int Disponibilidad { get; set; }
+    private DateTime Desde { get; set; } = DateTime.Now;
+    private DateTime Hasta { get; set; } = DateTime.Now;
 
     Paginacion paginacion = new Paginacion();
 
@@ -284,6 +307,9 @@
                         case "Cliente":
                             int id = ClientesBLL.Buscar(Criterio).ClienteId;
                             listapaginada = RentasBLL.GetList(e => e.ClienteId == id);
+                            break;
+                        case "Fecha":
+                            listapaginada = lista.Where(c => c.FechaRenta >= Desde.Date && c.FechaRenta.Date <= Hasta.Date).ToList();
                             break;
                     }
                 }

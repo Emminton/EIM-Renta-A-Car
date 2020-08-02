@@ -34,7 +34,8 @@ namespace EIMRentaaCar.Models
 
         [Required(ErrorMessage = "El campo Teléfono no debe de estar vació.")]
         [Phone(ErrorMessage = "Debes de ingresar tu número telefonico.")]
-        [MaxLength(10, ErrorMessage = "El campo telefono no tiene más de diez dígitos.")]
+        [MinLength(10, ErrorMessage = "El campo telefono no puede tener minimo de diez dígitos.")]
+        [MaxLength(10, ErrorMessage = "El campo telefono tiene más de diez dígitos.")]
         public string Telefono { get; set; }
 
         [Required(ErrorMessage = "El campo Dirección no debe de estar vació.")]

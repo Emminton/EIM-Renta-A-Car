@@ -40,6 +40,12 @@
                         <InputText @bind-Value="importadores.Nombre" class="form-control" />
                         <ValidationMessage For="@(() => importadores.Nombre)" />
                     </div>
+                    @*Fecha de Registro*@
+                    <div class="form-group">
+                        <label>Fecha de Registro</label>
+                        <InputDate @bind-Value="importadores.Fecha" class="form-control" />
+                        <ValidationMessage For="@(() => importadores.Fecha)" />
+                    </div>
 
                     @*Telefono*@
                     <div class="form-group">
@@ -91,7 +97,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        importadores.UsuarioId = getUser();
+
     }
 
     private void Nuevo()
@@ -119,7 +125,7 @@
     private void Guardar()
     {
         bool guardo;
-
+        importadores.UsuarioId = getUser();
         guardo = ImportadoresBLL.Guardar(importadores);
 
         if (guardo)

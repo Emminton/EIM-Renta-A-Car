@@ -15,6 +15,7 @@ namespace EIMRentaaCar.Models
         public int PagoRentaId { get; set; }
 
         public int RentaId { get; set; }
+        public int ClienteId { get; set; }
 
         public int UsuarioId { get; set; }
 

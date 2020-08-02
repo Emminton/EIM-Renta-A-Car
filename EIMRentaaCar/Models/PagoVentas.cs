@@ -15,7 +15,7 @@ namespace EIMRentaaCar.Models
         public int PagoVentaId { get; set; }
 
         public int VentaId { get; set; }
-
+        public int ClienteId { get; set; }
         public int UsuarioId { get; set; }
 
         [DataType(DataType.DateTime)]

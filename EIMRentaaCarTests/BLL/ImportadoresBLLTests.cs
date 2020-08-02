@@ -13,7 +13,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void GuardarTest()
         {
-            Importadores importadores = new Importadores(0,1,"NissanRD","8096637896","Nissanrd@gmail.com");
+            Importadores importadores = new Importadores(0,1,  "NissanRD", DateTime.Now, "8096637896","Nissanrd@gmail.com");
             bool paso = false;
             paso = ImportadoresBLL.Guardar(importadores);
             Assert.AreEqual(paso,true);
@@ -22,7 +22,7 @@ namespace EIMRentaaCar.BLL.Tests
         [TestMethod()]
         public void ModificarTest()
         {
-            Importadores importadores = new Importadores(1, 1, "NissanRD", "8096637896", "NissanDominican@gmail.com");
+            Importadores importadores = new Importadores(1, 1, "NissanRD", DateTime.Now, "8096637896", "NissanDominican@gmail.com");
             bool paso = false;
             paso = ImportadoresBLL.Modificar(importadores);
             Assert.AreEqual(paso, true);

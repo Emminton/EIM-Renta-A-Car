@@ -53,6 +53,11 @@
                                     }
                                 </select>
                             </div>
+                            @* cliente *@
+                            <div class="col">
+                                <label>El Cliente:</label>
+                                <InputText class="form-control" readonly="true" @bind-Value="nombreCliente" />
+                            </div>
 
                             <div class="col">
                                 <label>Monto </label>
@@ -82,137 +87,141 @@
     </EditForm>
 }
 
- @code {
+@code {
 
-     PagoRentas pagorenta = new PagoRentas();
-     [Parameter]
-     public int id { get; set; }
-     Usuarios usuarios = new Usuarios();
-     public bool paso { get; set; }
-     //Datos de la venta
-     public int RentaId { get; set; }
-     public decimal Balance { get; set; }
-     public int Ventaseleccionada { get; set; }
+    PagoRentas pagorenta = new PagoRentas();
+    [Parameter]
+    public int id { get; set; }
+    Usuarios usuarios = new Usuarios();
+    public bool paso { get; set; }
+    //Datos de la venta
+    public int RentaId { get; set; }
+    public decimal Balance { get; set; }
+    public int Ventaseleccionada { get; set; }
+    @*Datos del cliente*@
+    public string nombreCliente { get; set; }
 
-     protected override void OnInitialized()
-     {
-         Nuevo();
-         if (id > 0)
-         {
+    protected override void OnInitialized()
+    {
+        Nuevo();
+        if (id > 0)
+        {
 
-             if (PagoVentasBLL.Buscar(id) != null)
-                 this.pagorenta = PagoRentasBLL.Buscar(id);
-             else
-                 toast.ShowWarning("No encontrado.");
-         }
-         pagorenta.UsuarioId = getUser();
-     }
+            if (PagoVentasBLL.Buscar(id) != null)
+                this.pagorenta = PagoRentasBLL.Buscar(id);
+            else
+                toast.ShowWarning("No encontrado.");
+        }
+    }
 
-     private void Nuevo()
-     {
-         this.pagorenta = new PagoRentas();
-         Balance = 0;
-     }
+    private void Nuevo()
+    {
+        this.pagorenta = new PagoRentas();
+        Balance = 0;
+    }
 
-     private void Buscar()
-     {
-         if (pagorenta.PagoRentaId > 0)
-         {
-             var encontrado = PagoRentasBLL.Buscar(pagorenta.PagoRentaId);
+    private void Buscar()
+    {
+        if (pagorenta.PagoRentaId > 0)
+        {
+            var encontrado = PagoRentasBLL.Buscar(pagorenta.PagoRentaId);
 
-             if (encontrado != null)
-                 this.pagorenta = encontrado;
-             else
-             {
-                 toast.ShowWarning("No encontrado");
-                 NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el pago de la renta en la base de datos");
-             }
-         }
-     }
+            if (encontrado != null)
+                this.pagorenta = encontrado;
+            else
+            {
+                toast.ShowWarning("No encontrado");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el pago de la renta en la base de datos");
+            }
+        }
+    }
 
-     private void Guardar()
-     {
-         bool guardo = PagoRentasBLL.Guardar(pagorenta);
+    private void Guardar()
+    {
+        pagorenta.UsuarioId = getUser();
+        bool guardo = PagoRentasBLL.Guardar(pagorenta);
 
-         if (guardo)
-         {
-             Nuevo();
-             toast.ShowSuccess("Guardado correctamente");
-             NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el pago de la renta en la base de datos");
-         }
-         else
-         {
-             toast.ShowError("No fue posible guardar");
-             NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el pago de la renta en la base de datos");
-         }
-     }
+        if (guardo)
+        {
+            Nuevo();
+            toast.ShowSuccess("Guardado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el pago de la renta en la base de datos");
+        }
+        else
+        {
+            toast.ShowError("No fue posible guardar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el pago de la renta en la base de datos");
+        }
+    }
 
-     private void Eliminar()
-     {
-         bool elimino;
+    private void Eliminar()
+    {
+        bool elimino;
 
-         elimino = PagoRentasBLL.Eliminar(pagorenta.PagoRentaId);
+        elimino = PagoRentasBLL.Eliminar(pagorenta.PagoRentaId);
 
-         if (elimino)
-         {
-             Nuevo();
-             toast.ShowSuccess("Eliminado correctamente");
-             NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado el pago de la renta en la base de datos");
-         }
-         else
-         {
-             toast.ShowError("No fue posible eliminar");
-             NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el pago de renta en la base de datos");
-         }
-     }
+        if (elimino)
+        {
+            Nuevo();
+            toast.ShowSuccess("Eliminado correctamente");
+            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado el pago de la renta en la base de datos");
+        }
+        else
+        {
+            toast.ShowError("No fue posible eliminar");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado el pago de renta en la base de datos");
+        }
+    }
 
-     private List<Rentas> RentaCombo()
-     {
-         List<Rentas> lista = new List<Rentas>();
+    private List<Rentas> RentaCombo()
+    {
+        List<Rentas> lista = new List<Rentas>();
 
-         try
-         {
-             lista = RentasBLL.GetList(v => true);
-         }
-         catch (Exception)
-         {
-             throw;
-         }
+        try
+        {
+            lista = RentasBLL.GetList(v => true);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
 
-         return lista;
-     }
+        return lista;
+    }
 
-     private void MostrarRenta()
-     {
+    private void MostrarRenta()
+    {
 
-         var aux = RentasBLL.Buscar(pagorenta.RentaId);
-         if (aux != null)
-         {
-             Balance = aux.Balance;
-         }
+        var aux = RentasBLL.Buscar(pagorenta.RentaId);
+        if (aux != null)
+        {
+            Balance = aux.Balance;
+            nombreCliente = ClientesBLL.Buscar(aux.ClienteId).Nombre;
+            pagorenta.ClienteId = aux.ClienteId;
+        }
 
-     }
+    }
 
-     private int getUser()
-     {
-         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+    private int getUser()
+    {
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
-         if (usuario != null)
-         {
-             return usuario.UsuarioId;
-         }
-         return 0;
-     }
+        if (usuario != null)
+        {
+            return usuario.UsuarioId;
+        }
+        return 0;
+    }
 
-     private bool getRol()
-     {
+    private bool getRol()
+    {
 
-         Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
 
-         if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
-         {
-             return paso = true;
-         }
-         return paso = false;
-     }
- }
+        if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
+        {
+            return paso = true;
+        }
+        return paso = false;
+    }
+}

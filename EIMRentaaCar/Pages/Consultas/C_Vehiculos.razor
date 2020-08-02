@@ -26,7 +26,7 @@
                         <InputDate @bind-Value="Hasta" class="form-control" />
                     </div>
 
-                    <div class="form-group col-3">
+                    <div class="form-group col-2">
                         <label for="filtro"><strong>Filtro:</strong> </label>
                         <select class="form-control" @bind="Filtro">
                             <option value="" disabled selected>Seleccione un filtro</option>
@@ -39,7 +39,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-3">
+                    <div class="form-group col-4">
                         <label><strong>Criterio: </strong></label>
                         <div class="input-group">
                             <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
@@ -62,6 +62,7 @@
                         <th>Tipo</th>
                         <th>Precio por dia</th>
                         <th>Precio de venta</th>
+                        <th>ITBIS</th>
                         <th>Fecha de registro</th>
                     </tr>
                 </thead>
@@ -85,6 +86,7 @@
                                 <td>@item.Tipo</td>
                                 <td>@item.PrecioPorDia.ToString("N2")</td>
                                 <td>@item.PrecioVenta.ToString("N2")</td>
+                                <td>@item.ITBIS.ToString("N2")</td>
                                 <th>@item.Fecha.ToString("MM/dd/yyyy H:mm tt")</th>
 
                             </tr>

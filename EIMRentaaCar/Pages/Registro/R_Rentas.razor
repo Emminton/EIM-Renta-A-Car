@@ -218,7 +218,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        rentas.UsuarioId = getUser();
+
     }
 
     private void Nuevo()
@@ -281,7 +281,7 @@
         bool guardo;
         rentas.ClienteId = SelecionCliente;
         rentas.VehiculoId = SelecionVehiculo;
-
+        rentas.UsuarioId = getUser();
         guardo = RentasBLL.Guardar(rentas);
 
         if (guardo)

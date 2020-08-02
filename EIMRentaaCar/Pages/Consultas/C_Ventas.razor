@@ -16,18 +16,31 @@
             <div class="input-group mb-4">
                 <div class="input-group">
 
-                    <label for="filtro"><strong>Filtro:</strong> </label>
-                    <select class="form-control ml-3 mr-3" @bind="Filtro">
-                        <option value="" disabled selected>Seleccione un filtro</option>
-                        <option value="Todo">Todo</option>
-                        <option value="ID">Vehiculo ID</option>
-                        <option value="Cliente">Cliente</option>
-                    </select>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong>Desde: </strong> </label>
+                        <InputDate @bind-Value="Desde" class="form-control" />
+                    </div>
 
-                    <label for="criterio ml-3 mr-3"><strong> Criterio:</strong> </label>
-                    <input type="search" class="form-control ml-3 mr-3" @bind-value="Criterio" />
-
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                    <div class="form-group col-2">
+                        <label for="criterio "> <strong> Hasta: </strong> </label>
+                        <InputDate @bind-Value="Hasta" class="form-control" />
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="filtro"><strong>Filtro:</strong> </label>
+                        <select class="form-control " @bind="Filtro">
+                            <option value="" disabled selected>Seleccione un filtro</option>
+                            <option value="Todo">Todo</option>
+                            <option value="ID">Vehiculo ID</option>
+                            <option value="Cliente">Cliente</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label><strong>Criterio: </strong></label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
+                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -36,6 +49,9 @@
                     <tr>
                         <th>Vehiculo ID</th>
                         <th>Cliente ID</th>
+                        <th>Vin</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
                         <th>Fecha </th>
                         <th>Cuotas</th>
                         <th>Balance</th>
@@ -58,11 +74,14 @@
                             <tr class="table-striped">
                                 <td>@item.VehiculoId</td>
                                 <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
+                                <td>@VehiculosBLL.Buscar(item.VehiculoId).Vin</td>
+                                <td>@VehiculosBLL.Buscar(item.VehiculoId).Marca</td>
+                                <td>@VehiculosBLL.Buscar(item.VehiculoId).Modelo</td>
                                 <td>@item.FechaVenta.ToString("MM/dd/yyyy H:mm tt")</td>
                                 <td>@item.Cuotas.ToString("N2")</td>
                                 <td>@item.Balance.ToString("N2")</td>
                             </tr>
-                        }
+                         }
                     }
                 </tbody>
             </table>
@@ -142,6 +161,8 @@
     public decimal AcomularPrecio { get; set; }
     public int ContarVenta { get; set; }
     public int Disponibilidad { get; set; }
+    private DateTime Desde { get; set; } = DateTime.Now;
+    private DateTime Hasta { get; set; } = DateTime.Now;
 
     public byte[] Data { get; set; }
     public string pdfContent { get; set; }
@@ -291,6 +312,10 @@
                             int id = ClientesBLL.Buscar(Criterio).ClienteId;
                             listapaginada = VentasBLL.GetList(e=> e.ClienteId == id);
                             break;
+                        case "Fecha":
+                            listapaginada = lista.Where(c => c.FechaVenta >= Desde.Date && c.FechaVenta.Date <= Hasta.Date).ToList();
+                            break;
+
                     }
                 }
             }

@@ -36,6 +36,9 @@ namespace EIMRentaaCar.Models
         [Required(ErrorMessage = "No puede estar vació el campo precio de venta")]
         public decimal PrecioVenta { get; set; }
 
+        [Range(0, 100000000, ErrorMessage = "El campo precio de venta no puede ser menor que cero")]
+        public double ITBIS { get; set; } 
+
         [Range(0, 100000000, ErrorMessage = "El campo precio por dia no puede ser menor que cero")]
         [Required(ErrorMessage = "No puede estar vació el campo precio por dia")]
         public decimal PrecioPorDia { get; set; }
@@ -61,13 +64,14 @@ namespace EIMRentaaCar.Models
             Vin = string.Empty;
             Año = 0;
             PrecioVenta = 0.0m;
+            ITBIS = 0.0;
             PrecioPorDia = 0.0m;
             Kilometraje = 0;
             ImportadorId = 0;
             Fecha = DateTime.Now;
         }
 
-        public Vehiculos(int vehiculoId, int usuarioId, string estado, string tipo, string modelo, string marca, string vin, int año, decimal precioVenta, decimal precioPorDia, int kilometraje, int importadorId, DateTime fecha)
+        public Vehiculos(int vehiculoId, int usuarioId, string estado, string tipo, string modelo, string marca, string vin, int año, decimal precioVenta, double itbis, decimal precioPorDia, int kilometraje, int importadorId, DateTime fecha)
         {
             VehiculoId = vehiculoId;
             UsuarioId = usuarioId;
@@ -78,6 +82,7 @@ namespace EIMRentaaCar.Models
             Vin = string.Empty;
             Año = año;
             PrecioVenta = precioVenta;
+            ITBIS = itbis;
             PrecioPorDia = precioPorDia;
             Kilometraje = kilometraje;
             ImportadorId = importadorId;

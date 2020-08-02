@@ -210,7 +210,7 @@
             else
                 toast.ShowWarning("No encontrado.");
         }
-        ventas.UsuarioId = getUser();
+
     }
 
     private void Nuevo()
@@ -259,6 +259,7 @@
         }
         else
         {
+            ventas.UsuarioId = getUser();
             bool guardo = VentasBLL.Guardar(ventas);
 
             if (guardo)
