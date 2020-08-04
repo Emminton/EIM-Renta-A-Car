@@ -13,7 +13,9 @@ namespace EIMRentaaCar.Models
 		[Required(ErrorMessage = "El campo Id debe ser un numero")]
 		[Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
 		public int VentaId { get; set; }
+		[Required(ErrorMessage = "El campo cliente no debe estar vació")]
 		public int ClienteId { get; set; }
+		[Required(ErrorMessage = "El campo vehiculo no debe estar vació")]
 		public int VehiculoId { get; set; }
         public int UsuarioId { get; set; }
 		[Range(0, 100000000, ErrorMessage = "El campo cuotas no puede ser menor que cero")]

@@ -13,7 +13,9 @@ namespace EIMRentaaCar.Models
         [Key]
         public int RentaId { get; set; }
 
+        [Required(ErrorMessage = "El campo vehiculo no debe estar vació")]
         public int VehiculoId { get; set; }
+        [Required(ErrorMessage = "El campo cliente no debe estar vació")]
         public int ClienteId { get; set; }
         public int UsuarioId { get; set; }
         public DateTime FechaRenta { get; set; }
