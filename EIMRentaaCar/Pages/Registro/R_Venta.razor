@@ -123,7 +123,7 @@
                     @*Detalle*@
                     <div class="table-responsive text-nowrap">
                         <table class="table table-striped">
-                            <thead class="thead-light">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>#</th>
                                     <th>Monto</th>
@@ -169,11 +169,34 @@
                     <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"> Nuevo </i></button>
                     <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"> Guardar </i></button>
                     <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"> Eliminar </i></button>
+                    <button type= "button" class="btn btn-lg btn-warning" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i>Factura</button>
                 </div>
             </div>
         </div>
     </EditForm>
 }
+
+
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content m-md-auto">
+            <div class="modal-header">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @code {
 
@@ -182,22 +205,25 @@
     Ventas ventas = new Ventas();
 
     @*Datos del cliente*@
-    public int ClienteSelecionado { get; set; }
-    public string nombreCliente { get; set; }
+public int ClienteSelecionado { get; set; }
+public string nombreCliente { get; set; }
 
     @*Datos del vehiculo*@
-    public int Vehiculoseleccionado { get; set; }
-    public string Marca { get; set; }
-    public string Modelo { get; set; }
-    public decimal Precio { get; set; }
-    public string Vin { get; set; }
-    public decimal KM { get; set; }
-    public int Año { get; set; }
-    public string Tipo { get; set; }
+public int Vehiculoseleccionado { get; set; }
+public string Marca { get; set; }
+public string Modelo { get; set; }
+public decimal Precio { get; set; }
+public string Vin { get; set; }
+public decimal KM { get; set; }
+public int Año { get; set; }
+public string Tipo { get; set; }
 
     @*Datos del usuario*@
     Usuarios usuarios = new Usuarios();
     public bool paso { get; set; }
+
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
 
     protected override void OnInitialized()
     {
@@ -238,10 +264,7 @@
             if (encontrado != null)
             {
                 this.ventas = encontrado;
-                ClienteSelecionado = encontrado.ClienteId;
-                Vehiculoseleccionado = encontrado.VehiculoId;
             }
-
             else
             {
                 toast.ShowWarning("No encontrado");
@@ -404,7 +427,7 @@
                 {
                     CuotaId = 0,
                     VentaId = ventas.VentaId,
-                    UsuarioId = 0,
+                    UsuarioId = getUser(),
                     Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
                     Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
                     Pagada = false,
@@ -468,5 +491,23 @@
             return paso = true;
         }
         return paso = false;
+    }
+
+
+    private void PDF()
+    {
+        if (ventas == null)
+        {
+            toast.ShowInfo("No hay datos");
+        }
+        else
+        {
+            EIMRentaaCar.Pages.Reportes.FacturaVenta factura = new Reportes.FacturaVenta();
+
+            Data = factura.Reporte(ventas);
+
+            pdfContent = "data:application/pdf;base64,";
+            pdfContent += System.Convert.ToBase64String(Data);
+        }
     }
 }

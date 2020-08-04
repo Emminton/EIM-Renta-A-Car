@@ -2,6 +2,7 @@
 using EIMRentaaCar.Models;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Org.BouncyCastle.Math.EC.Multiplier;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,8 +13,8 @@ namespace EIMRentaaCar.Pages.Reportes
 {
     public class ReportPagoRenta
     {
-        int columnas = 4;
-
+        int columnas = 5;
+        decimal monto = 0;
         Document document = new Document();
         PdfPTable pdfTable;
         PdfPCell pdfCell = new PdfPCell();
@@ -42,7 +43,8 @@ namespace EIMRentaaCar.Pages.Reportes
             anchoColumnas[0] = 50; //id
             anchoColumnas[1] = 60; //fecha 
             anchoColumnas[2] = 100; //Usuario
-            anchoColumnas[3] = 70;//Monto
+            anchoColumnas[3] = 100; //cliente
+            anchoColumnas[4] = 70;//Monto
 
             pdfTable.SetWidths(anchoColumnas);
 
@@ -139,6 +141,12 @@ namespace EIMRentaaCar.Pages.Reportes
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
+            pdfCell = new PdfPCell(new Phrase("Cliente", fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
             pdfCell = new PdfPCell(new Phrase("Monto", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -172,6 +180,12 @@ namespace EIMRentaaCar.Pages.Reportes
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
+                pdfCell = new PdfPCell(new Phrase(ClientesBLL.Buscar(item.ClienteId).Nombre, _fontStyle));
+                pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+                pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                pdfCell.BackgroundColor = BaseColor.White;
+                pdfTable.AddCell(pdfCell);
+
                 pdfCell = new PdfPCell(new Phrase(item.Monto.ToString("N2"), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -180,6 +194,13 @@ namespace EIMRentaaCar.Pages.Reportes
 
                 pdfTable.CompleteRow();
             }
+
+            pdfCell = new PdfPCell(new Phrase("Total de pagos", fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
 
             pdfCell = new PdfPCell(new Phrase(num++.ToString(), fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -195,14 +216,31 @@ namespace EIMRentaaCar.Pages.Reportes
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase(" ", fontStyle));
+            pdfCell = new PdfPCell(new Phrase("Monto total", fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
+              
+            pdfCell = new PdfPCell(new Phrase(monto.ToString("N2"), fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.White;
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
 
+            pdfTable.CompleteRow();
+
             #endregion
+        }
+
+        private void CalcularSumatoria(List<PagoDetalles> pagoDetalles)
+        {
+            foreach (var item in pagoDetalles)
+            {
+                monto += item.Monto;
+            }
         }
 
     }

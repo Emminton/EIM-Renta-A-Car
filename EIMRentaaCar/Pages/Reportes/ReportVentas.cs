@@ -13,6 +13,9 @@ namespace EIMRentaaCar.Pages.Reportes
     public class ReportVentas
     {
         int columnas = 7;
+
+        decimal monto = 0;
+        decimal cuota = 0;
         Document document = new Document();
         PdfPTable pdfTable;
         PdfPCell pdfCell = new PdfPCell();
@@ -220,6 +223,15 @@ namespace EIMRentaaCar.Pages.Reportes
                 pdfTable.CompleteRow();
             }
 
+            calcular();
+
+            pdfCell = new PdfPCell(new Phrase("Total de venta", fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
+
             pdfCell = new PdfPCell(new Phrase(num++.ToString(), fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -227,12 +239,34 @@ namespace EIMRentaaCar.Pages.Reportes
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase(" ", fontStyle));
+            pdfCell = new PdfPCell(new Phrase("Total monto de cuota", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.White;
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase(cuota.ToString("N2"), fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Total de monto", fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase(monto.ToString("N2"), fontStyle));
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.White;
+            pdfCell.Border = 0;
+            pdfTable.AddCell(pdfCell);
+
 
             pdfCell = new PdfPCell(new Phrase(" ", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -240,8 +274,19 @@ namespace EIMRentaaCar.Pages.Reportes
             pdfCell.BackgroundColor = BaseColor.White;
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
+
+
+            pdfTable.CompleteRow();
 
             #endregion
+        }     
+        private void calcular()
+        {
+            foreach (var item in lista)
+            {
+                cuota += item.MontoCuotas;
+                monto += item.MontoTotal;
+            }
         }
 
     }

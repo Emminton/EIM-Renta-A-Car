@@ -178,11 +178,32 @@
                     <button type="button" class="btn btn-lg btn-primary" @onclick="Nuevo"><i class="fa fa-plus"></i> Nuevo</button>
                     <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-save"></i> Guardar</button>
                     <button type="button" class="btn btn-lg btn-danger" @onclick="Eliminar"><i class="fa fa-trash"></i> Eliminar</button>
+                    <button type="button" class="btn btn-lg btn-warning" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i>Factura</button>
                 </div>
             </div>
         </div>
     </EditForm>
 }
+
+<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content m-md-auto">
+            <div class="modal-header">
+                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @code   {
 
@@ -206,6 +227,9 @@
     @*Datos Del Cliente*@
     public string nombreCliente { get; set; }
     public int SelecionCliente { get; set; }
+
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
 
     protected override void OnInitialized()
     {
@@ -367,7 +391,7 @@
                 {
                     PagoId = 0,
                     RentaId = rentas.RentaId,
-                    UsuarioId = 0,
+                    UsuarioId = getUser(),
                     Monto = VehiculosBLL.Buscar(SelecionVehiculo).PrecioPorDia,
                     Balance = VehiculosBLL.Buscar(SelecionVehiculo).PrecioPorDia,
                     Pagada = false,
@@ -431,5 +455,22 @@
             return paso = true;
         }
         return paso = false;
+    }
+
+    private void PDF()
+    {
+        if (rentas == null)
+        {
+            toast.ShowInfo("No hay datos");
+        }
+        else
+        {
+            EIMRentaaCar.Pages.Reportes.FacturaRenta factura = new Reportes.FacturaRenta();
+
+            Data = factura.Reporte(rentas);
+
+            pdfContent = "data:application/pdf;base64,";
+            pdfContent += System.Convert.ToBase64String(Data);
+        }
     }
 }

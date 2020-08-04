@@ -178,6 +178,8 @@
                 this.vehiculos = aux;
             else
                 toast.ShowWarning("No encontrado.");
+
+            vehiculos.Estado = "Disponible";
         }
 
     }
@@ -206,8 +208,8 @@
 
     private void Calcular()
     {
-        
-            vehiculos.ITBIS = Convert.ToDouble(vehiculos.PrecioVenta) * 0.18;
+
+        vehiculos.ITBIS = Convert.ToDouble(vehiculos.PrecioVenta) * 0.18;
 
     }
 
