@@ -140,7 +140,7 @@
                                         <td>@item.Monto.ToString("N2")</td>
                                         <td>@item.Balance.ToString("N2")</td>
                                         <td><input type="checkbox" @bind="item.Pagada" /></td>
-                                        <td><button type="button" class="btn" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash text-danger"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i></button></td>
                                     </tr>
                                 }
 
@@ -382,7 +382,7 @@ public string Tipo { get; set; }
         {
             Marca = auxventa.Marca;
             Modelo = auxventa.Modelo;
-            Precio = auxventa.PrecioVenta;
+            Precio = auxventa.PrecioVenta + Convert.ToDecimal(auxventa.ITBIS);
             Vin = auxventa.Vin;
             KM = auxventa.Kilometraje;
             Año = auxventa.Año;
@@ -428,8 +428,8 @@ public string Tipo { get; set; }
                     CuotaId = 0,
                     VentaId = ventas.VentaId,
                     UsuarioId = getUser(),
-                    Monto = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
-                    Balance = VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta / ventas.Cuotas,
+                    Monto = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
+                    Balance = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
                     Pagada = false,
                     Numero = (1 + i)
                 });
