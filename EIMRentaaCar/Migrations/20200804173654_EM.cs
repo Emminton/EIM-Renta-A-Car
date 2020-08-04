@@ -12,7 +12,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     BancoAsociadoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(maxLength: 30, nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
@@ -30,7 +30,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     ClienteId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(maxLength: 40, nullable: false),
                     FechaNacimiento = table.Column<DateTime>(nullable: false),
@@ -49,7 +49,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     ImportadorId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(nullable: false),
                     Nombre = table.Column<string>(maxLength: 30, nullable: false),
                     Fecha = table.Column<DateTime>(nullable: false),
@@ -66,7 +66,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     NotificacionId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(nullable: false),
                     Titulo = table.Column<string>(nullable: false),
                     Asunto = table.Column<string>(nullable: false),
@@ -83,7 +83,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     PagoRentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RentaId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
@@ -100,7 +100,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     PagoVentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VentaId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
@@ -117,7 +117,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     RentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VehiculoId = table.Column<int>(nullable: false),
                     ClienteId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
@@ -135,7 +135,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     UsuarioId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(maxLength: 50, nullable: false),
                     Email = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 30, nullable: false),
@@ -154,7 +154,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     VehiculoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     UsuarioId = table.Column<int>(nullable: false),
                     Estado = table.Column<string>(nullable: false),
                     Tipo = table.Column<string>(nullable: false),
@@ -179,7 +179,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     VentaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(nullable: false),
                     VehiculoId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
@@ -199,7 +199,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     PagoId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     RentaId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
                     Monto = table.Column<decimal>(nullable: false),
@@ -223,7 +223,7 @@ namespace EIMRentaaCar.Migrations
                 columns: table => new
                 {
                     CuotaId = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     VentaId = table.Column<int>(nullable: false),
                     UsuarioId = table.Column<int>(nullable: false),
                     Monto = table.Column<decimal>(nullable: false),
@@ -245,7 +245,7 @@ namespace EIMRentaaCar.Migrations
             migrationBuilder.InsertData(
                 table: "Usuarios",
                 columns: new[] { "UsuarioId", "ConfirmarPassword", "Email", "FechaIngreso", "Nombre", "Password", "Roles", "UserName" },
-                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 8, 2, 16, 48, 31, 446, DateTimeKind.Local).AddTicks(5452), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
+                values: new object[] { 1, "MQAyADMANAA=", "Admin@gamil.com", new DateTime(2020, 8, 4, 13, 36, 53, 775, DateTimeKind.Local).AddTicks(5685), "Admistrador", "MQAyADMANAA=", "Administrador", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CuotaDetalles_VentaId",
