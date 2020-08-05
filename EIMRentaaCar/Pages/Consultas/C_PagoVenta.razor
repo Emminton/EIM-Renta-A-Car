@@ -4,36 +4,39 @@
 @using EIMRentaaCar.Models
 
 @inject IToastService toast
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<EditForm Model="listapaginada">
-    <DataAnnotationsValidator />
-    <div class="card">
-        <div class="card-header">
-            <h3>Consultas De Pago Ventas</h3>
-        </div>
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())
+{
+    <EditForm Model="listapaginada">
+        <DataAnnotationsValidator />
+        <div class="card">
+            <div class="card-header">
+                <h3>Consultas De Pago Ventas</h3>
+            </div>
 
-        <div class="card-body">
-            <div class="input-group mb-4">
-                <div class="input-group">
+            <div class="card-body">
+                <div class="input-group mb-4">
+                    <div class="input-group">
 
-                    <div class="form-group col-2">
-                        <label for="criterio "> <strong>Desde: </strong> </label>
-                        <InputDate @bind-Value="Desde" class="form-control" />
-                    </div>
+                        <div class="form-group col-2">
+                            <label for="criterio "> <strong>Desde: </strong> </label>
+                            <InputDate @bind-Value="Desde" class="form-control" />
+                        </div>
 
-                    <div class="form-group col-2">
-                        <label for="criterio "> <strong> Hasta: </strong> </label>
-                        <InputDate @bind-Value="Hasta" class="form-control" />
-                    </div>
+                        <div class="form-group col-2">
+                            <label for="criterio "> <strong> Hasta: </strong> </label>
+                            <InputDate @bind-Value="Hasta" class="form-control" />
+                        </div>
 
-                    <div class="form-group col-2">
-                        <label for="filtro">Filtro: </label>
-                        <select class="form-control " @bind="Filtro">
-                            <option value="" disabled selected>Seleccione un filtro</option>
-                            <option value="Todo">Todo</option>
-                            <option value="ID">ID</option>
-                        </select>
-                    </div>
+                        <div class="form-group col-2">
+                            <label for="filtro">Filtro: </label>
+                            <select class="form-control " @bind="Filtro">
+                                <option value="" disabled selected>Seleccione un filtro</option>
+                                <option value="Todo">Todo</option>
+                                <option value="ID">ID</option>
+                            </select>
+                        </div>
 
                         <div class="form-group col-4">
                             <label><strong>Criterio: </strong></label>
@@ -45,218 +48,232 @@
                     </div>
                 </div>
 
-            <table class=" table mb-3 mt-3" id="example">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Monto</th>
-                       
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (listapaginada.Count == 0)
-                    {
-                        toast.ShowWarning("No hay datos");
-                    }
-                    else
-                    {
-                        @foreach (var item in listapaginada)
+                <table class=" table mb-3 mt-3" id="example">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (listapaginada.Count == 0)
                         {
-                            <tr class="table-striped">
-                                <td>@item.PagoVentaId</td>
-                                <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
-                                <td>@item.Fecha.ToString("MM/dd/yyyy")</td>
-                                <td>@item.Monto.ToString("N2")</td>
-
-                            </tr>
+                            toast.ShowWarning("No hay datos");
                         }
-                    }
+                        else
+                        {
+                            @foreach (var item in listapaginada)
+                            {
+                                <tr class="table-striped">
+                                    <td>@item.PagoVentaId</td>
+                                    <td>@ClientesBLL.Buscar(item.ClienteId).Nombre</td>
+                                    <td>@item.Fecha.ToString("MM/dd/yyyy")</td>
+                                    <td>@item.Monto.ToString("N2")</td>
 
-                </tbody>
-            </table>
-        </div>
+                                </tr>
+                            }
+                        }
 
-        <div class="card-footer text-center">
-            <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
-        </div>
-        <div class="form-row col-12 justify-content-center">
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item bt">
-                        <a class="page-link" @onclick="PaginaAnterior">
-                            <span class="oi oi-media-skip-backward "></span>
-                        </a>
-                    </li>
-
-                    @for (int i = 1; i <= Paginas; i++)
-                    {
-                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
-
-                    }
-
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaSiguiente">
-                            <span class="oi oi-media-skip-forward "></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</EditForm>
-
-<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content m-md-auto">
-            <div class="modal-header">
-                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"></h4>
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-body">
-                <div style="text-align: center;">
-                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+
+            <div class="card-footer text-center">
+                <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
+            </div>
+            <div class="form-row col-12 justify-content-center">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item bt">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip-backward "></span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip-forward "></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </EditForm>
+}
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content m-md-auto">
+                <div class="modal-header">
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center;">
+                        <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-            </div>
         </div>
     </div>
-</div>
 
 
-@code {
+    @code {
 
-    private List<PagoVentas> lista { get; set; }
-    private List<PagoVentas> listapaginada { get; set; }
+        private List<PagoVentas> lista { get; set; }
+        private List<PagoVentas> listapaginada { get; set; }
 
-    private string Filtro { get; set; }
-    private string Criterio { get; set; }
-    private DateTime Desde { get; set; } = DateTime.Now;
-    private DateTime Hasta { get; set; } = DateTime.Now;
+        private string Filtro { get; set; }
+        private string Criterio { get; set; }
+        private DateTime Desde { get; set; } = DateTime.Now;
+        private DateTime Hasta { get; set; } = DateTime.Now;
 
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
 
-    Paginacion paginacion = new Paginacion();
+        Paginacion paginacion = new Paginacion();
 
-    public byte[] Data { get; set; }
-    public string pdfContent { get; set; }
+        public byte[] Data { get; set; }
+        public string pdfContent { get; set; }
 
+        public bool paso { get; set; }
 
-
-    protected override void OnInitialized()
-    {
-        lista = PagoVentasBLL.GetList(C => true);
-        Filtro = "Todo";
-        IniciarPaginacion();
-    }
-
-    private void PDF()
-    {
-        EIMRentaaCar.Pages.Reportes.ReportPagoVenta cobros = new Reportes.ReportPagoVenta();
-
-        Data = cobros.Reporte();
-
-        pdfContent = "data:application/pdf;base64,";
-        pdfContent += System.Convert.ToBase64String(Data);
-    }
-
-
-    public void IniciarPaginacion()
-    {
-        PaginaActual = 1;
-        Elementos = lista.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        listapaginada = lista.Take(paginacion.Mostrar).ToList();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
+        protected override void OnInitialized()
         {
-            PaginaActual++;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
+            lista = PagoVentasBLL.GetList(C => true);
+            Filtro = "Todo";
+            IniciarPaginacion();
         }
-    }
 
-    private void Mover()
-    {
-        if (PaginaActual < Paginas)
+        private void PDF()
         {
-            PaginaActual++;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
+            EIMRentaaCar.Pages.Reportes.ReportPagoVenta cobros = new Reportes.ReportPagoVenta();
+
+            Data = cobros.Reporte();
+
+            pdfContent = "data:application/pdf;base64,";
+            pdfContent += System.Convert.ToBase64String(Data);
         }
-        else if (PaginaActual > 1)
+
+
+        public void IniciarPaginacion()
         {
-            PaginaActual--;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
+            PaginaActual = 1;
+            Elementos = lista.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            listapaginada = lista.Take(paginacion.Mostrar).ToList();
         }
-    }
 
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
+        private void PaginaSiguiente()
         {
-            PaginaActual--;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void Buscar()
-    {
-        try
-        {
-            if (Filtro == null)
+            if (PaginaActual < Paginas)
             {
-                toast.ShowWarning("Selecciones un filtro");
+                PaginaActual++;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
             }
-            else
-            {
-                if (Filtro != null)
-                {
+        }
 
-                    switch (Filtro)
-                    {
-                        case "Todo":
-                            listapaginada = PagoVentasBLL.GetList(e => true);
-                            IniciarPaginacion();
-                            break;
-                        case "ID":
-                            listapaginada = PagoVentasBLL.GetList(e => e.PagoVentaId == Convert.ToInt32(Criterio));
-                            break;
-                        case "Fecha":
-                            listapaginada = lista.Where(c => c.Fecha >= Desde.Date && c.Fecha.Date <= Hasta.Date).ToList();
-                            break;
-                    }
+        private void Mover()
+        {
+            if (PaginaActual < Paginas)
+            {
+                PaginaActual++;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+            else if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void Buscar()
+        {
+            try
+            {
+                if (Filtro == null)
+                {
+                    toast.ShowWarning("Selecciones un filtro");
                 }
                 else
                 {
-                    toast.ShowWarning("debes de insertar un dato al criterio");
+                    if (Filtro != null)
+                    {
+
+                        switch (Filtro)
+                        {
+                            case "Todo":
+                                listapaginada = PagoVentasBLL.GetList(e => true);
+                                IniciarPaginacion();
+                                break;
+                            case "ID":
+                                listapaginada = PagoVentasBLL.GetList(e => e.PagoVentaId == Convert.ToInt32(Criterio));
+                                break;
+                            case "Fecha":
+                                listapaginada = lista.Where(c => c.Fecha >= Desde.Date && c.Fecha.Date <= Hasta.Date).ToList();
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        toast.ShowWarning("debes de insertar un dato al criterio");
+                    }
                 }
             }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-        catch (Exception)
+
+
+        private bool getRol()
         {
-            throw;
+
+            Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+            if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
+            {
+                return paso = true;
+            }
+            return paso = false;
         }
+
     }
-}
 

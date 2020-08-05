@@ -4,347 +4,366 @@
 @using EIMRentaaCar.Models
 
 @inject IToastService toast
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-<EditForm Model="listapaginada">
-    <DataAnnotationsValidator />
-    <div class="card">
-        <div class="card-header">
-            <h3>Consultas De Vehiculo</h3>
-        </div>
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && getRol())
+{
+    <EditForm Model="listapaginada">
+        <DataAnnotationsValidator />
+        <div class="card">
+            <div class="card-header">
+                <h3>Consultas De Vehiculo</h3>
+            </div>
 
-        <div class="card-body">
-            <div class="input-group ">
-                <div class="input-group">
+            <div class="card-body">
+                <div class="input-group ">
+                    <div class="input-group">
 
-                    <div class="form-group col-2">
-                        <label for="criterio "> <strong>Desde: </strong> </label>
-                        <InputDate @bind-Value="Desde" class="form-control"/>
-                    </div>
-
-                    <div class="form-group col-2">
-                        <label for="criterio "> <strong> Hasta: </strong> </label>
-                        <InputDate @bind-Value="Hasta" class="form-control" />
-                    </div>
-
-                    <div class="form-group col-2">
-                        <label for="filtro"><strong>Filtro:</strong> </label>
-                        <select class="form-control" @bind="Filtro">
-                            <option value="" disabled selected>Seleccione un filtro</option>
-                            <option value="Todo">Todo</option>
-                            <option value="Id">Vehiculo ID</option>
-                            <option value="Vin">Vin</option>
-                            <option value="Marca">Marca</option>
-                            <option value="Modelo">Modelo</option>
-                            <option value="Fecha">Fecha</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-4">
-                        <label><strong>Criterio: </strong></label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
-                            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                        <div class="form-group col-2">
+                            <label for="criterio "> <strong>Desde: </strong> </label>
+                            <InputDate @bind-Value="Desde" class="form-control" />
                         </div>
+
+                        <div class="form-group col-2">
+                            <label for="criterio "> <strong> Hasta: </strong> </label>
+                            <InputDate @bind-Value="Hasta" class="form-control" />
+                        </div>
+
+                        <div class="form-group col-2">
+                            <label for="filtro"><strong>Filtro:</strong> </label>
+                            <select class="form-control" @bind="Filtro">
+                                <option value="" disabled selected>Seleccione un filtro</option>
+                                <option value="Todo">Todo</option>
+                                <option value="Id">Vehiculo ID</option>
+                                <option value="Vin">Vin</option>
+                                <option value="Marca">Marca</option>
+                                <option value="Modelo">Modelo</option>
+                                <option value="Fecha">Fecha</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label><strong>Criterio: </strong></label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Criterio" @bind="Criterio" />
+                                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar </button>
+                            </div>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
 
-            <table class=" table mb-3 mt-3">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Vehiculo ID</th>
-                        <th>Vin</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Kilometraje</th>
-                        <th>Año</th>
-                        <th>Tipo</th>
-                        <th>Precio por dia</th>
-                        <th>Precio de venta</th>
-                        <th>ITBIS</th>
-                        <th>Fecha de registro</th>
-                    </tr>
-                </thead>
+                <table class=" table mb-3 mt-3">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Vehiculo ID</th>
+                            <th>Vin</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Kilometraje</th>
+                            <th>Año</th>
+                            <th>Tipo</th>
+                            <th>Precio por dia</th>
+                            <th>Precio de venta</th>
+                            <th>ITBIS</th>
+                            <th>Fecha de registro</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    @if (listapaginada.Count == 0)
-                    {
-                        toast.ShowWarning("No hay datos");
-                    }
-                    else
-                    {
-                        @foreach (var item in listapaginada)
+                    <tbody>
+                        @if (listapaginada.Count == 0)
                         {
-                            <tr class="table-striped">
-                                <td>@item.VehiculoId</td>
-                                <td>@item.Vin</td>
-                                <td>@item.Marca</td>
-                                <td>@item.Modelo</td>
-                                <td>@item.Kilometraje</td>
-                                <td>@item.Año</td>
-                                <td>@item.Tipo</td>
-                                <td>@item.PrecioPorDia.ToString("N2")</td>
-                                <td>@item.PrecioVenta.ToString("N2")</td>
-                                <td>@item.ITBIS.ToString("N2")</td>
-                                <th>@item.Fecha.ToString("MM/dd/yyyy H:mm tt")</th>
-
-                            </tr>
+                            toast.ShowWarning("No hay datos");
                         }
-                    }
-                </tbody>
-            </table>
-        </div>
-        <div class="form-group">
-            <div class="row">
+                        else
+                        {
+                            @foreach (var item in listapaginada)
+                            {
+                                <tr class="table-striped">
+                                    <td>@item.VehiculoId</td>
+                                    <td>@item.Vin</td>
+                                    <td>@item.Marca</td>
+                                    <td>@item.Modelo</td>
+                                    <td>@item.Kilometraje</td>
+                                    <td>@item.Año</td>
+                                    <td>@item.Tipo</td>
+                                    <td>@item.PrecioPorDia.ToString("N2")</td>
+                                    <td>@item.PrecioVenta.ToString("N2")</td>
+                                    <td>@item.ITBIS.ToString("N2")</td>
+                                    <th>@item.Fecha.ToString("MM/dd/yyyy H:mm tt")</th>
 
-                <div class="col-2">
-                    <label><strong>Total de Precios </strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
-                </div>
-                <div class="align-content-lg-center">
-                    <label><strong>Total precio por Dias </strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="PrecioporDia" />
-                </div>
-                <div class="form-group col-2 col-md-2 ml-md-auto">
-                    <label><strong>Vehiculos Disponible</strong></label>
-                    <InputNumber class="form-control" readonly="true" @bind-Value="Disponibilidad" />
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <div class="row">
+
+                    <div class="col-2">
+                        <label><strong>Total de Precios </strong></label>
+                        <InputNumber class="form-control" readonly="true" @bind-Value="AcomularPrecio" />
+                    </div>
+                    <div class="align-content-lg-center">
+                        <label><strong>Total precio por Dias </strong></label>
+                        <InputNumber class="form-control" readonly="true" @bind-Value="PrecioporDia" />
+                    </div>
+                    <div class="form-group col-2 col-md-2 ml-md-auto">
+                        <label><strong>Vehiculos Disponible</strong></label>
+                        <InputNumber class="form-control" readonly="true" @bind-Value="Disponibilidad" />
+                    </div>
                 </div>
             </div>
+            <div class="card-footer text-center">
+                <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
+            </div>
+            <div class="form-row col-12 justify-content-center">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item bt">
+                            <a class="page-link" @onclick="PaginaAnterior">
+                                <span class="oi oi-media-skip-backward "></span>
+                            </a>
+                        </li>
+
+                        @for (int i = 1; i <= Paginas; i++)
+                        {
+                            <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
+
+                        }
+
+                        <li class="page-item">
+                            <a class="page-link" @onclick="PaginaSiguiente">
+                                <span class="oi oi-media-skip-forward "></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <div class="card-footer text-center">
-            <button class="btn btn-outline-success" data-toggle="modal" @onclick="PDF" data-target="#myModals"><i class="oi oi-print"></i> Generar Reporte</button>
-        </div>
-        <div class="form-row col-12 justify-content-center">
-            <nav>
-                <ul class="pagination">
-                    <li class="page-item bt">
-                        <a class="page-link" @onclick="PaginaAnterior">
-                            <span class="oi oi-media-skip-backward "></span>
-                        </a>
-                    </li>
+    </EditForm>
+}
+    <div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content m-md-auto">
+                <div class="modal-header">
+                    <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <div style="text-align: center;">
+                        <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
-                    @for (int i = 1; i <= Paginas; i++)
-                    {
-                        <li class=" @(PaginaActual == i ? "text-danger" : "page-item")" @onclick="Mover"> <a class="page-link disabled">@i</a></li>
-
-                    }
-
-                    <li class="page-item">
-                        <a class="page-link" @onclick="PaginaSiguiente">
-                            <span class="oi oi-media-skip-forward "></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                </div>
+            </div>
         </div>
     </div>
-</EditForm>
-
-<div class="modal fade" id="myModals" tabindex="-1" role="dialog" aria-labelledby="myModalsLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content m-md-auto">
-            <div class="modal-header">
-                <button type="button" class="close text-danger" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <div style="text-align: center;">
-                    <iframe src="@pdfContent" style="width:950px; height:600px;" frameborder="0"></iframe>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-            </div>
-        </div>
-    </div>
-</div>
 
 
-@code {
-    private List<Vehiculos> lista { get; set; }
-    private List<Vehiculos> listapaginada { get; set; }
+    @code {
 
-    double Paginas = 0;
-    double Elementos = 0;
-    int PaginaActual = 0;
-    public decimal AcomularPrecio { get; set; }
-    public decimal PrecioporDia { get; set; }
-    public int Disponibilidad { get; set; }
+        private List<Vehiculos> lista { get; set; }
+        private List<Vehiculos> listapaginada { get; set; }
 
-    public byte[] Data { get; set; }
-    public string pdfContent { get; set; }
+        double Paginas = 0;
+        double Elementos = 0;
+        int PaginaActual = 0;
+        public decimal AcomularPrecio { get; set; }
+        public decimal PrecioporDia { get; set; }
+        public int Disponibilidad { get; set; }
 
-    Paginacion paginacion = new Paginacion();
+        public byte[] Data { get; set; }
+        public string pdfContent { get; set; }
 
-    private string Filtro { get; set; }
-    private string Criterio { get; set; }
-    private DateTime Desde { get; set; } = DateTime.Now;
-    private DateTime Hasta { get; set; } = DateTime.Now;
+        Paginacion paginacion = new Paginacion();
 
-    protected override void OnInitialized()
-    {
-        lista = VehiculosBLL.GetList(C => true);
-        Filtro = "Todo";
-        IniciarPaginacion();
-    }
+        private string Filtro { get; set; }
+        private string Criterio { get; set; }
+        private DateTime Desde { get; set; } = DateTime.Now;
+        private DateTime Hasta { get; set; } = DateTime.Now;
 
-    private void TotalPrecio()
+        public bool paso { get; set; }
 
-    {
-
-        foreach (var item in Datos())
+        protected override void OnInitialized()
         {
-            AcomularPrecio += item.PrecioVenta;
-            PrecioporDia += item.PrecioPorDia;
+            lista = VehiculosBLL.GetList(C => true);
+            Filtro = "Todo";
+            IniciarPaginacion();
         }
 
-    }
+        private void TotalPrecio()
 
-    private List<Vehiculos> Datos()
-    {
-        try
-        {
-            List<Vehiculos> lista = VehiculosBLL.GetList(v => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-        return lista;
-
-
-    }
-
-
-    private void ContarVehiculo()
-    {
-        try
         {
 
-            Disponibilidad = VehiculosBLL.GetList(v => v.Estado == "Disponible").Count();
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-    private void PDF()
-    {
-        EIMRentaaCar.Pages.Reportes.ReportVehiculo reportes = new Reportes.ReportVehiculo();
-
-        Data = reportes.Reporte();
-
-        pdfContent = "data:application/pdf;base64,";
-        pdfContent += System.Convert.ToBase64String(Data);
-    }
-    public void IniciarPaginacion()
-    {
-        PaginaActual = 1;
-        Elementos = lista.Count();
-        Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
-        listapaginada = lista.Take(paginacion.Mostrar).ToList();
-
-        TotalPrecio();
-        ContarVehiculo();
-    }
-
-    private void PaginaSiguiente()
-    {
-        if (PaginaActual < Paginas)
-        {
-            PaginaActual++;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void Mover()
-    {
-        if (PaginaActual < Paginas)
-        {
-            PaginaActual++;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-        else if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-
-    private void PaginaAnterior()
-    {
-        if (PaginaActual > 1)
-        {
-            PaginaActual--;
-            listapaginada = lista
-                .Skip((PaginaActual - 1) * paginacion.Mostrar)
-                .Take(paginacion.Mostrar)
-                .ToList();
-        }
-    }
-
-    private void Buscar()
-    {
-        try
-        {
-            if (Filtro == null)
+            foreach (var item in Datos())
             {
-                toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
+                AcomularPrecio += item.PrecioVenta;
+                PrecioporDia += item.PrecioPorDia;
             }
-            else
-            {
-                lista = VehiculosBLL.GetList(a => true);
 
-                if (lista.Count == 0)
+        }
+
+        private List<Vehiculos> Datos()
+        {
+            try
+            {
+                List<Vehiculos> lista = VehiculosBLL.GetList(v => true);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return lista;
+
+
+        }
+
+
+        private void ContarVehiculo()
+        {
+            try
+            {
+
+                Disponibilidad = VehiculosBLL.GetList(v => v.Estado == "Disponible").Count();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        private void PDF()
+        {
+            EIMRentaaCar.Pages.Reportes.ReportVehiculo reportes = new Reportes.ReportVehiculo();
+
+            Data = reportes.Reporte();
+
+            pdfContent = "data:application/pdf;base64,";
+            pdfContent += System.Convert.ToBase64String(Data);
+        }
+        public void IniciarPaginacion()
+        {
+            PaginaActual = 1;
+            Elementos = lista.Count();
+            Paginas = Math.Ceiling(Elementos / paginacion.Mostrar);
+            listapaginada = lista.Take(paginacion.Mostrar).ToList();
+
+            TotalPrecio();
+            ContarVehiculo();
+        }
+
+        private void PaginaSiguiente()
+        {
+            if (PaginaActual < Paginas)
+            {
+                PaginaActual++;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void Mover()
+        {
+            if (PaginaActual < Paginas)
+            {
+                PaginaActual++;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+            else if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+
+        private void PaginaAnterior()
+        {
+            if (PaginaActual > 1)
+            {
+                PaginaActual--;
+                listapaginada = lista
+                    .Skip((PaginaActual - 1) * paginacion.Mostrar)
+                    .Take(paginacion.Mostrar)
+                    .ToList();
+            }
+        }
+
+        private void Buscar()
+        {
+            try
+            {
+                if (Filtro == null)
                 {
-                    toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                    toast.ShowWarning("Debe seleccionar un Filtro", "Aviso");
                 }
                 else
                 {
+                    lista = VehiculosBLL.GetList(a => true);
 
-                    switch (Filtro)
+                    if (lista.Count == 0)
                     {
-                        case "Todo":
-                            listapaginada = VehiculosBLL.GetList(e => true);
-                            IniciarPaginacion();
-                            break;
-                        case "VehiculoId":
-                            listapaginada = VehiculosBLL.GetList(e => e.VehiculoId == Convert.ToInt32(Criterio));
-                            break;
-                        case "Vin":
-                            listapaginada = VehiculosBLL.GetList(e => e.Vin == Criterio);
-                            break;
-                        case "Marca":
-                            listapaginada = VehiculosBLL.GetList(e => e.Marca == Criterio);
-                            break;
-                        case "Modelo":
-                            listapaginada = VehiculosBLL.GetList(e => e.Modelo == Criterio);
-                            break;
-                        case "Fecha":
-                            listapaginada = lista.Where(c => c.Fecha >= Desde.Date && c.Fecha.Date <= Hasta.Date).ToList();
-                            break;
+                        toast.ShowWarning("No hay Articulos Registrados", "Aviso");
+                    }
+                    else
+                    {
+
+                        switch (Filtro)
+                        {
+                            case "Todo":
+                                listapaginada = VehiculosBLL.GetList(e => true);
+                                IniciarPaginacion();
+                                break;
+                            case "VehiculoId":
+                                listapaginada = VehiculosBLL.GetList(e => e.VehiculoId == Convert.ToInt32(Criterio));
+                                break;
+                            case "Vin":
+                                listapaginada = VehiculosBLL.GetList(e => e.Vin == Criterio);
+                                break;
+                            case "Marca":
+                                listapaginada = VehiculosBLL.GetList(e => e.Marca == Criterio);
+                                break;
+                            case "Modelo":
+                                listapaginada = VehiculosBLL.GetList(e => e.Modelo == Criterio);
+                                break;
+                            case "Fecha":
+                                listapaginada = lista.Where(c => c.Fecha >= Desde.Date && c.Fecha.Date <= Hasta.Date).ToList();
+                                break;
+
+                        }
 
                     }
-
                 }
-            }
 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
-        catch (Exception)
+
+        private bool getRol()
         {
-            throw;
+
+            Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+            if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
+            {
+                return paso = true;
+            }
+            return paso = false;
         }
+
     }
-}
