@@ -140,7 +140,7 @@
                                         <td>@item.Monto.ToString("N2")</td>
                                         <td>@item.Balance.ToString("N2")</td>
                                         <td><input type="checkbox" @bind="item.Pagada" /></td>
-                                        <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i></button></td>
+                                        <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i> Remover</button> </td>
                                     </tr>
                                 }
 
@@ -205,18 +205,18 @@
     Ventas ventas = new Ventas();
 
     @*Datos del cliente*@
-public int ClienteSelecionado { get; set; }
-public string nombreCliente { get; set; }
+    public int ClienteSelecionado { get; set; }
+    public string nombreCliente { get; set; }
 
     @*Datos del vehiculo*@
-public int Vehiculoseleccionado { get; set; }
-public string Marca { get; set; }
-public string Modelo { get; set; }
-public decimal Precio { get; set; }
-public string Vin { get; set; }
-public decimal KM { get; set; }
-public int Año { get; set; }
-public string Tipo { get; set; }
+    public int Vehiculoseleccionado { get; set; }
+    public string Marca { get; set; }
+    public string Modelo { get; set; }
+    public decimal Precio { get; set; }
+    public string Vin { get; set; }
+    public decimal KM { get; set; }
+    public int Año { get; set; }
+    public string Tipo { get; set; }
 
     @*Datos del usuario*@
     Usuarios usuarios = new Usuarios();
@@ -224,6 +224,8 @@ public string Tipo { get; set; }
 
     public byte[] Data { get; set; }
     public string pdfContent { get; set; }
+
+    public int contar { get; set; }
 
     protected override void OnInitialized()
     {
@@ -275,6 +277,12 @@ public string Tipo { get; set; }
 
     private void Guardar()
     {
+
+        if (ventas.Cuotas != contar)
+        {
+            toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
+        }
+
         if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
         {
             toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
@@ -423,6 +431,9 @@ public string Tipo { get; set; }
         {
             for (int i = 0; i < ventas.Cuotas; i++)
             {
+                contar = 1 + i;
+
+
                 this.ventas.CuotaDetalles.Add(new CuotaDetalles
                 {
                     CuotaId = 0,
@@ -432,12 +443,18 @@ public string Tipo { get; set; }
                     Balance = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
                     Pagada = false,
                     Numero = (1 + i)
+
                 });
             }
 
             if (ventas.CuotaDetalles.Count > 0)
             {
                 ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
+            }
+
+            if (ventas.Cuotas != contar)
+            {
+                toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
             }
 
             CalcularBalance();
