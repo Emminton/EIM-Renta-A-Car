@@ -290,7 +290,7 @@ private void Guardar()
 {
     if(ventas.Cuotas != contar)
     {
-        toast.ShowInfo("No puedes agregar mas cuotas hasta que se pague");
+        toast.ShowInfo("No puedes agregar mas cuotas");
     }
     else
     {
@@ -464,7 +464,7 @@ private void Agregar()
 
         if (ventas.Cuotas != contar)
         {
-            toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
+            toast.ShowInfo("No puedes modificar la cuotas ya hechas");
         }
 
         CalcularBalance();

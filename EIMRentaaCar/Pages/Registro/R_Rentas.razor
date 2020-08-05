@@ -114,7 +114,6 @@
                         </div>
                     </div>
 
-
                     <div class="form-row">
                         <div class="col">
                             <label><strong>Tiempo De Renta</strong></label>
@@ -166,9 +165,6 @@
 
                         </div>
                     </div>
-
-
-
                 </form>
             </div>
             @*Botones*@
@@ -224,13 +220,13 @@
     Usuarios usuarios = new Usuarios();
 
     @*Datos Del Cliente*@
-public string nombreCliente { get; set; }
-public int SelecionCliente { get; set; }
+    public string nombreCliente { get; set; }
+    public int SelecionCliente { get; set; }
 
-public byte[] Data { get; set; }
-public string pdfContent { get; set; }
+    public byte[] Data { get; set; }
+    public string pdfContent { get; set; }
 
-public int contar { get; set; }
+    public int contar { get; set; }
 
 protected override void OnInitialized()
 {
@@ -312,7 +308,7 @@ private void Guardar()
 {
     if (rentas.TiempoRenta != contar)
     {
-        toast.ShowInfo("No puedes agregar mas cuotas hasta que se pague");
+        toast.ShowInfo("No puedes agregar mas dias");
     }
     else
     {
@@ -437,6 +433,11 @@ private void Agregar()
         if (rentas.PagoDetalle.Count > 0)
         {
             rentas.Balance = rentas.PagoDetalle[0].Monto;
+        }
+
+        if (rentas.TiempoRenta != contar)
+        {
+            toast.ShowInfo("No puedes modificar los dias de renta ya hechas");
         }
 
         CalcularBalance();
