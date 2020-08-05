@@ -31,6 +31,15 @@
                                 </div>
                             </div>
                         </div>
+                        <br />
+                        <div class="col">
+                            @*Fecha de la Renta*@
+                            <div class="form-group">
+                                <label>Fecha de la Renta</label>
+                                <InputDate @bind-Value="ventas.FechaVenta" class="form-control col-4" />
+                                <ValidationMessage For="@(() => ventas.FechaVenta)" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -219,70 +228,72 @@
     public string Tipo { get; set; }
 
     @*Datos del usuario*@
-    Usuarios usuarios = new Usuarios();
-    public bool paso { get; set; }
+Usuarios usuarios = new Usuarios();
+public bool paso { get; set; }
 
-    public byte[] Data { get; set; }
-    public string pdfContent { get; set; }
+public byte[] Data { get; set; }
+public string pdfContent { get; set; }
 
-    public int contar { get; set; }
+public int contar { get; set; }
 
-    protected override void OnInitialized()
+protected override void OnInitialized()
+{
+    Nuevo();
+    if (VentaId > 0)
     {
-        Nuevo();
-        if (VentaId > 0)
-        {
-            var Auxventas = VentasBLL.Buscar(VentaId);
-            if (Auxventas != null)
-                this.ventas = Auxventas;
-            else
-                toast.ShowWarning("No encontrado.");
-        }
-
+        var Auxventas = VentasBLL.Buscar(VentaId);
+        if (Auxventas != null)
+            this.ventas = Auxventas;
+        else
+            toast.ShowWarning("No encontrado.");
     }
 
-    private void Nuevo()
-    {
-        this.ventas = new Ventas();
-        Marca = string.Empty;
-        Modelo = string.Empty;
-        Precio = 0;
-        Vin = string.Empty;
-        KM = 0;
-        Año = 0;
-        Tipo = string.Empty;
-        nombreCliente = string.Empty;
-        ClienteSelecionado = 0;
-        Vehiculoseleccionado = 0;
+}
 
-    }
+private void Nuevo()
+{
+    this.ventas = new Ventas();
+    Marca = string.Empty;
+    Modelo = string.Empty;
+    Precio = 0;
+    Vin = string.Empty;
+    KM = 0;
+    Año = 0;
+    Tipo = string.Empty;
+    nombreCliente = string.Empty;
+    ClienteSelecionado = 0;
+    Vehiculoseleccionado = 0;
 
-    private void Buscar()
+}
+
+private void Buscar()
+{
+    if (ventas.VentaId > 0)
     {
-        if (ventas.VentaId > 0)
+        var encontrado = VentasBLL.Buscar(ventas.VentaId);
+
+        if (encontrado != null)
         {
-            var encontrado = VentasBLL.Buscar(ventas.VentaId);
-
-            if (encontrado != null)
-            {
-                this.ventas = encontrado;
-            }
-            else
-            {
-                toast.ShowWarning("No encontrado");
-                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado la venta en la base de datos");
-            }
+            this.ventas = encontrado;
+            Vehiculoseleccionado = ventas.VehiculoId;
+            contar = ventas.Cuotas;
+        }
+        else
+        {
+            toast.ShowWarning("No encontrado");
+            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha encontrado la venta en la base de datos");
         }
     }
+}
 
-    private void Guardar()
+private void Guardar()
+{
+    if(ventas.Cuotas != contar)
     {
-
-        if (ventas.Cuotas != contar)
-        {
-            toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
-        }
-
+        toast.ShowInfo("No puedes agregar mas cuotas hasta que se pague");
+    }
+    else
+    {
         if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
         {
             toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
@@ -315,216 +326,215 @@
                 NotificacionBLL.Mensaje(getUser(), "Error", "No fue pos posible guardar la venta en la base de datos");
             }
         }
-
     }
 
-    private void Eliminar()
+}
+
+private void Eliminar()
+{
+    bool elimino;
+
+    elimino = VentasBLL.Eliminar(ventas.VentaId);
+
+    if (elimino)
     {
-        bool elimino;
-
-        elimino = VentasBLL.Eliminar(ventas.VentaId);
-
-        if (elimino)
-        {
-            Nuevo();
-            toast.ShowSuccess("Eliminado correctamente");
-            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado la venta en al base de datos");
-        }
-        else
-        {
-            toast.ShowError("No fue posible eliminar");
-            NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible eliminar la venta");
-        }
-
+        Nuevo();
+        toast.ShowSuccess("Eliminado correctamente");
+        NotificacionBLL.Mensaje(getUser(), "Success", "Se ha eliminado la venta en al base de datos");
+    }
+    else
+    {
+        toast.ShowError("No fue posible eliminar");
+        NotificacionBLL.Mensaje(getUser(), "Error", "No fue posible eliminar la venta");
     }
 
-    private List<Clientes> ClienteCombo()
+}
+
+private List<Clientes> ClienteCombo()
+{
+    List<Clientes> lista = new List<Clientes>();
+
+    try
     {
-        List<Clientes> lista = new List<Clientes>();
-
-        try
-        {
-            lista = ClientesBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
+        lista = ClientesBLL.GetList(c => true);
+    }
+    catch (Exception)
+    {
+        throw;
     }
 
-    private List<Vehiculos> VehiculoCombo()
+    return lista;
+}
+
+private List<Vehiculos> VehiculoCombo()
+{
+    List<Vehiculos> lista = new List<Vehiculos>();
+
+    try
     {
-        List<Vehiculos> lista = new List<Vehiculos>();
-
-        try
-        {
-            lista = VehiculosBLL.GetList(c => true);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-
-        return lista;
+        lista = VehiculosBLL.GetList(c => true);
+    }
+    catch (Exception)
+    {
+        throw;
     }
 
-    private void MostrarNombreCliente()
-    {
-        string auxVenta = string.Empty;
+    return lista;
+}
 
-        var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
-        if (auxCliente != null)
+private void MostrarNombreCliente()
+{
+    string auxVenta = string.Empty;
+
+    var auxCliente = ClientesBLL.Buscar(ClienteSelecionado);
+    if (auxCliente != null)
+    {
+        auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
+        nombreCliente = auxVenta;
+    }
+    ventas.ClienteId = ClienteSelecionado;
+}
+
+private void MostrarVehiculo()
+{
+    var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
+    if (auxventa != null)
+    {
+        Marca = auxventa.Marca;
+        Modelo = auxventa.Modelo;
+        Precio = auxventa.PrecioVenta + Convert.ToDecimal(auxventa.ITBIS);
+        Vin = auxventa.Vin;
+        KM = auxventa.Kilometraje;
+        Año = auxventa.Año;
+        Tipo = auxventa.Tipo;
+
+        //aqui paso el precio del vehiculo al monto
+        ventas.MontoTotal = Precio;
+
+        if (auxventa.Estado == "Rentado")
         {
-            auxVenta = ClientesBLL.Buscar(auxCliente.ClienteId).Nombre;
-            nombreCliente = auxVenta;
+            toast.ShowError("Este vehiculo fue rentado");
+
         }
-        ventas.ClienteId = ClienteSelecionado;
+    }
+    ventas.VehiculoId = Vehiculoseleccionado;
+}
+
+private void Agregar()
+{
+    if (ventas.Cuotas == 0)
+    {
+        toast.ShowWarning("Tiene que poner las cuotas.");
+        return;
     }
 
-    private void MostrarVehiculo()
+    if (ClienteSelecionado == 0 && Vehiculoseleccionado == 0)
     {
-        var auxventa = VehiculosBLL.Buscar(Vehiculoseleccionado);
-        if (auxventa != null)
+        toast.ShowWarning("Tiene que seleccionar un cliente y un vehiculo Id");
+        return;
+    }
+
+    if (ventas.Cuotas <= 0)
+    {
+        toast.ShowWarning("La cuotas debe ser mayor a 0.");
+        return;
+    }
+    else
+    {
+        for (int i = 0; i < ventas.Cuotas; i++)
         {
-            Marca = auxventa.Marca;
-            Modelo = auxventa.Modelo;
-            Precio = auxventa.PrecioVenta + Convert.ToDecimal(auxventa.ITBIS);
-            Vin = auxventa.Vin;
-            KM = auxventa.Kilometraje;
-            Año = auxventa.Año;
-            Tipo = auxventa.Tipo;
 
-            //aqui paso el precio del vehiculo al monto
-            ventas.MontoTotal = Precio;
-
-            if (auxventa.Estado == "Rentado")
+            this.ventas.CuotaDetalles.Add(new CuotaDetalles
             {
-                toast.ShowError("Este vehiculo fue rentado");
+                CuotaId = 0,
+                VentaId = ventas.VentaId,
+                UsuarioId = getUser(),
+                Monto = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
+                Balance = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
+                Pagada = false,
+                Numero = (1 + i)
 
-            }
+            });
         }
-        ventas.VehiculoId = Vehiculoseleccionado;
-    }
 
-    private void Agregar()
+        if (ventas.CuotaDetalles.Count > 0)
+        {
+            ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
+        }
+
+        if (ventas.Cuotas != contar)
+        {
+            toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
+        }
+
+        CalcularBalance();
+    }
+}
+
+private void EliminarOrdenDetalle(CuotaDetalles detalle)
+{
+    try
     {
-        if (ventas.Cuotas == 0)
-        {
-            toast.ShowWarning("Tiene que poner las cuotas.");
-            return;
-        }
-
-        if (ClienteSelecionado == 0 && Vehiculoseleccionado == 0)
-        {
-            toast.ShowWarning("Tiene que seleccionar un cliente y un vehiculo Id");
-            return;
-        }
-
-        if (ventas.Cuotas <= 0)
-        {
-            toast.ShowWarning("La cuotas debe ser mayor a 0.");
-            return;
-        }
-        else
-        {
-            for (int i = 0; i < ventas.Cuotas; i++)
-            {
-                contar = 1 + i;
-
-
-                this.ventas.CuotaDetalles.Add(new CuotaDetalles
-                {
-                    CuotaId = 0,
-                    VentaId = ventas.VentaId,
-                    UsuarioId = getUser(),
-                    Monto = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
-                    Balance = (VehiculosBLL.Buscar(Vehiculoseleccionado).PrecioVenta + Convert.ToDecimal(VehiculosBLL.Buscar(Vehiculoseleccionado).ITBIS)) / ventas.Cuotas,
-                    Pagada = false,
-                    Numero = (1 + i)
-
-                });
-            }
-
-            if (ventas.CuotaDetalles.Count > 0)
-            {
-                ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
-            }
-
-            if (ventas.Cuotas != contar)
-            {
-                toast.ShowInfo("No puedes modificar la cuotas ya hechas, se recomiento remover cada elemento");
-            }
-
-            CalcularBalance();
-        }
+        ventas.CuotaDetalles.Remove(detalle);
     }
-
-    private void EliminarOrdenDetalle(CuotaDetalles detalle)
-    {
-        try
-        {
-            ventas.CuotaDetalles.Remove(detalle);
-        }
-        catch (Exception)
-        {
-
-            throw;
-        }
-    }
-
-    private void CalcularBalance()
-    {
-        ventas.Balance = 0;
-        foreach (CuotaDetalles cuota in ventas.CuotaDetalles)
-        {
-            if (!cuota.Pagada)
-            {
-                ventas.Balance += cuota.Balance;
-            }
-        }
-
-    }
-
-    private int getUser()
-    {
-        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
-
-        if (usuario != null)
-        {
-            return usuario.UsuarioId;
-        }
-        return 0;
-    }
-
-    private bool getRol()
+    catch (Exception)
     {
 
-        Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
-
-        if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
-        {
-            return paso = true;
-        }
-        return paso = false;
+        throw;
     }
+}
 
-
-    private void PDF()
+private void CalcularBalance()
+{
+    ventas.Balance = 0;
+    foreach (CuotaDetalles cuota in ventas.CuotaDetalles)
     {
-        if (ventas == null)
+        if (!cuota.Pagada)
         {
-            toast.ShowInfo("No hay datos");
-        }
-        else
-        {
-            EIMRentaaCar.Pages.Reportes.FacturaVenta factura = new Reportes.FacturaVenta();
-
-            Data = factura.Reporte(ventas);
-
-            pdfContent = "data:application/pdf;base64,";
-            pdfContent += System.Convert.ToBase64String(Data);
+            ventas.Balance += cuota.Balance;
         }
     }
+
+}
+
+private int getUser()
+{
+    Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+    if (usuario != null)
+    {
+        return usuario.UsuarioId;
+    }
+    return 0;
+}
+
+private bool getRol()
+{
+
+    Usuarios usuario = UsuarioBLL.Buscar(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.Name);
+
+    if (usuario.Roles == "Administrador" || usuario.Roles == "Empleado")
+    {
+        return paso = true;
+    }
+    return paso = false;
+}
+
+
+private void PDF()
+{
+    if (ventas == null)
+    {
+        toast.ShowInfo("No hay datos");
+    }
+    else
+    {
+        EIMRentaaCar.Pages.Reportes.FacturaVenta factura = new Reportes.FacturaVenta();
+
+        Data = factura.Reporte(ventas);
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
+    }
+}
 }
