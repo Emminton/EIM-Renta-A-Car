@@ -39,7 +39,7 @@ namespace EIMRentaaCar.BLL.Tests
         public void BuscarTest()
         {
             var paso = PagoVentasBLL.Buscar(1);
-            Assert.AreEqual(paso,paso);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]

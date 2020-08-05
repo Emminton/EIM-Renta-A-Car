@@ -33,14 +33,14 @@ namespace EIMRentaaCar.BLL.Tests
         {
             bool paso = false;
             paso = BancoAsociadoBLL.Eliminar(1);
-            Assert.AreEqual(paso,paso); 
+            Assert.AreEqual(paso,true); 
         }
 
         [TestMethod()]
         public void BuscarTest()
         {           
             var paso = BancoAsociadoBLL.Buscar(1);
-            Assert.AreEqual(paso,paso);
+            Assert.AreEqual(paso,true);
         }
 
         [TestMethod()]
