@@ -44,7 +44,7 @@ namespace EIMRentaaCar.Models
         public string Direccion { get; set; }
 
         [Required(ErrorMessage = "El campo Email no debe estar vació.")]
-        [EmailAddress(ErrorMessage = "Ingrese su dirección de Email.")]
+        [EmailAddress(ErrorMessage = "Ingrese un Email Valido.")]
         public string Email { get; set; }
 
         public Clientes()
