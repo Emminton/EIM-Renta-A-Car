@@ -131,14 +131,14 @@
                             @*Precio de la venta*@
                             <div class="col">
                                 <label>Precio de Venta:</label>
-                                <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control" @onclick="Calcular"></InputNumber>
+                                <InputNumber @bind-Value="vehiculos.PrecioVenta" class="form-control" @onfocusout="Calcular"></InputNumber>
                                 <ValidationMessage For="@(()=>vehiculos.PrecioVenta)"></ValidationMessage>
                             </div>
 
                             @*Precio de ITEBIS *@
                             <div class="col">
                                 <label>ITBIS:</label>
-                                <InputNumber @bind-Value="vehiculos.ITBIS" step="0,0" class="form-control"></InputNumber>
+                                <InputNumber @bind-Value="vehiculos.ITBIS"  class="form-control" readonly="true"></InputNumber>
                                 <ValidationMessage For="@(()=>vehiculos.ITBIS)"></ValidationMessage>
                             </div>
                         </div>
@@ -162,10 +162,10 @@
 
 @code {
 
-    [Parameter]
-    public int Id { get; set; }
-    Vehiculos vehiculos = new Vehiculos();
-    Usuarios usuarios = new Usuarios();
+        [Parameter]
+        public int Id { get; set; }
+        Vehiculos vehiculos = new Vehiculos();
+        Usuarios usuarios = new Usuarios();
     public bool paso { get; set; }
 
     protected override void OnInitialized()
@@ -206,8 +206,10 @@
 
     private void Calcular()
     {
-
-        vehiculos.ITBIS = Convert.ToDouble(vehiculos.PrecioVenta) * 0.18;
+        if (vehiculos.PrecioVenta != 0)
+        {
+            vehiculos.ITBIS = Convert.ToDouble(vehiculos.PrecioVenta) * 0.18;
+        }
 
     }
 

@@ -488,9 +488,9 @@
 
     private void PDF()
     {
-        if (rentas == null)
+        if (RentasBLL.Buscar(rentas.RentaId)==null)
         {
-            toast.ShowInfo("No hay datos");
+            toast.ShowInfo("Tienes que guardar la renta primero");
         }
         else
         {

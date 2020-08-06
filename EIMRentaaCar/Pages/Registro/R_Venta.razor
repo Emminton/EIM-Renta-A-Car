@@ -509,9 +509,9 @@ private bool getRol()
 
 private void PDF()
 {
-    if (ventas == null)
+    if (VentasBLL.Buscar(ventas.VentaId) == null)
     {
-        toast.ShowInfo("No hay datos");
+        toast.ShowInfo("Tiene que guardar la venta primero");
     }
     else
     {
