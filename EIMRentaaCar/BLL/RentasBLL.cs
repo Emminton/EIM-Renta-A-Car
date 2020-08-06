@@ -11,31 +11,31 @@ namespace EIMRentaaCar.BLL
 {
     public class RentasBLL
     {
-        public static bool Guardar(Rentas rentas)
+        public static bool Guardar(Rentas ventas)
         {
-            if (!Existe(rentas.RentaId))// si no existe se inserta
-                return Insertar(rentas);
+            if (!Existe(ventas.RentaId))// si no existe se inserta
+                return Insertar(ventas);
             else
-                return Modificar(rentas);
+                return Modificar(ventas);
         }
 
-        private static bool Insertar(Rentas rentas)
+        private static bool Insertar(Rentas ventas)
         {
             bool paso = false;
             Contexto contexto = new Contexto();
 
             try
             {
-                var vehiculo = VehiculosBLL.Buscar(rentas.VehiculoId);
+                var vehiculo = VehiculosBLL.Buscar(ventas.VehiculoId);
 
                 if (vehiculo != null)
                 {
-                    vehiculo.Estado = "Rentado";    //Cambiando el estado del vehículo a Rentado
+                    vehiculo.Estado = "Rentado";    //Cambiando el estado del vehículo a vendido
                     VehiculosBLL.Modificar(vehiculo);
                 }
-                contexto.Rentas.Add(rentas);
-                paso = contexto.SaveChanges() > 0;
 
+                contexto.Rentas.Add(ventas);
+                paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -48,18 +48,18 @@ namespace EIMRentaaCar.BLL
             return paso;
         }
 
-        public static bool Modificar(Rentas rentas)
+        public static bool Modificar(Rentas ventas)
         {
             bool paso = false;
             Contexto contexto = new Contexto();
-
             try
             {
-                foreach (PagoDetalles item in rentas.PagoDetalle)
+                foreach (PagoDetalles item in ventas.PagoDetalle)
                 {
                     contexto.Entry(item).State = EntityState.Modified;
                 }
-                contexto.Entry(rentas).State = EntityState.Modified;
+
+                contexto.Entry(ventas).State = EntityState.Modified;
                 paso = contexto.SaveChanges() > 0;
             }
             catch (Exception)
@@ -110,11 +110,11 @@ namespace EIMRentaaCar.BLL
         public static Rentas Buscar(int id)
         {
             Contexto contexto = new Contexto();
-            Rentas rentas;
+            Rentas ventas;
 
             try
             {
-                rentas = contexto.Rentas.Where(v => v.RentaId == id)
+                ventas = contexto.Rentas.Where(v => v.RentaId == id)
                                  .Include(v => v.PagoDetalle)
                                  .SingleOrDefault();
             }
@@ -126,7 +126,7 @@ namespace EIMRentaaCar.BLL
             {
                 contexto.Dispose();
             }
-            return rentas;
+            return ventas;
         }
 
         public static List<Rentas> GetList(Expression<Func<Rentas, bool>> expression)
@@ -157,7 +157,7 @@ namespace EIMRentaaCar.BLL
             bool encontrado = false;
             try
             {
-                encontrado = contexto.Rentas.Any(c => c.RentaId == id);
+                encontrado = contexto.Ventas.Any(v => v.VentaId == id);
             }
             catch (Exception)
             {
