@@ -23,14 +23,14 @@ namespace EIMRentaaCar.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-           // optionsBuilder.UseSqlServer(@"Server=tcp:eimservidor.database.windows.net,1433;Initial Catalog=EIMDB;Persist Security Info=False;User ID=eimadmin;Password=eim_1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
-           //optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database = EIM.db; Trusted_Connection = True; ");
-            optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
+            optionsBuilder.UseSqlServer(@"Server=tcp:eim.database.windows.net,1433;Initial Catalog=EIMDB;Persist Security Info=False;User ID=admin123;Password=admin_123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            
+            //optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database = EIM.db; Trusted_Connection = True; ");
+            /*optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");*/
         }
 
         protected override void OnModelCreating(ModelBuilder model)
         {
-
 
             model.Entity<Usuarios>().HasData(new Usuarios
             {
