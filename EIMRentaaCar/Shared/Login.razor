@@ -1,52 +1,58 @@
 ﻿@page  "/Login"
 @using System.Web;
+
+@using BLL;
+
+@inject IToastService toast
+
+
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <AuthorizeView>
-        <Authorized>
-            <b>Hello, @context.User.Identity.Name!</b>
-        </Authorized>
-        <NotAuthorized>
-            <div class="container">
-                <div class="d-flex justify-content-center h-100">
-                    <div class="user_card">
-                        <div class="d-flex justify-content-center">
-                            <div class="brand_logo_container">
-                                <img src="/Imagen/E&M.png" class="brand_logo" alt="Logo">
-                            </div>
+<AuthorizeView>
+    <Authorized>
+        <b>Hello, @context.User.Identity.Name!</b>
+    </Authorized>
+    <NotAuthorized>
+        <div class="container">
+            <div class="d-flex justify-content-center h-100">
+                <div class="user_card">
+                    <div class="d-flex justify-content-center">
+                        <div class="brand_logo_container">
+                            <img src="/Imagen/E&M.png" class="brand_logo" alt="Logo">
                         </div>
-                        <div class="d-flex justify-content-center form_container">
-                            <form>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fa fa-user"></i></span>
-                                    </div>
-                                    <input type="text" name="" class="form-control input_user" placeholder="Nombre de Usuario" @bind="@Username">
+                    </div>
+                    <div class="d-flex justify-content-center form_container">
+                        <form>
+                            <div class="input-group mb-3">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
                                 </div>
-                                <div class="input-group mb-2">
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fa fa-key"></i></span>
-                                    </div>
-                                    <input type="password" name="" @bind="@Password" class="form-control input_pass" placeholder="Contraseña">
+                                <input type="text" name="" class="form-control input_user" placeholder="Nombre de Usuario" @bind="@Username">
+                            </div>
+                            <div class="input-group mb-2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-key"></i></span>
                                 </div>
+                                <input type="password" name="" @bind="@Password" class="form-control input_pass" placeholder="Contraseña">
+                            </div>
 
-                                <div class="d-flex justify-content-center mt-3 login_container">
-                                    <a class="ml-md-auto btn btn-danger form-control"
-                                       href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)"
-                                       target="_top"><i class="oi oi-account-login"></i> Login</a>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="mt-4">                           
-                           <div class="d-flex justify-content-center links">
-                                <a href="Forgot">Se le olvido su contrseña</a>
+                            <div class="d-flex justify-content-center mt-3 login_container">
+                                <a class="ml-md-auto btn btn-danger form-control" @onclick="Validar"
+                                   href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)"
+                                   target="_top"><i class="oi oi-account-login"></i> Login</a>
                             </div>
+                        </form>
+                    </div>
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-center links">
+                            <a href="Forgot">Se le olvido su contrseña</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </NotAuthorized>
-    </AuthorizeView>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 
@@ -141,9 +147,19 @@
 
     }
 
+
+
     private string encode(string datos)
     {
         return HttpUtility.UrlEncode(datos);
     }
 
+
+    private void Validar()
+    {
+        if (UsuarioBLL.Buscar(Username) == null)
+        {
+            toast.ShowWarning("Usuario y contraseña Incorrecta");
+        }
+    }
 }

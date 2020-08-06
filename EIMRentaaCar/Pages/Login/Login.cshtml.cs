@@ -19,7 +19,17 @@ namespace EIMRentaaCar.Pages.Login
 
         private string getNivel(string paramUsername)
         {
-            string nivel = UsuarioBLL.Buscar(paramUsername).Roles;
+            string nivel = string.Empty;
+
+            if (UsuarioBLL.Buscar(paramUsername) == null)
+            {
+
+            }
+            else
+            {
+                nivel = UsuarioBLL.Buscar(paramUsername).Roles;
+            }
+
             return nivel;
         }
 

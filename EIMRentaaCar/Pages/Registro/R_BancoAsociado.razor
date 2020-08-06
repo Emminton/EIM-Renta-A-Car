@@ -86,10 +86,10 @@
 
 @code
 {
-    [Parameter]
-    public int BancoId { get; set; }
-    Usuarios usuarios = new Usuarios();
-    BancosAsociados bancosAsociados = new BancosAsociados();
+        [Parameter]
+        public int BancoId { get; set; }
+        Usuarios usuarios = new Usuarios();
+        BancosAsociados bancosAsociados = new BancosAsociados();
     public bool  paso { get; set; }
 
     protected override void OnInitialized()
@@ -134,16 +134,25 @@
         bancosAsociados.UsuarioId = getUser();
         guardo = BancoAsociadoBLL.Guardar(bancosAsociados);
 
-        if (guardo)
+        if (bancosAsociados.Nombre == BancoAsociadoBLL.Buscar(bancosAsociados.Nombre).Nombre && bancosAsociados.PaginaWeb == BancoAsociadoBLL.Buscar(bancosAsociados.PaginaWeb).PaginaWeb)
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
-            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el banco en la base de datos");
+            toast.ShowInfo("Hay un banco con el mismo nombre y pagina web ");
         }
         else
         {
-            toast.ShowError("No fue posible guardar");
-            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el banco en la base de datos");
+
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+                NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el banco en la base de datos");
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el banco en la base de datos");
+            }
         }
     }
 

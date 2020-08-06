@@ -148,7 +148,7 @@
                                         <td>@item.Numero</td>
                                         <td>@item.Monto.ToString("N2")</td>
                                         <td>@item.Balance.ToString("N2")</td>
-                                        <td><input type="checkbox" @bind="item.Pagada" /></td>
+                                        <td><InputCheckbox @bind-Value="item.Pagada" readonly="true" /></td>
                                         <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i> Remover</button> </td>
                                     </tr>
                                 }

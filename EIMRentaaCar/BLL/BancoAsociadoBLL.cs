@@ -148,5 +148,28 @@ namespace EIMRentaaCar.BLL
             }
             return encontrado;
         }
+
+
+        public static BancosAsociados Buscar(string nombre)
+        {
+            BancosAsociados bancos;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+                bancos = contexto.BancoAsociados.Where(c => c.Nombre == nombre).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+
+            return bancos;
+        }
+
     }
 }

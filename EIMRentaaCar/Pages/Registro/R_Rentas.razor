@@ -146,7 +146,7 @@
                                         <td>@item.Dias</td>
                                         <td>@item.Monto</td>
                                         <td>@item.Balance</td>
-                                        <td><input type="checkbox" @bind="item.Pagada" /></td>
+                                        <td><InputCheckbox  @bind-Value="item.Pagada" readonly="true" /></td>
                                         <td><button type="button" class="btn btn-danger" @onclick="(() => EliminarOrdenDetalle(item))"><i class="oi oi-trash"></i> Remover</button> </td>
                                     </tr>
                                 }

@@ -112,10 +112,10 @@
 
 @code {
 
-    Usuarios usuarios = new Usuarios();
+        Usuarios usuarios = new Usuarios();
 
-    [Parameter]
-    public int Id { get; set; }
+        [Parameter]
+        public int Id { get; set; }
     public bool paso { get; set; }
     public string direccion { get; set; }
 
@@ -143,38 +143,47 @@
     private void Guardar()
     {
 
-        bool paso;
-        paso = UsuarioBLL.Guardar(usuarios);
-        if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
+        if (usuarios.UserName == UsuarioBLL.Buscar(usuarios.UserName).UserName)
         {
-            var validar = UsuarioBLL.ConfirmarClaves(usuarios.Password, usuarios.ConfirmarPassword);
-            if ( validar != true)
-            {
-
-                toast.ShowWarning("Las claves no coinciden");
-                NotificacionBLL.Mensaje(getUser(), "Info", "Las clave que ha insertado no coincide");
-            }
-            else
-            {
-                if (paso)
-                {
-                    Nuevo();
-                    toast.ShowSuccess("Guardado Correctamente");
-                    NotificacionBLL.Mensaje(getUser(), "Success", "Se ha agregado un nuevo usuario");
-                }
-                else
-                {
-                    toast.ShowError("No fue posible guardar");
-                    NotificacionBLL.Mensaje(getUser(), "Error", "Se ha eliminado un usuario de la base de datos");
-                }
-            }
+            toast.ShowInfo("Ya existe este nombre de usuario");
         }
         else
         {
-            toast.ShowError("No puedes modificar tu datos porque no eres administrador");
-            NotificacionBLL.Mensaje(getUser(), "Info", "No puedes modificar tu datos porque no eres administrador");
-        }
 
+
+            bool paso;
+            paso = UsuarioBLL.Guardar(usuarios);
+            if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador"))
+            {
+                var validar = UsuarioBLL.ConfirmarClaves(usuarios.Password, usuarios.ConfirmarPassword);
+                if (validar != true)
+                {
+
+                    toast.ShowWarning("Las claves no coinciden");
+                    NotificacionBLL.Mensaje(getUser(), "Info", "Las clave que ha insertado no coincide");
+                }
+                else
+                {
+                    if (paso)
+                    {
+                        Nuevo();
+                        toast.ShowSuccess("Guardado Correctamente");
+                        NotificacionBLL.Mensaje(getUser(), "Success", "Se ha agregado un nuevo usuario");
+                    }
+                    else
+                    {
+                        toast.ShowError("No fue posible guardar");
+                        NotificacionBLL.Mensaje(getUser(), "Error", "Se ha eliminado un usuario de la base de datos");
+                    }
+                }
+            }
+            else
+            {
+                toast.ShowError("No puedes modificar tu datos porque no eres administrador");
+                NotificacionBLL.Mensaje(getUser(), "Info", "No puedes modificar tu datos porque no eres administrador");
+            }
+
+        }
     }
 
     private void Buscar()

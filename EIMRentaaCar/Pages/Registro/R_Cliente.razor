@@ -145,19 +145,28 @@
 
     private void Guardar()
     {
-        cliente.UsuarioId = getUser();
-        bool guardo = ClientesBLL.Guardar(cliente);
 
-        if (guardo)
+
+        if (cliente.Cedula == ClientesBLL.Buscar(cliente.Cedula).Cedula)
         {
-            Nuevo();
-            toast.ShowSuccess("Guardado correctamente");
-            NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el cliente en la base de datos");
+            toast.ShowInfo("Ya existe una cédula con ese mismo número");
         }
         else
         {
-            toast.ShowError("No fue posible guardar");
-            NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el cliente en la base de datos");
+            cliente.UsuarioId = getUser();
+            bool guardo = ClientesBLL.Guardar(cliente);
+
+            if (guardo)
+            {
+                Nuevo();
+                toast.ShowSuccess("Guardado correctamente");
+                NotificacionBLL.Mensaje(getUser(), "Success", "Se ha guardado el cliente en la base de datos");
+            }
+            else
+            {
+                toast.ShowError("No fue posible guardar");
+                NotificacionBLL.Mensaje(getUser(), "Error", "No se ha guardado el cliente en la base de datos");
+            }
         }
     }
 
