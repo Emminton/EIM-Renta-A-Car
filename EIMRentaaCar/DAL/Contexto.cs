@@ -25,7 +25,7 @@ namespace EIMRentaaCar.DAL
             base.OnConfiguring(optionsBuilder);
            //optionsBuilder.UseSqlServer();
            //optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database = EIM.db; Trusted_Connection = True; ");
-           //optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
+           optionsBuilder.UseSqlite(@"Data Source=Data\EIM.db");
         }
 
         protected override void OnModelCreating(ModelBuilder model)

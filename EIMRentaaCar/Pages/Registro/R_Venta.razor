@@ -234,7 +234,6 @@ public bool paso { get; set; }
 public byte[] Data { get; set; }
 public string pdfContent { get; set; }
 
-public int contar { get; set; }
 
 protected override void OnInitialized()
 {
@@ -276,7 +275,6 @@ private void Buscar()
         {
             this.ventas = encontrado;
             Vehiculoseleccionado = ventas.VehiculoId;
-            contar = ventas.Cuotas;
         }
         else
         {
@@ -288,12 +286,7 @@ private void Buscar()
 
 private void Guardar()
 {
-    if(ventas.Cuotas != contar)
-    {
-        toast.ShowInfo("No puedes agregar mas cuotas");
-    }
-    else
-    {
+    
         if (VehiculosBLL.Buscar(Vehiculoseleccionado).Estado == "Rentado")
         {
             toast.ShowError("No se puede realizar la venta por que el vehiculo fue rentado");
@@ -326,7 +319,6 @@ private void Guardar()
                 NotificacionBLL.Mensaje(getUser(), "Error", "No fue pos posible guardar la venta en la base de datos");
             }
         }
-    }
 
 }
 
@@ -461,12 +453,6 @@ private void Agregar()
         {
             ventas.MontoCuotas = ventas.CuotaDetalles[0].Monto;
         }
-
-        if (ventas.Cuotas != contar)
-        {
-            toast.ShowInfo("No puedes modificar la cuotas ya hechas");
-        }
-
         CalcularBalance();
     }
 }
